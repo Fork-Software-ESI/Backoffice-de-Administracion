@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaqueteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,24 +19,59 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Ruta para listar usuarios (ejemplo)
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
+/*  ESTAS RUTAS HAY QUE MOVERLAS PARA api.php    */
 
-// Ruta para ver el formulario de creación de usuario
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 
-// Ruta para guardar un nuevo usuario (POST)
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
+// Rutas para UserController
 
-// Ruta para ver los detalles de un usuario específico
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users', [UserController::class, 'getUsuarios'])->name('users.getUsuarios');
 
-// Ruta para ver el formulario de edición de un usuario
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::post('/users', [UserController::class, 'CrearUsuario'])->name('users.CrearUsuario');
 
-// Ruta para actualizar un usuario específico (PUT/PATCH)
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::get('/users/{id}', [UserController::class, 'getUsuarioId'])->name('users.getUsuarioId');
 
-// Ruta para eliminar un usuario específico (DELETE)
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/{user}/edit', [UserController::class, 'editarUsuario'])->name('users.edit');
 
+Route::put('/users/{id}', [UserController::class, 'ActualizarUsuario'])->name('users.ActualizarUsuario');
+
+Route::delete('/users/{id}', [UserController::class, 'EliminarUsuario'])->name('users.EliminarUsuario');
+
+// Rutas para PaqueteController
+
+Route::get('/paquete', [PaqueteController::class, 'getPaquete'])->name('paquete.getPaquete');
+
+Route::get('/paquete/create', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
+
+Route::post('/paquete', [PaqueteController::class, 'guardarPaquetes'])->name('paquete.guardarPaquetes');
+
+Route::get('/paquete/{package}', [PaqueteControllerr::class, 'infoPaquete'])->name('paquete.infoPaquete');
+
+Route::get('/paquete/{package}/edit', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
+
+Route::put('/paquete/{package}', [PaqueteController::class, 'actualizarPaquete'])->name('paquete.actualizarPaquete');  //put es un metodo para actializar o modificar recursos
+
+Route::delete('/paquete/{id}', [PaqueteController::class, 'eliminarPaquete'])->name('paquete.elimiarPaquete');
+
+// Rutas para AlmacenController
+
+Route::get('/almacenes', [AlmacenController::class, 'index'])->name('almacenes.index');
+
+Route::post('/almacenes', [AlmacenController::class, 'store'])->name('almacenes.store');
+
+// Rutas para CamionController
+
+Route::get('/camiones', [CamionController::class, 'index'])->name('camiones.index');
+
+Route::post('/camiones', [CamionController::class, 'store'])->name('camiones.store');
+
+// Rutas para LoteController
+
+Route::get('/lotes', [LoteController::class, 'getLotes'])->name('lotes.getLotes');
+
+Route::post('/lotes', [LoteController::class, 'createLote'])->name('lotes.createLote');
+
+// Rutas para TrayectoriaController
+
+Route::get('/trayectorias', [TrayectoriaController::class, 'index'])->name('trayectorias.index');
+
+Route::post('/trayectorias', [TrayectoriaController::class, 'store'])->name('trayectorias.store');
