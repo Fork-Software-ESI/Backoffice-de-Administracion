@@ -21,34 +21,30 @@ class UserController extends Controller
 
     public function CrearUsuario(Request $request)
     {
-        // Validar los datos del formulario
-        $validar = $request->validate([
-            'ci' => 'required|string',
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'rol' => 'required|string'
+        $validatedData = $request->validate([
+            'username' => 'required|string|max:55',
+            'password' => 'required|string|min:6|confirmed',
         ]);
-        $user = User::create($validar);
+        $user = User::create($validatedData);
         return response()->json($user, 201);
     }
 
     public function ActualizarUsuario(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $validar = $request->validate([
-            'ci' => 'required|string',
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'required|string|min:6',
-            'rol' => 'required|string'
+        $request->validate([
+            'username' => 'required|string|max:55',
+            'password' => 'required|string|min:6|confirmed',
         ]);
-        $user->update($validar);
+        $user->update($request->all());
         return response()->json($user);
     }
     public function EliminarUsuario($id)
     {
         $user = User::findOrFail($id);
+        if (!$user){
+            return response()->json(['error' => 'No existe el Usuario'], 404);
+        }
         $user->delete();
         return response()->json(null, 204);
     }

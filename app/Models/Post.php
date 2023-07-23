@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Almacen extends Model
+class Post extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'id', 
-        'direccion',
-    ];
 
-    protected $table='almacenes';
-
-    
+    public function user(){
+        return $this -> belongsTo(User::class, 'user_id', 'id');
+    }
 }

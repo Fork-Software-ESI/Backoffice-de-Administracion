@@ -10,7 +10,7 @@ class PaqueteController extends Controller
     public function getPaquete()
     {
         $paquetes = Paquete::all();
-        return view('paquete.getPaquete', compact('package'));
+        return response()->json($paquetes);
     }
 
     public function crearPaquete()
@@ -23,7 +23,7 @@ class PaqueteController extends Controller
             'id' => 'required',
             'description' => 'required',
             'peso_kg' => 'required',
-            'lot_id' => 'required|exists:lots,id',
+            'lote_id' => 'required|exists:lots,id',
         ]);
         $paquete = Paquete::createPaquete($request->all());
         return response()->json($paquete, 201);
@@ -36,7 +36,6 @@ class PaqueteController extends Controller
 
     public function editarPaquete(Paquete $package)
     {
-        // Aquí puedes pasar información adicional al formulario, si es necesario
         return view('paquete.editarPaquete', compact('package'));
     }
 
@@ -55,6 +54,6 @@ class PaqueteController extends Controller
     public function eliminarPaquete(Paquete $package)
     {
         $package->delete();
-        return redirect()->route('paquete.getPaquete')->with('success', 'Paquete eliminado exitosamente.');
+        return response()->json(['message' => 'Paquete eliminado exitosamente.'], 200);
     }
 }
