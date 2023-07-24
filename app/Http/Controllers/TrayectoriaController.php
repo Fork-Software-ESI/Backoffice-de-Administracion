@@ -17,6 +17,7 @@ class TrayectoriaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'id'=> 'required|numeric',
             'lote_id' => 'required|numeric',
             'origen' => 'required|string',
             'destino' => 'required|string',

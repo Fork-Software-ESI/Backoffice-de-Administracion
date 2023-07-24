@@ -19,24 +19,26 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'ci',
+        'nombre',
+        'apellido',
+        'correo',
         'username',
         'password',
+        'telefono',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+    public function tokens()
+    {
+        return $this->hasMany(\Laravel\Passport\Token::class);
+    }
 
+
+    protected $primaryKey = 'id';
+    public $incrementing = true;
 }

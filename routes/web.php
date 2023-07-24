@@ -19,36 +19,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*  ESTAS RUTAS HAY QUE MOVERLAS PARA api.php    */
-
 
 // Rutas para UserController
 
-Route::get('/users', [UserController::class, 'getUsuarios'])->name('users.getUsuarios');
+Route::get('/users', [UserController::class, 'mostrarUsuarios'])->name('users.mostrarUsuarios');
 
-Route::post('/users', [UserController::class, 'CrearUsuario'])->name('users.CrearUsuario');
+Route::get('/users/{username}', [UserController::class, 'getUsuarioId'])->name('users.getUsuarioId');
 
-Route::get('/users/{id}', [UserController::class, 'getUsuarioId'])->name('users.getUsuarioId');
+Route::put('/users/{username}/edit', [UserController::class, 'editarUsuario'])->name('users.editarUsuario');
 
-Route::get('/users/{user}/edit', [UserController::class, 'editarUsuario'])->name('users.edit');
-
-Route::put('/users/{id}', [UserController::class, 'ActualizarUsuario'])->name('users.ActualizarUsuario');
-
-Route::delete('/users/{id}', [UserController::class, 'EliminarUsuario'])->name('users.EliminarUsuario');
+Route::delete('/users/{username}', [UserController::class, 'EliminarUsuario'])->name('users.EliminarUsuario');
 
 // Rutas para PaqueteController
 
 Route::get('/paquete', [PaqueteController::class, 'getPaquete'])->name('paquete.getPaquete');
 
-Route::get('/paquete/create', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
+Route::post('/paquete', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
 
-Route::post('/paquete', [PaqueteController::class, 'guardarPaquetes'])->name('paquete.guardarPaquetes');
+Route::get('/paquete/{id}', [PaqueteControllerr::class, 'infoPaquete'])->name('paquete.infoPaquete');
 
-Route::get('/paquete/{package}', [PaqueteControllerr::class, 'infoPaquete'])->name('paquete.infoPaquete');
-
-Route::get('/paquete/{package}/edit', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
-
-Route::put('/paquete/{package}', [PaqueteController::class, 'actualizarPaquete'])->name('paquete.actualizarPaquete');  //put es un metodo para actializar o modificar recursos
+Route::put('/paquete/{id}/edit', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
 
 Route::delete('/paquete/{id}', [PaqueteController::class, 'eliminarPaquete'])->name('paquete.elimiarPaquete');
 

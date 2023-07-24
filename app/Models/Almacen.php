@@ -15,5 +15,4 @@ class Almacen extends Model
 
     protected $table='almacenes';
 
-    
 }

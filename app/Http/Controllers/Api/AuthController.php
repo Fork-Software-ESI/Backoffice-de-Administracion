@@ -5,39 +5,29 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        $validatedData = $request->validate([
-            'username' => 'required|max:55|unique:users',
-            'password' => 'required|confirmed'
-        ]);
-
-        $validatedData['password'] = bcrypt($request->password);
-
-        $user = User::create($validatedData);
-
-        $accessToken = $user->createToken('authToken')->accessToken;
-
-        return response([ 'user' => $user, 'access_token' => $accessToken]);
-    }
-
     public function login(Request $request)
     {
-        $loginData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required'
         ]);
 
-        if (!auth()->attempt($loginData)) {
-            return response(['message' => 'Credenciales invalidas']);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
         }
 
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
+        $credentials = $request->only('username', 'password');
 
-        return response(['user' => auth()->user(), 'access_token' => $accessToken]);
-
+        if (Auth::attempt($credentials)) {
+            $accessToken = Auth::user()->createToken('authToken')->accessToken;
+            return response()->json(['user' => Auth::user(), 'access_token' => $accessToken]);
+        } else {
+            return response()->json(['error' => 'Credenciales inválidas'], 401);
+        }
     }
 }

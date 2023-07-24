@@ -3,57 +3,75 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use App\Models\Paquete;
 
 class PaqueteController extends Controller
 {
     public function getPaquete()
     {
-        $paquetes = Paquete::all();
-        return response()->json($paquetes);
+        $paquete = Paquete::all();
+        return response()->json($paquete);
     }
 
-    public function crearPaquete()
-    {
-        return view('paquete.create');
-    }
-    public function guardarPaquetes(Request $request)
+    public function crearPaquete(Request $request)
     {
         $request->validate([
-            'id' => 'required',
-            'description' => 'required',
+            'descripcion' => 'required|string',
             'peso_kg' => 'required',
-            'lote_id' => 'required|exists:lots,id',
+            'lote_id' => 'exists:lotes,id',
         ]);
-        $paquete = Paquete::createPaquete($request->all());
+        $paquete = Paquete::create($request->all());
         return response()->json($paquete, 201);
     }
 
-    public function infoPaquete(Paquete $package)
+
+    public function infoPaquete(Request $request, $id)
     {
-        return view('paquete.infoPaquete', compact('package'));
+        $paquete = Paquete::find($id);
+
+        if (!$paquete) {
+            return response()->json(['error' => 'Paquete no encontrado'], 404);
+        }
+
+        return response()->json($paquete);
     }
 
-    public function editarPaquete(Paquete $package)
+    public function editarPaquete(Request $request, $id)
     {
-        return view('paquete.editarPaquete', compact('package'));
-    }
+        $paquete = Paquete::find($id);
 
-    public function actualizarPaquete(Request $request, Paquete $package)
-    {
-        $request->validate([
-            'id' => 'required',
-            'description' => 'required',
-            'peso_kg' => 'required',
-            'lot_id' => 'required|exists:lots,id',
+        if (!$paquete) {
+            return response()->json(['error' => 'Paquete no encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'peso_kg' => 'required|numeric|min:0',
+            'descripcion' => 'required|string|max:255',
         ]);
-        $package->update($request->all());
-        return response()->json($package, 201);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $paquete->update([
+            'peso_kg' => $request->input('peso_kg'),
+            'descripcion' => $request->input('descripcion'),
+        ]);
+
+        return response()->json($paquete);
     }
 
-    public function eliminarPaquete(Paquete $package)
+    public function eliminarPaquete($id)
     {
-        $package->delete();
+        $paquete = Paquete::find($id);
+
+        if (!$paquete) {
+            return response()->json(['error' => 'Paquete no encontrado'], 404);
+        }
+
+        $paquete->delete();
+
         return response()->json(['message' => 'Paquete eliminado exitosamente.'], 200);
     }
 }
