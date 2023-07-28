@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaqueteController;
+use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\CamionController;
+use App\Http\Controllers\LoteController;
+use App\Http\Controllers\TrayectoriaController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +27,20 @@ Route::get('/', function () {
 
 // Rutas para UserController
 
-Route::get('/users', [UserController::class, 'mostrarUsuarios'])->name('users.mostrarUsuarios');
+Route::get('/user',[UserController::class, 'mostrarVistaPrincipal']);
 
-Route::get('/users/{username}', [UserController::class, 'getUsuarioId'])->name('users.getUsuarioId');
+//Route::get('/users', [UserController::class, 'mostrarUsuarios'])->name('users.mostrarUsuarios');
 
-Route::put('/users/{username}/edit', [UserController::class, 'editarUsuario'])->name('users.editarUsuario');
+Route::get('/user/mostrarUsuarios', [UserController::class, 'mostrarUsuarios']);
 
-Route::delete('/users/{username}', [UserController::class, 'EliminarUsuario'])->name('users.EliminarUsuario');
+Route::match(['get', 'post'], '/user/buscarUsuario', [UserController::class, 'buscarUsuario'])->name('users.buscarUsuario');
+
+// crearUsuario esta en api.php
+
+Route::get('/user/crearUsuario', [UserController::class, 'mostrarVistaCrearUsuario'])->name('user.mostrarVistaCrearUsuario');
+Route::post('/user/crearUsuario', [UserController::class, 'crearUsuario'])->name('user.crearUsuario');
+
+Route::match(['get', 'post', 'delete'],'/user/eliminarUsuario', [UserController::class, 'eliminarUsuario'])->name('users.eliminarUsuario');
 
 // Rutas para PaqueteController
 
@@ -36,17 +48,21 @@ Route::get('/paquete', [PaqueteController::class, 'getPaquete'])->name('paquete.
 
 Route::post('/paquete', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
 
-Route::get('/paquete/{id}', [PaqueteControllerr::class, 'infoPaquete'])->name('paquete.infoPaquete');
+Route::get('/paquete/{id}', [PaqueteController::class, 'infoPaquete'])->name('paquete.infoPaquete');
 
-Route::put('/paquete/{id}/edit', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
+Route::put('/paquete/{id}', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
 
 Route::delete('/paquete/{id}', [PaqueteController::class, 'eliminarPaquete'])->name('paquete.elimiarPaquete');
 
 // Rutas para AlmacenController
 
-Route::get('/almacenes', [AlmacenController::class, 'index'])->name('almacenes.index');
+Route::get('/almacenes', [AlmacenController::class, 'mostrarAlmacenes'])->name('almacenes.mostrar');
 
-Route::post('/almacenes', [AlmacenController::class, 'store'])->name('almacenes.store');
+Route::post('/almacenes', [AlmacenController::class, 'crearAlmacen'])->name('almacenes.crearAlmacen');
+
+Route::put('/almacenes/{id}', [AlmacenController::class, 'editarAlmacen'])->name('almacenes.editarAlmacen');
+
+Route::delete('/almacenes/{id}', [AlmacenController::class, 'eliminarAlmacen'])->name('almacenes.eliminarAlmacen');
 
 // Rutas para CamionController
 
@@ -62,6 +78,10 @@ Route::post('/lotes', [LoteController::class, 'createLote'])->name('lotes.create
 
 // Rutas para TrayectoriaController
 
-Route::get('/trayectorias', [TrayectoriaController::class, 'index'])->name('trayectorias.index');
+Route::get('/trayectorias', [TrayectoriaController::class, 'mostrarTrayectorias'])->name('trayectorias.mostrarTrayectorias');
 
-Route::post('/trayectorias', [TrayectoriaController::class, 'store'])->name('trayectorias.store');
+Route::post('/trayectorias', [TrayectoriaController::class, 'crearTrayectoria'])->name('trayectorias.crearTrayectoria');
+
+Route::post('/trayectorias', [TrayectoriaController::class, 'editarTrayectoria'])->name('trayectorias.editarTrayectoria');
+
+Route::post('/trayectorias', [TrayectoriaController::class, 'eliminarTrayectoria'])->name('trayectorias.eliminarTrayectoria');

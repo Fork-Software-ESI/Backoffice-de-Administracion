@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use App\Models\Paquete;
+use Illuminate\Support\Facades\Validator;
 
 class PaqueteController extends Controller
 {

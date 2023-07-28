@@ -18,9 +18,10 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', [UserController::class, 'CrearUsuario']);
+Route::post('/register', [UserController::class, 'crearUsuario']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::delete('/eliminar/{username}', [UserController::class, 'EliminarUsuario']);*/

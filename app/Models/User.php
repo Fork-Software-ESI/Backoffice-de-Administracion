@@ -39,6 +39,6 @@ class User extends Authenticatable
     }
 
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id';  //estaba en id
     public $incrementing = true;
 }
