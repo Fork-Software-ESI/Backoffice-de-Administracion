@@ -36,7 +36,7 @@ Route::match(['get', 'post'], '/user/buscarUsuario', [UserController::class, 'bu
 
 // crearUsuario esta en api.php
 
-//Route::get('/user/crearUsuario', [UserController::class, 'mostrarVistaCrearUsuario'])->name('user.mostrarVistaCrearUsuario');
+Route::get('/user/crearUsuario', [UserController::class, 'mostrarVistaCrearUsuario'])->name('user.mostrarVistaCrearUsuario');
 
 Route::post('/user/crearUsuario', [UserController::class, 'crearUsuario'])->name('user.crearUsuario');
 
