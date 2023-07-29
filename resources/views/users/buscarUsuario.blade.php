@@ -41,6 +41,9 @@
                 </tbody>
             </table>
 
+            <a href="{{ route('users.eliminarUsuario', ['username' => $user->username]) }}">Eliminar Usuario</a> <br>
+            <a href="{{ route('users.editarUsuario', ['username' => $user->username]) }}">Editar Usuario</a>
+
         @else
             <p>Usuario no encontrado</p>
         @endif

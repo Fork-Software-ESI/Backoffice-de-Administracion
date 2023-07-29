@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Validator;
 
 class PaqueteController extends Controller
 {
-    public function getPaquete()
+    public function mostrarVistaPrincipalPaquete(){
+        return view('paquete/paquete');
+    }
+    public function mostrarPaquetes()
     {
         $paquete = Paquete::all();
         return response()->json($paquete);

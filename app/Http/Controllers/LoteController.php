@@ -8,13 +8,16 @@ use App\Models\Lote;
 class LoteController extends Controller
 {
     //
-    public function index()
+    public function mostrarVistaPrincipalLote(){
+        return view('lote/lote');
+    }
+    public function mostrarLotes()
     {
         $lotes = Lote::all();
         return response()->json($lotes);
     }
 
-    public function store(Request $request)
+    public function crearLote(Request $request)
     {
         $request->validate([
             'id' => 'required|int',

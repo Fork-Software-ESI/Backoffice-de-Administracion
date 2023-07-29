@@ -8,5 +8,10 @@
 </head>
 <body>
     <h1>Bienvenido a la user view</h1>
+    <ol>
+        <li><a href="{{ route('user.mostrarUsuarios') }}">Mostrar usuarios</a></li>
+        <li><a href="{{ route('user.buscarUsuario') }}">Buscar usuarios y eliminar o editar el mismo</a></li>
+        <li><a href="{{ route('user.crearUsuario') }}">Crear usuario</a></li>
+    </ol>
 </body>
 </html>

@@ -8,13 +8,13 @@ use App\Models\Camion;
 
 class CamionController extends Controller
 {
-    public function index()
+    public function mostrarCamiones()
     {
         $camiones = Camion::all();
         return response()->json($camiones);
     }
 
-    public function store(Request $request)
+    public function crearCamion(Request $request)
     {
         $request->validate([
             'matricula' => 'required|string',

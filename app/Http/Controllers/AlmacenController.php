@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class AlmacenController extends Controller
 {
+    public function mostrarVistaPrincipalAlmacen(){
+        return view('almacen/almacen');
+    }
     public function mostrarAlmacenes()
     {
         $almacenes= Almacen::all();

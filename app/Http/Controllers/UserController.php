@@ -92,7 +92,6 @@ class UserController extends Controller
     public function eliminarUsuario(Request $request)
     {
         $username = $request->input('username');
-        //dd($username);
         $user = User::where('username', $username)->first();
 
         if (!$user) {

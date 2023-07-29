@@ -7,6 +7,12 @@
     <title>Home</title>
 </head>
 <body>
-    <h1>Bienvenidos a ...</h1>
+    <h1>Bienvenidos a Fork Software</h1>
+    <ol>
+        <li><a href="{{ route('user.mostrarVistaPrincipal') }}">Usuarios</a></li>
+        <li><a href="{{ route('almacenes.mostrarVistaPrincipalAlmacen') }}">Almacenes</a></li>
+        <li><a href="{{ route('paquete.mostrarVistaPrincipalPaquete') }}">Paquetes</a></li>
+        <li><a href="{{ route('lote.mostrarVistaPrincipalLote') }}">Lotes</a></li>
+    </ol>
 </body>
 </html>
