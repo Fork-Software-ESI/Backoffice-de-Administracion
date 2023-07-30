@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function mostrarVistaPrincipal(){
+    public function mostrarVistaPrincipal()
+    {
         return view('users/user');
     }
 
-    public function mostrarVistaCrearUsuario() {
+    public function mostrarVistaCrearUsuario()
+    {
         return view('users/crearUsuario');
     }
 
@@ -24,6 +26,18 @@ class UserController extends Controller
         $users = User::all();
         return view('users.mostrarUsuarios', ['users' => $users]);
     }
+
+    public function mostrarVistaEditarUsuario($username)
+    {
+        $user = User::where('username', $username)->first();
+    
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+    
+        return view('users.editarUsuario', compact('user'));
+    }
+    
 
     public function buscarUsuario(Request $request)
     {
@@ -70,25 +84,43 @@ class UserController extends Controller
     public function editarUsuario(Request $request, $username)
     {
         $user = User::where('username', $username)->first();
+        
         if (!$user) {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'ci' => 'string|max:8',
-            'nombre' => 'string|max:20',
-            'apellido' => 'string|max:100',
-            'correo' => 'email',
-            'username' => 'max:55|min:3|unique:users|regex:/^\S*$/',
-            'password' => 'string|min:6|confirmed',
-            'telefono' => 'string',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+        if ($request->isMethod('patch')) {
+            $validator = Validator::make($request->all(), [
+                'ci' => 'string|max:8',
+                'nombre' => 'string|max:20',
+                'apellido' => 'string|max:100',
+                'correo' => 'email',
+                'password' => 'nullable|string|min:6|confirmed',
+                'telefono' => 'string',
+            ]);
+
+            if ($validator->fails()) {
+                //dd($validator->errors()->all());
+                return redirect()->route('user.editarUsuario', ['username' => $user->username])->withErrors($validator)->withInput();
+            }
+
+            $data = $request->only(['ci', 'nombre', 'apellido', 'correo', 'telefono']);
+
+            if (!empty($request->password)) {
+                $data['password'] = bcrypt($request->password);
+            } else {
+                unset($data['password']);
+            }
+
+            $user->update($data);
+            
+            return redirect()->route('user.editarUsuario', ['username' => $user->username])
+                ->with('success', 'Usuario actualizado exitosamente');
         }
-        $user->update($request->all());
-        return response()->json($user);
+
+        return view('users.editarUsuario', ['user' => $user]);
     }
+
     public function eliminarUsuario(Request $request)
     {
         $username = $request->input('username');
@@ -96,7 +128,6 @@ class UserController extends Controller
 
         if (!$user) {
             $mensaje = "Usuario no encontrado";
-            
         }
 
         $user->delete();
@@ -104,5 +135,4 @@ class UserController extends Controller
 
         return view('users.eliminarUsuario', compact('mensaje', 'user'));
     }
-
 }

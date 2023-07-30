@@ -18,8 +18,7 @@
     <h1>Crear usuario</h1>
     <form action="" method="post">
         @csrf
-        <label for="ci">Cedula de identidad <input value="{{ old('ci') }}" type="text" name="ci"
-                required>
+        <label for="ci">Cedula de identidad <input value="{{ old('ci') }}" type="text" name="ci" required>
             @error('ci')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
