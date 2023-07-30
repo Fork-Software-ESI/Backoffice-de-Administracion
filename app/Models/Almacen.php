@@ -9,7 +9,6 @@ class Almacen extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id', 
         'direccion',
     ];
 

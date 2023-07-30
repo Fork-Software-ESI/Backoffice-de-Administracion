@@ -10,6 +10,7 @@
 
 <body>
     <h1>Bienvenido a Buscar Usuario</h1>
+    <a href="{{ route('user.mostrarVistaPrincipal') }}">Volver al menú principal</a>
     <form action="{{ route('user.buscarUsuario') }}" method="post">
         @csrf
         <label for="username">Ingrese el username del usuario:</label>
@@ -19,7 +20,6 @@
     <h2>Informacion del usuario:</h2>
     @if (isset($user))
         @if ($user)
-            <h2>Informacion del usuario:</h2>
             <table>
                 <thead>
                     <tr>
@@ -45,9 +45,9 @@
 
             <a href="{{ route('user.eliminarUsuario', ['username' => $user->username]) }}">Eliminar Usuario</a> <br>
             <a href="{{ route('user.editarUsuario', ['username' => $user->username]) }}">Editar Usuario</a>
-        @else
-            <p>Usuario no encontrado</p>
         @endif
+    @elseif (isset($error))
+        <p>{{ $error }}</p>
     @endif
 </body>
 

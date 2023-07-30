@@ -21,29 +21,23 @@ class UserController extends Controller
         return view('users/crearUsuario');
     }
 
+    public function mostrarVistaBuscarUsuario()
+    {
+        return view('users/buscarUsuario');
+    }
+
     public function mostrarUsuarios()
     {
         $users = User::all();
         return view('users.mostrarUsuarios', ['users' => $users]);
     }
-
-    public function mostrarVistaEditarUsuario($username)
-    {
-        $user = User::where('username', $username)->first();
-    
-        if (!$user) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
-        }
-    
-        return view('users.editarUsuario', compact('user'));
-    }
-    
-
     public function buscarUsuario(Request $request)
     {
         $username = $request->input('username');
         $user = User::where('username', $username)->first();
-
+        if (!$user) {
+            return view('users.buscarUsuario', ['error' => 'Usuario no encontrado']);
+        }
         return view('users.buscarUsuario', ['user' => $user]);
     }
 
@@ -84,7 +78,7 @@ class UserController extends Controller
     public function editarUsuario(Request $request, $username)
     {
         $user = User::where('username', $username)->first();
-        
+
         if (!$user) {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
@@ -113,7 +107,7 @@ class UserController extends Controller
             }
 
             $user->update($data);
-            
+
             return redirect()->route('user.editarUsuario', ['username' => $user->username])
                 ->with('success', 'Usuario actualizado exitosamente');
         }
