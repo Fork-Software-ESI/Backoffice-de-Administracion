@@ -9,7 +9,7 @@
 <body>
     <h2>Bienvenido a la view de Paquete</h2>    
     <ol>
-        <li><a href="{{ route('paquete.mostrarPaquete') }}">Mostrar paquetes</a></li>
+        <li><a href="{{ route('paquete.mostrarPaquetes') }}">Mostrar paquetes</a></li>
         <li><a href="{{ route('paquete.buscarPaquete') }}">Buscar paquete y eliminarlo o editarlo</a></li>
         <li><a href="{{ route('paquete.crearPaquete') }}">Crear paquete</a></li>
     </ol>

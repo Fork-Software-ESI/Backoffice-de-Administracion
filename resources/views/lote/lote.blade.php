@@ -9,7 +9,7 @@
 <body>
     <h1>Bienvenido a la view de Lote</h1>
     <ol>
-        <li><a href="{{ route('lote.mostrarLote') }}">Mostrar Lotes</a></li>
+        <li><a href="{{ route('lote.mostrarLotes') }}">Mostrar Lotes</a></li>
         <li><a href="{{ route('lote.buscarLote') }}">Buscar Lote y eliminarlo o editarlo</a></li>
         <li><a href="{{ route('lote.crearLote') }}">Crear Lote</a></li>
     </ol>

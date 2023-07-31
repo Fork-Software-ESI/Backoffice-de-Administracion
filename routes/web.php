@@ -23,10 +23,12 @@ Route::match(['get', 'post', 'delete'], '/user/eliminarUsuario', [UserController
 
 Route::get('/paquete', [PaqueteController::class, 'mostrarVistaPrincipalPaquete'])->name('paquete.mostrarVistaPrincipalPaquete');
 Route::get('/paquetes/mostrarPaquetes', [PaqueteController::class, 'mostrarPaquetes'])->name('paquete.mostrarPaquetes');
-Route::post('/paquetes/crearPaquete', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
 Route::get('/paquetes/buscarPaquete', [PaqueteController::class, 'buscarPaquete'])->name('paquete.buscarPaquete');
-Route::put('/paquetes/editarPaquete', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
-Route::delete('/paquetes/eliminarPaquete', [PaqueteController::class, 'eliminarPaquete'])->name('paquete.eliminarPaquete');
+Route::post('/paquetes/buscarPaquete', [PaqueteController::class, 'buscarPaquete'])->name('paquete.buscarPaquete');
+Route::get('/paquetes/crearPaquete', [PaqueteController::class, 'mostrarVistaCrearPaquete'])->name('paquete.vistaCrearPaquete');
+Route::post('/paquetes/crearPaquete', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
+Route::match(['get', 'patch'], '/paquete/editarPaquete/{descripcion}', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
+Route::match(['get', 'post', 'delete'], '/paquete/eliminarPaquete', [PaqueteController::class, 'eliminarPaquete'])->name('paquete.eliminarPaquete');
 
 Route::get('/almacen', [AlmacenController::class, 'mostrarVistaPrincipalAlmacen'])->name('almacen.mostrarVistaPrincipalAlmacen');
 Route::get('/almacenes/mostrarAlmacenes', [AlmacenController::class, 'mostrarAlmacenes'])->name('almacen.mostrarAlmacenes');
@@ -46,7 +48,7 @@ Route::get('/lote/buscarLote', [LoteController::class, 'mostrarVistaBuscarLote']
 Route::post('/lote/buscarLote', [LoteController::class, 'buscarLote'])->name('lote.buscarLote');
 Route::get('/lote/crearLote', [LoteController::class, 'mostrarVistaCrearLote'])->name('lote.vistaCrearLote');
 Route::post('/lote/crearLote', [LoteController::class, 'crearLote'])->name('lote.crearLote');
-Route::match(['get', 'patch'], '/lote/editarLote/{direccion}', [LoteController::class, 'editarLote'])->name('lote.editarLote');
+Route::match(['get', 'patch'], '/lote/editarLote/{descripcion}', [LoteController::class, 'editarLote'])->name('lote.editarLote');
 Route::match(['get', 'post', 'delete'], '/lote/eliminarLote', [LoteController::class, 'eliminarLote'])->name('lote.eliminarLote');
 
 Route::get('/trayectorias', [TrayectoriaController::class, 'mostrarTrayectorias'])->name('trayectorias.mostrarTrayectorias');

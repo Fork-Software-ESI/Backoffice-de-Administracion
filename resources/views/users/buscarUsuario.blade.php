@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h1>Bienvenido a Buscar Usuario</h1>
+    <h2>Bienvenido a Buscar Usuario</h2>
     <a href="{{ route('user.mostrarVistaPrincipal') }}">Volver al menú principal</a>
     <form action="{{ route('user.buscarUsuario') }}" method="post">
         @csrf

@@ -28,8 +28,8 @@ class LoteController extends Controller
 
     public function buscarLote(Request $request)
     {
-        $descripcion = $request->input('$descripcion');
-        $lote = Lote::where('$descripcion', $descripcion)->first();
+        $descripcion = $request->input('descripcion');
+        $lote = Lote::where('descripcion', $descripcion)->first();
         if (!$lote) {
             return view('lote.buscarLote', ['error' => 'Lote no encontrado']);
         }
@@ -39,7 +39,7 @@ class LoteController extends Controller
     public function crearLote(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            '$descripcion' => 'required|string',
+            'descripcion' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -48,12 +48,12 @@ class LoteController extends Controller
 
         $validatedData = $validator->validated();
 
-        if (Lote::where('$descripcion', $validatedData['$descripcion'])->exists()) {
-            return response()->json(['error' => 'La $descripcion de el lote ya está en uso'], 422);
+        if (Lote::where('descripcion', $validatedData['descripcion'])->exists()) {
+            return response()->json(['error' => 'La descripcion de el lote ya está en uso'], 422);
         }
 
         Lote::create([
-            '$descripcion' => $validatedData['$descripcion'],
+            'descripcion' => $validatedData['descripcion'],
         ]);
 
         session()->flash('mensaje', 'Lote creado exitosamente');
@@ -64,7 +64,7 @@ class LoteController extends Controller
         $lote = Lote::where('descripcion', $descripcion)->first();
 
         if (!$lote) {
-            return response()->json(['error' => 'Almacén no encontrado'], 404);
+            return response()->json(['error' => 'Lote no encontrado'], 404);
         }
 
         if ($request->isMethod('patch')) {
@@ -80,7 +80,7 @@ class LoteController extends Controller
 
             $lote->update($data);
 
-            return redirect()->route('lote.editarlote', ['descripcion' => $lote->descripcion])
+            return redirect()->route('lote.editarLote', ['descripcion' => $lote->descripcion])
                 ->with('success', 'Lote actualizado exitosamente');
         }
 

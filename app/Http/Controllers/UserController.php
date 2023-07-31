@@ -90,7 +90,7 @@ class UserController extends Controller
                 'apellido' => 'string|max:100',
                 'correo' => 'email',
                 'password' => 'nullable|string|min:6|confirmed',
-                'telefono' => 'string',
+                'telefono' => 'numeric',
             ]);
 
             if ($validator->fails()) {

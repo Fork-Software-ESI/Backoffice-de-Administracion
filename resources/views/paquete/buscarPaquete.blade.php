@@ -7,6 +7,41 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <h2>Bienvenido a Buscar Usuario</h2>
+    <a href="{{ route('paquete.mostrarVistaPrincipalPaquete') }}">Volver al menú principal</a>
+    <form action="{{ route('paquete.buscarPaquete') }}" method="post">
+        @csrf
+        <label for="descripcion">Ingrese la descripcion del paquete:</label>
+        <input type="text" name="descripcion" id="descripcion" required>
+        <button type="submit">Buscar</button>
+    </form>
+    <h2>Informacion del usuario:</h2>
+    @if (isset($paquete))
+        @if ($paquete)
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Descripcion</th>
+                        <th>Peso_Kg</th>
+                        <th>Lote_Id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ $paquete->id }}</td>
+                        <td>{{ $paquete->descripcion }}</td>
+                        <td>{{ $paquete->peso_kg }}</td>
+                        <td>{{ $paquete->lote_id }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a href="{{ route('paquete.eliminarPaquete', ['descripcion' => $paquete->descripcion]) }}">Eliminar Paquete</a> <br>
+            <a href="{{ route('paquete.editarPaquete', ['descripcion' => $paquete->descripcion]) }}">Editar Paquete</a>
+        @endif
+    @elseif (isset($error))
+        <p>{{ $error }}</p>
+    @endif
 </body>
 </html>

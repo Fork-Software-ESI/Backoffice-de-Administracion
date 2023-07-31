@@ -11,7 +11,7 @@
     @if (session('success'))
         <p>{{ session('success') }}</p>
     @endif
-    <form action="{{ route('almacen.editarAlmacen', ['almacen' => $almacen->direccion]) }}" method="post">
+    <form action="{{ route('almacen.editarAlmacen', ['direccion' => $almacen->direccion]) }}" method="post">
         @csrf
         @method('PATCH')
         <label for="direccion">direccion <input value="{{ $almacen->direccion }}" type="text" name="direccion">

@@ -16,7 +16,7 @@
     <h1>Crear lote</h1>
     <form action="" method="post">
         @csrf
-        <label for="descripcion">Descripcion <input type="text" name="descripcion" required>
+        <label for="descripcion">Descripcion <input value="{{ old('descripcion') }}" type="text" name="descripcion" required>
             @error('descripcion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>

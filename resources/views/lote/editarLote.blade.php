@@ -11,10 +11,10 @@
     @if (session('success'))
         <p>{{ session('success') }}</p>
     @endif
-    <form action="{{ route('lote.editarLote', ['lote' => $lote->descripcion]) }}" method="post">
+    <form action="{{ route('lote.editarLote', ['descripcion' => $lote->descripcion]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="descripcion">descripcion <input value="{{ $lote->descripcion }}" type="text" name="descripcion">
+        <label for="descripcion">Descripcion <input value="{{ $lote->descripcion }}" type="text" name="descripcion">
             @error('descripcion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>

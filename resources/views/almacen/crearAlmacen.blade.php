@@ -15,7 +15,7 @@
     <h1>Crear usuario</h1>
     <form action="" method="post">
         @csrf
-        <label for="direccion">Direccion <input type="text" name="direccion" required>
+        <label for="direccion">Direccion <input value="{{ old('direccion') }}" type="text" name="direccion" required>
             @error('direccion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
