@@ -24,7 +24,7 @@ class AlmacenController extends Controller
     public function mostrarAlmacenes()
     {
         $almacen= Almacen::all();
-        return response()->json($almacen);
+        return view('almacen.mostrarAlmacenes', ['almacen' => $almacen]);
     }
     public function buscarAlmacen(Request $request)
     {

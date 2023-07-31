@@ -9,7 +9,6 @@ class Paquete extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id',
         'descripcion',
         'peso_kg',
         'lote_id',

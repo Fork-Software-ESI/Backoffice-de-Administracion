@@ -22,11 +22,11 @@ Route::match(['get', 'patch'], '/user/editarUsuario/{username}', [UserController
 Route::match(['get', 'post', 'delete'], '/user/eliminarUsuario', [UserController::class, 'eliminarUsuario'])->name('user.eliminarUsuario');
 
 Route::get('/paquete', [PaqueteController::class, 'mostrarVistaPrincipalPaquete'])->name('paquete.mostrarVistaPrincipalPaquete');
-Route::get('/paquete/mostrarPaquetes', [PaqueteController::class, 'mostrarPaquetes'])->name('paquete.mostrarPaquetes');
-Route::post('/paquete/crearPaquete', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
-Route::get('/paquete/buscarPaquete', [PaqueteController::class, 'buscarPaquete'])->name('paquete.buscarPaquete');
-Route::put('/paquete/editarPaquete', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
-Route::delete('/paquete/eliminarPaquete', [PaqueteController::class, 'eliminarPaquete'])->name('paquete.eliminarPaquete');
+Route::get('/paquetes/mostrarPaquetes', [PaqueteController::class, 'mostrarPaquetes'])->name('paquete.mostrarPaquetes');
+Route::post('/paquetes/crearPaquete', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
+Route::get('/paquetes/buscarPaquete', [PaqueteController::class, 'buscarPaquete'])->name('paquete.buscarPaquete');
+Route::put('/paquetes/editarPaquete', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
+Route::delete('/paquetes/eliminarPaquete', [PaqueteController::class, 'eliminarPaquete'])->name('paquete.eliminarPaquete');
 
 Route::get('/almacen', [AlmacenController::class, 'mostrarVistaPrincipalAlmacen'])->name('almacen.mostrarVistaPrincipalAlmacen');
 Route::get('/almacenes/mostrarAlmacenes', [AlmacenController::class, 'mostrarAlmacenes'])->name('almacen.mostrarAlmacenes');
@@ -34,10 +34,7 @@ Route::get('/almacenes/buscarAlmacen', [AlmacenController::class, 'mostrarVistaB
 Route::post('/almacenes/buscarAlmacen', [AlmacenController::class, 'buscarAlmacen'])->name('almacen.buscarAlmacen');
 Route::get('/almacenes/crearAlmacen', [AlmacenController::class, 'mostrarVistaCrearAlmacen'])->name('almacen.vistaCrearAlmacen');
 Route::post('/almacenes/crearAlmacen', [AlmacenController::class, 'crearAlmacen'])->name('almacen.crearAlmacen');
-
-//Route::put('/almacenes/editarAlmacen', [AlmacenController::class, 'editarAlmacen'])->name('almacenes.editarAlmacen');
-Route::match(['get', 'patch'], '/user/editarAlmacen/{direccion}', [AlmacenController::class, 'editarAlmacen'])->name('almacen.editarAlmacen');
-//Route::delete('/almacenes/eliminarAlmacen', [AlmacenController::class, 'eliminarAlmacen'])->name('almacenes.eliminarAlmacen');
+Route::match(['get', 'patch'], '/almacen/editarAlmacen/{direccion}', [AlmacenController::class, 'editarAlmacen'])->name('almacen.editarAlmacen');
 Route::match(['get', 'post', 'delete'], '/almacen/eliminarAlmacen', [AlmacenController::class, 'eliminarAlmacen'])->name('almacen.eliminarAlmacen');
 
 Route::get('/camiones/mostrarCamiones', [CamionController::class, 'mostrarCamiones'])->name('camiones.mostrarCamiones');
@@ -45,7 +42,12 @@ Route::post('/camiones/crearCamion', [CamionController::class, 'crearCamion'])->
 
 Route::get('/lote', [LoteController::class, 'mostrarVistaPrincipalLote'])->name('lote.mostrarVistaPrincipalLote');
 Route::get('/lote/mostrarLotes', [LoteController::class, 'mostrarLotes'])->name('lote.mostrarLotes');
+Route::get('/lote/buscarLote', [LoteController::class, 'mostrarVistaBuscarLote'])->name('lote.vistaBuscarLote');
+Route::post('/lote/buscarLote', [LoteController::class, 'buscarLote'])->name('lote.buscarLote');
+Route::get('/lote/crearLote', [LoteController::class, 'mostrarVistaCrearLote'])->name('lote.vistaCrearLote');
 Route::post('/lote/crearLote', [LoteController::class, 'crearLote'])->name('lote.crearLote');
+Route::match(['get', 'patch'], '/lote/editarLote/{direccion}', [LoteController::class, 'editarLote'])->name('lote.editarLote');
+Route::match(['get', 'post', 'delete'], '/lote/eliminarLote', [LoteController::class, 'eliminarLote'])->name('lote.eliminarLote');
 
 Route::get('/trayectorias', [TrayectoriaController::class, 'mostrarTrayectorias'])->name('trayectorias.mostrarTrayectorias');
 Route::post('/trayectorias', [TrayectoriaController::class, 'crearTrayectoria'])->name('trayectorias.crearTrayectoria');

@@ -4,25 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Mostrar Lotes</title>
 </head>
 <body>
-    <h2>Lista de Almacenes</h2>
+    <h2>Lista de lotes</h2>
     <table>
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Direccion</th>
+                <th>Descripcion</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($almacen as $almacen)
+            @foreach ($lote as $lote)
                 <tr>
-                    <td>{{ $almacen->id }}</td>
-                    <td>{{ $almacen->direccion }}</td>
+                    <td>{{ $lote->id }}</td>
+                    <td>{{ $lote->descripcion }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+</body>
 </body>
 </html>

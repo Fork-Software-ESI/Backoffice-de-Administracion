@@ -11,7 +11,7 @@ class Almacen extends Model
     protected $fillable = [
         'direccion',
     ];
-
+    protected $primaryKey = 'id';
     protected $table='almacenes';
 
 }
