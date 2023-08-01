@@ -12,10 +12,10 @@
     <form action="{{ route('almacen.buscarAlmacen') }}" method="post">
         @csrf
         <label for="id">Ingrese la id de el almacen:</label>
-        <input type="text" name="id" required>
+        <input type="number" name="id" required>
         <button type="submit">Buscar</button>
     </form>
-    <h2>Informacion de la almacen:</h2>
+    <h2>Informacion del almacen:</h2>
     @if (isset($almacen))
         @if ($almacen)
             <table>

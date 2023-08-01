@@ -12,7 +12,7 @@
     <form action="{{ route('paquete.buscarPaquete') }}" method="post">
         @csrf
         <label for="id">Ingrese la id del paquete:</label>
-        <input type="text" name="id" id="id" required>
+        <input type="number" name="id" id="id" required>
         <button type="submit">Buscar</button>
     </form>
     <h2>Informacion del paquete:</h2>

@@ -12,7 +12,7 @@
     <form action="{{ route('lote.buscarLote') }}" method="post">
         @csrf
         <label for="id">Ingrese la id de el lote:</label>
-        <input type="text" name="id" required>
+        <input type="number" name="id" required>
         <button type="submit">Buscar</button>
     </form>
     <h2>Informacion del lote:</h2>

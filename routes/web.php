@@ -21,7 +21,7 @@ Route::match(['get', 'post', 'delete'], '/users/eliminarUsuario', [UserControlle
 
 Route::get('/paquetes', [PaqueteController::class, 'mostrarVistaPrincipalPaquete'])->name('paquete.mostrarVistaPrincipalPaquete');
 Route::get('/paquetes/mostrarPaquetes', [PaqueteController::class, 'mostrarPaquetes'])->name('paquete.mostrarPaquetes');
-Route::get('/paquetes/buscarPaquete', [PaqueteController::class, 'buscarPaquete'])->name('paquete.buscarPaquete');
+Route::get('/paquetes/buscarPaquete', [PaqueteController::class, 'mostrarVistaBuscarPaquete'])->name('paquete.buscarPaquete');
 Route::post('/paquetes/buscarPaquete', [PaqueteController::class, 'buscarPaquete'])->name('paquete.buscarPaquete');
 Route::get('/paquetes/crearPaquete', [PaqueteController::class, 'mostrarVistaCrearPaquete'])->name('paquete.vistaCrearPaquete');
 Route::post('/paquetes/crearPaquete', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
