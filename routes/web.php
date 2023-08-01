@@ -5,10 +5,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaqueteController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\LoteController;
+use App\Http\Controllers\EstanteriaController;
 
 Route::get('/', function () {
     return view('home');
 });
+
+Route::post('/csrf-cookie', function () {
+    return response()->json(['message' => 'CSRF cookie set']);
+});
+
 
 Route::get('/users', [UserController::class, 'mostrarVistaPrincipal'])->name('user.mostrarVistaPrincipal');
 Route::get('/users/mostrarUsuarios', [UserController::class, 'mostrarUsuarios'])->name('user.mostrarUsuarios');
@@ -45,3 +51,12 @@ Route::get('/lotes/crearLote', [LoteController::class, 'mostrarVistaCrearLote'])
 Route::post('/lotes/crearLote', [LoteController::class, 'crearLote'])->name('lote.crearLote');
 Route::match(['get', 'patch'], '/lotes/editarLote/{id}', [LoteController::class, 'editarLote'])->name('lote.editarLote');
 Route::match(['get', 'post', 'delete'], '/lotes/eliminarLote', [LoteController::class, 'eliminarLote'])->name('lote.eliminarLote');
+
+Route::get('/estanterias', [EstanteriaController::class, 'mostrarVistaPrincipalEstanteria'])->name('estanteria.mostrarVistaPrincipalEstanteria');
+Route::get('/estanterias/mostrarEstanteria', [EstanteriaController::class, 'mostrarEstanteria'])->name('estanteria.mostrarEstanterias');
+Route::get('/estanterias/buscarEstanteria', [EstanteriaController::class, 'mostrarVistaBuscarEstanteria'])->name('estanteria.vistaBuscarEstanteria');
+Route::post('/estanterias/buscarEstanteria', [EstanteriaController::class, 'buscarEstanteria'])->name('estanteria.buscarEstanteria');
+Route::get('/estanterias/crearEstanteria/', [EstanteriaController::class, 'mostrarVistaCrearEstanteria'])->name('estanteria.mostrarVistaCrearEstanteria');
+Route::post('/estanterias/crearEstanteria', [EstanteriaController::class, 'crearEstanteria'])->name('estanteria.crearEstanteria');
+Route::match(['get', 'patch'], '/estanterias/editarEstanteria/{id}', [EstanteriaController::class, 'editarEstanteria'])->name('estanteria.editarEstanteria');
+Route::match(['get', 'post', 'delete'], '/estanterias/eliminarEstanteria', [EstanteriaController::class, 'eliminarEstanteria'])->name('estanteria.eliminarEstanteria');

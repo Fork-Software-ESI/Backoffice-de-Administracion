@@ -13,6 +13,7 @@
         <li><a href="{{ route('almacen.mostrarVistaPrincipalAlmacen') }}">Almacenes</a></li>
         <li><a href="{{ route('paquete.mostrarVistaPrincipalPaquete') }}">Paquetes</a></li>
         <li><a href="{{ route('lote.mostrarVistaPrincipalLote') }}">Lotes</a></li>
+        <li><a href="{{ route('estanteria.mostrarVistaPrincipalEstanteria') }}">Estanterias</a></li>
     </ol>
 </body>
 </html>
