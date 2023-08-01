@@ -28,8 +28,8 @@ class LoteController extends Controller
 
     public function buscarLote(Request $request)
     {
-        $descripcion = $request->input('descripcion');
-        $lote = Lote::where('descripcion', $descripcion)->first();
+        $id = $request->input('id');
+        $lote = Lote::where('id', $id)->first();
         if (!$lote) {
             return view('lote.buscarLote', ['error' => 'Lote no encontrado']);
         }
@@ -59,9 +59,9 @@ class LoteController extends Controller
         session()->flash('mensaje', 'Lote creado exitosamente');
         return redirect()->route('lote.crearLote');
     }
-    public function editarLote(Request $request, $descripcion)
+    public function editarLote(Request $request, $id)
     {
-        $lote = Lote::where('descripcion', $descripcion)->first();
+        $lote = Lote::where('id', $id)->first();
 
         if (!$lote) {
             return response()->json(['error' => 'Lote no encontrado'], 404);
@@ -73,14 +73,14 @@ class LoteController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return redirect()->route('lote.editarLote', ['descripcion' => $lote->descripcion])->withErrors($validator)->withInput();
+                return redirect()->route('lote.editarLote', ['id' => $lote->id])->withErrors($validator)->withInput();
             }
 
             $data = $request->only(['descripcion']);
 
             $lote->update($data);
 
-            return redirect()->route('lote.editarLote', ['descripcion' => $lote->descripcion])
+            return redirect()->route('lote.editarLote', ['id' => $lote->id])
                 ->with('success', 'Lote actualizado exitosamente');
         }
 
@@ -89,15 +89,15 @@ class LoteController extends Controller
 
     public function eliminarlote(Request $request)
     {
-        $descripcion = $request->input('descripcion');
-        $lote = Lote::where('descripcion', $descripcion)->first();
+        $id = $request->input('id');
+        $lote = Lote::where('id', $id)->first();
 
         if (!$lote) {
             $mensaje = "Lote no encontrado";
         }
         if($lote){
             $lote->delete();
-            $mensaje = "El lote con la descripcion: " . $descripcion . " ha sido eliminada exitosamente";
+            $mensaje = "El lote con la id: " . $id . " ha sido eliminada exitosamente";
         }
         
         return view('lote.eliminarLote', compact('mensaje'));

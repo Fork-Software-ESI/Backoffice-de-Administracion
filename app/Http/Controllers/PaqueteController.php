@@ -44,10 +44,6 @@ class PaqueteController extends Controller
         }
         
         $validatedData = $validator->validated();
-        
-        /*if (Paquete::where('descripcion', $validatedData['descripcion'])->exists()) {
-            return response()->json(['error' => 'La descripcion de el paquete ya está en uso'], 422);
-        }*/
 
         Paquete::create($validatedData);
 
@@ -66,7 +62,7 @@ class PaqueteController extends Controller
         if ($request->isMethod('patch')) {
             $validator = Validator::make($request->all(), [
                 'descripcion' => 'string',
-                'peso_kg' => '',
+                'peso_kg' => 'numeric',
                 'lote_id' => 'exists:lotes,id',
             ]);
 

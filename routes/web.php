@@ -43,5 +43,5 @@ Route::get('/lotes/buscarLote', [LoteController::class, 'mostrarVistaBuscarLote'
 Route::post('/lotes/buscarLote', [LoteController::class, 'buscarLote'])->name('lote.buscarLote');
 Route::get('/lotes/crearLote', [LoteController::class, 'mostrarVistaCrearLote'])->name('lote.vistaCrearLote');
 Route::post('/lotes/crearLote', [LoteController::class, 'crearLote'])->name('lote.crearLote');
-Route::match(['get', 'patch'], '/lotes/editarLote/{descripcion}', [LoteController::class, 'editarLote'])->name('lote.editarLote');
+Route::match(['get', 'patch'], '/lotes/editarLote/{id}', [LoteController::class, 'editarLote'])->name('lote.editarLote');
 Route::match(['get', 'post', 'delete'], '/lotes/eliminarLote', [LoteController::class, 'eliminarLote'])->name('lote.eliminarLote');

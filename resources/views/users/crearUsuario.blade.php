@@ -49,8 +49,7 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="username">Nombre de usuario
-            <input value="{{ old('username') }}" type="text" name="username" required>
+        <label for="username">Nombre de usuario <input value="{{ old('username') }}" type="text" name="username" required>
             @error('username')
                 <br>
                 <small style="color:red;">{{ $message }}</small>

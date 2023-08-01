@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Buscar Lote</title>
+    <title>Lote - Buscar Lote</title>
 </head>
 <body>
     <h1>Bienvenido a Buscar Lote</h1>
     <a href="{{ route('almacen.mostrarVistaPrincipalAlmacen') }}">Volver al menú principal</a>
     <form action="{{ route('lote.buscarLote') }}" method="post">
         @csrf
-        <label for="descripcion">Ingrese la descripcion de el lote:</label>
-        <input type="text" name="descripcion" required>
+        <label for="id">Ingrese la id de el lote:</label>
+        <input type="text" name="id" required>
         <button type="submit">Buscar</button>
     </form>
     <h2>Informacion del lote:</h2>
@@ -33,8 +33,8 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('lote.eliminarLote', ['descripcion' => $lote->descripcion]) }}">Eliminar Lote</a> <br>
-            <a href="{{ route('lote.editarLote', ['descripcion' => $lote->descripcion]) }}">Editar Lote</a>
+            <a href="{{ route('lote.eliminarLote', ['id' => $lote->id]) }}">Eliminar Lote</a> <br>
+            <a href="{{ route('lote.editarLote', ['id' => $lote->id]) }}">Editar Lote</a>
         @endif
     @elseif (isset($error))
         <p>{{ $error }}</p>
