@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Bienvenido a Buscar Lote</h1>
-    <a href="{{ route('almacen.mostrarVistaPrincipalAlmacen') }}">Volver al menú principal</a>
+    <a href="{{ route('lote.mostrarVistaPrincipalLote') }}">Volver al menú principal</a>
     <form action="{{ route('lote.buscarLote') }}" method="post">
         @csrf
         <label for="id">Ingrese la id de el lote:</label>

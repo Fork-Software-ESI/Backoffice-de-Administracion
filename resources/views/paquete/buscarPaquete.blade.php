@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Paqute - Buscar Paquete</title>
+    <title>Paquete - Buscar Paquete</title>
 </head>
 <body>
-    <h2>Bienvenido a Buscar Usuario</h2>
+    <h2>Bienvenido a Buscar Paquete</h2>
     <a href="{{ route('paquete.mostrarVistaPrincipalPaquete') }}">Volver al menú principal</a>
     <form action="{{ route('paquete.buscarPaquete') }}" method="post">
         @csrf
@@ -15,7 +15,7 @@
         <input type="text" name="id" id="id" required>
         <button type="submit">Buscar</button>
     </form>
-    <h2>Informacion del usuario:</h2>
+    <h2>Informacion del paquete:</h2>
     @if (isset($paquete))
         @if ($paquete)
             <table>
