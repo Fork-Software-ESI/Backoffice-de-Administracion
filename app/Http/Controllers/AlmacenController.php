@@ -28,8 +28,8 @@ class AlmacenController extends Controller
     }
     public function buscarAlmacen(Request $request)
     {
-        $direccion = $request->input('direccion');
-        $almacen = Almacen::where('direccion', $direccion)->first();
+        $id = $request->input('id');
+        $almacen = Almacen::where('id', $id)->first();
         if (!$almacen) {
             return view('almacen.buscarAlmacen', ['error' => 'Almacen no encontrado']);
         }
@@ -60,9 +60,9 @@ class AlmacenController extends Controller
         return redirect()->route('almacen.crearAlmacen');
     }
 
-    public function editarAlmacen(Request $request, $direccion)
+    public function editarAlmacen(Request $request, $id)
     {
-        $almacen = Almacen::where('direccion', $direccion)->first();
+        $almacen = Almacen::where('id', $id)->first();
 
         if (!$almacen) {
             return response()->json(['error' => 'Almacén no encontrado'], 404);
@@ -81,7 +81,7 @@ class AlmacenController extends Controller
 
             $almacen->update($data);
 
-            return redirect()->route('almacen.editarAlmacen', ['direccion' => $almacen->direccion])
+            return redirect()->route('almacen.editarAlmacen', ['id' => $almacen->id])
                 ->with('success', 'Almacén actualizado exitosamente');
         }
 
@@ -90,15 +90,15 @@ class AlmacenController extends Controller
 
     public function eliminarAlmacen(Request $request)
     {
-        $direccion = $request->input('direccion');
-        $almacen = Almacen::where('direccion', $direccion)->first();
+        $id = $request->input('id');
+        $almacen = Almacen::where('id', $id)->first();
 
         if (!$almacen) {
             $mensaje = "Almacen no encontrado";
         }
         if($almacen){
             $almacen->delete();
-            $mensaje = "El almacen con la direccion: " . $direccion . " ha sido eliminada exitosamente";
+            $mensaje = "El almacen con el id: " . $id . " ha sido eliminado exitosamente";
         }
         
         return view('almacen.eliminarAlmacen', compact('mensaje'));

@@ -13,7 +13,13 @@ class CreatePaquetesTable extends Migration
      */
     public function up()
     {
-        Schema::table('paquetes', function (Blueprint $table) {
+        Schema::create('paquetes', function (Blueprint $table) {
+            $table->id();
+            $table->string('descripcion');
+            $table->integer('peso_kg');
+            $table->unsignedBigInteger('lote_id')->nullable();
+            $table->foreign('lote_id')->references('id')->on('lotes');
+            $table->timestamps();
             //
         });
     }
@@ -25,8 +31,7 @@ class CreatePaquetesTable extends Migration
      */
     public function down()
     {
-        Schema::table('paquetes', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('paquetes');
     }
+    //
 }

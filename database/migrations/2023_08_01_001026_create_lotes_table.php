@@ -13,8 +13,10 @@ class CreateLotesTable extends Migration
      */
     public function up()
     {
-        Schema::table('lotes', function (Blueprint $table) {
-            //
+        Schema::create('lotes', function (Blueprint $table) {
+            $table->id();
+            $table->string('descripcion');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,7 @@ class CreateLotesTable extends Migration
      */
     public function down()
     {
-        Schema::table('lotes', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('lotes');
+        //
     }
 }

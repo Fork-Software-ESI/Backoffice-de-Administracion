@@ -17,9 +17,4 @@ class Paquete extends Model
     protected $table = 'paquetes';
     protected $primaryKey = 'id';
     public $incrementing = true; 
-
-    public function lote()
-    {
-        return $this->belongsTo(Lote::class);
-    }
 }

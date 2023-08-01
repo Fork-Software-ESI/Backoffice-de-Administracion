@@ -25,8 +25,8 @@ class PaqueteController extends Controller
     }
     public function buscarPaquete(Request $request)
     {
-        $descripcion = $request->input('descripcion');
-        $paquete = Paquete::where('descripcion', $descripcion)->first();
+        $id = $request->input('id');
+        $paquete = Paquete::where('id', $id)->first();
         if (!$paquete) {
             return view('paquete.buscarPaquete', ['error' => 'Paquete no encontrado']);
         }
@@ -37,17 +37,17 @@ class PaqueteController extends Controller
         $validator = Validator::make($request->all(), [
             'descripcion' => 'required|string',
             'peso_kg' => 'required',
-            'lote_id' => 'exists:lotes,id',
+            'lote_id' => 'nullableexists:lotes,id',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            return redirect()->route('paquete.crearPaquete')->withErrors($validator)->withInput();
         }
         
         $validatedData = $validator->validated();
         
-        if (Paquete::where('descripcion', $validatedData['descripcion'])->exists()) {
+        /*if (Paquete::where('descripcion', $validatedData['descripcion'])->exists()) {
             return response()->json(['error' => 'La descripcion de el paquete ya está en uso'], 422);
-        }
+        }*/
 
         Paquete::create($validatedData);
 
@@ -55,9 +55,9 @@ class PaqueteController extends Controller
         return redirect()->route('paquete.crearPaquete');
     }
 
-    public function editarPaquete(Request $request, $descripcion)
+    public function editarPaquete(Request $request, $id)
     {
-        $paquete = Paquete::where('descripcion', $descripcion)->first();
+        $paquete = Paquete::where('id', $id)->first();
 
         if (!$paquete) {
             return response()->json(['error' => 'Paquete no encontrado'], 404);
@@ -71,14 +71,14 @@ class PaqueteController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return redirect()->route('paquete.editarPaquete', ['descripcion' => $paquete->descripcion])->withErrors($validator)->withInput();
+                return redirect()->route('paquete.editarPaquete', ['id' => $paquete->id])->withErrors($validator)->withInput();
             }
 
             $data = $request->only(['descripcion', 'peso_kg', 'lote_id']);
 
             $paquete->update($data);
 
-            return redirect()->route('paquete.editarPaquete', ['descripcion' => $paquete->descripcion])
+            return redirect()->route('paquete.editarPaquete', ['id' => $paquete->id])
                 ->with('success', 'Paquete actualizado exitosamente');
         }
 
@@ -87,8 +87,8 @@ class PaqueteController extends Controller
 
     public function eliminarPaquete(Request $request)
     {
-        $descripcion = $request->input('descripcion');
-        $paquete = Paquete::where('descripcion', $descripcion)->first();
+        $id = $request->input('id');
+        $paquete = Paquete::where('id', $id)->first();
 
         if (!$paquete) {
             $mensaje = "Paquete no encontrado";
@@ -96,7 +96,7 @@ class PaqueteController extends Controller
 
         $paquete->delete();
 
-        $mensaje = "El paquete con la descripcion: " . $descripcion . " ha sido eliminado exitosamente";
+        $mensaje = "El paquete con la id: " . $id . " ha sido eliminado exitosamente";
         return view('paquete.eliminarPaquete', compact('mensaje', 'paquete'));
     }
 }

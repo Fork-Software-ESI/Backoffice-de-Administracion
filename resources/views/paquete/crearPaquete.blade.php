@@ -27,7 +27,7 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="lote_id">Id del lote <input value="{{ old('lote_id') }}" type="" name="lote_id" required>
+        <label for="lote_id">Id del lote <input value="{{ old('lote_id') }}" type="" name="lote_id">
             @error('lote_id')
                 <br>
                 <small style="color:red;">{{ $message }}</small>

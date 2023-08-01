@@ -11,8 +11,8 @@
     <a href="{{ route('paquete.mostrarVistaPrincipalPaquete') }}">Volver al menú principal</a>
     <form action="{{ route('paquete.buscarPaquete') }}" method="post">
         @csrf
-        <label for="descripcion">Ingrese la descripcion del paquete:</label>
-        <input type="text" name="descripcion" id="descripcion" required>
+        <label for="id">Ingrese la id del paquete:</label>
+        <input type="text" name="id" id="id" required>
         <button type="submit">Buscar</button>
     </form>
     <h2>Informacion del usuario:</h2>
@@ -37,8 +37,8 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('paquete.eliminarPaquete', ['descripcion' => $paquete->descripcion]) }}">Eliminar Paquete</a> <br>
-            <a href="{{ route('paquete.editarPaquete', ['descripcion' => $paquete->descripcion]) }}">Editar Paquete</a>
+            <a href="{{ route('paquete.eliminarPaquete', ['id' => $paquete->id]) }}">Eliminar Paquete</a> <br>
+            <a href="{{ route('paquete.editarPaquete', ['id' => $paquete->id]) }}">Editar Paquete</a>
         @endif
     @elseif (isset($error))
         <p>{{ $error }}</p>

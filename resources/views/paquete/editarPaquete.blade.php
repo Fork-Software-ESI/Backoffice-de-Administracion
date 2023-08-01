@@ -11,7 +11,7 @@
     @if (session('success'))
         <p>{{ session('success') }}</p>
     @endif
-    <form action="{{ route('paquete.editarPaquete', ['descripcion' => $paquete->descripcion]) }}" method="post">
+    <form action="{{ route('paquete.editarPaquete', ['id' => $paquete->id]) }}" method="post">
         @csrf
         @method('PATCH')
         @csrf

@@ -11,8 +11,8 @@
     <a href="{{ route('almacen.mostrarVistaPrincipalAlmacen') }}">Volver al menú principal</a>
     <form action="{{ route('almacen.buscarAlmacen') }}" method="post">
         @csrf
-        <label for="direccion">Ingrese la direccion de el almacen:</label>
-        <input type="text" name="direccion" required>
+        <label for="id">Ingrese la id de el almacen:</label>
+        <input type="text" name="id" required>
         <button type="submit">Buscar</button>
     </form>
     <h2>Informacion de la almacen:</h2>
@@ -33,8 +33,8 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('almacen.eliminarAlmacen', ['direccion' => $almacen->direccion]) }}">Eliminar Almacen</a> <br>
-            <a href="{{ route('almacen.editarAlmacen', ['direccion' => $almacen->direccion]) }}">Editar Almacen</a>
+            <a href="{{ route('almacen.eliminarAlmacen', ['id' => $almacen->id]) }}">Eliminar Almacen</a> <br>
+            <a href="{{ route('almacen.editarAlmacen', ['id' => $almacen->id]) }}">Editar Almacen</a>
         @endif
     @elseif (isset($error))
         <p>{{ $error }}</p>
