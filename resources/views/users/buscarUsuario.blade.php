@@ -29,6 +29,7 @@
                         <th>Correo</th>
                         <th>Username</th>
                         <th>Teléfono</th>
+                        <th>Rol</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +40,7 @@
                         <td>{{ $user->correo }}</td>
                         <td>{{ $user->username }}</td>
                         <td>{{ $user->telefono }}</td>
+                        <td>{{ $user->rol }}</td>
                     </tr>
                 </tbody>
             </table>

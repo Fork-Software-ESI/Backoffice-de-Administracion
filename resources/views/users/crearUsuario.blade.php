@@ -67,6 +67,19 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
+        <label for="rol">Seleccione su rol
+        <select name="rol" id="rol">
+            <option value="administrador">Administrador</option>
+            <option value="gerente">Gerente</option>
+            <option value="cliente">Cliente</option>
+            <option value="chofer">Chofer</option>
+            <option value="funcionario">Funcionario</option>
+        </select>
+            @error('rol')
+                <br>
+                <small style="color:red;">{{ $message }}</small>
+            @enderror
+        </label><br><br>
         <button type="submit">Crear</button>
     </form>
 </body>

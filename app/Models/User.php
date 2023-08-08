@@ -26,6 +26,7 @@ class User extends Authenticatable
         'username',
         'password',
         'telefono',
+        'rol',
     ];
 
     protected $hidden = [
@@ -39,6 +40,6 @@ class User extends Authenticatable
     }
 
 
-    protected $primaryKey = 'id';  //estaba en id
+    protected $primaryKey = 'id';
     public $incrementing = true;
 }

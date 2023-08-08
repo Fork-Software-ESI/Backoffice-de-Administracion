@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuario - Mostrar Usuarios</title>
+    <title>Chofer - Mostrar Usuarios</title>
     <link rel="stylesheet" href="/css/mostrarUsuarios.css">
 </head>
 
 <body>
-    <h1>Lista de usuarios</h1>
+    <h1>Lista de choferes</h1>
     <table>
         <thead>
             <tr>
@@ -23,15 +23,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
+            @foreach ($chofer as $chofer)
                 <tr>
-                    <td>{{ $user->ci }}</td>
-                    <td>{{ $user->nombre }}</td>
-                    <td>{{ $user->apellido }}</td>
-                    <td>{{ $user->correo }}</td>
-                    <td>{{ $user->username }}</td>
-                    <td>{{ $user->telefono }}</td>
-                    <td>{{ $user->rol }}</td>
+                    <td>{{ $chofer->ci }}</td>
+                    <td>{{ $chofer->nombre }}</td>
+                    <td>{{ $chofer->apellido }}</td>
+                    <td>{{ $chofer->correo }}</td>
+                    <td>{{ $chofer->username }}</td>
+                    <td>{{ $chofer->telefono }}</td>
+                    <td>{{ $chofer->rol }}</td>
                 </tr>
             @endforeach
         </tbody>

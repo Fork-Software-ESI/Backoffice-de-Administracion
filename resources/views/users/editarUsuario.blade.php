@@ -59,6 +59,15 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
+        <label for="roles"> Seleccione su rol
+            <select name="rol" id="rol">
+                <option value="administrador">Administrador</option>
+                <option value="cliente">Cliente</option>
+                <option value="gerente">Gerente</option>
+                <option value="funcionario">Funcionario</option>
+                <option value="chofer">Chofer</option>
+            </select>
+        </label><br><br>
         <button type="submit">Actualizar Usuario</button>
     </form>
 </body>

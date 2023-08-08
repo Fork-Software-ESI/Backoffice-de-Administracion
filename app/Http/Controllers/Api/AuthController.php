@@ -3,31 +3,43 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+
+    public function mostrarVistaLogin()
+    {
+        return view('api/login');
+    }
+
+    public function mostrarVistaHome()
+    {
+        return view('api/home');
+    }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'password' => 'required'
+            'username' => 'required|max:55|min:3|regex:/^\S*$/',
+            'password' => 'required|min:6'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            return redirect()->route('auth.login')->withErrors($validator)->withInput();
         }
 
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
             $accessToken = Auth::user()->createToken('authToken')->accessToken;
-            return response()->json(['user' => Auth::user(), 'access_token' => $accessToken]);
+            session(['accessToken' => $accessToken]);
+            return redirect()->route('auth.mostrarVistaHome');
         } else {
-            return response()->json(['error' => 'Credenciales inválidas'], 401);
+            session()->flash('mensaje', 'Credenciales inválidas');
+            return redirect()->route('auth.login')->withErrors($validator)->withInput();
         }
     }
 }

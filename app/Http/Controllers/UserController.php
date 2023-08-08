@@ -50,6 +50,7 @@ class UserController extends Controller
             'username' => 'required|max:55|min:3|unique:users|regex:/^\S*$/',
             'password' => 'required|min:6|confirmed',
             'telefono' => 'required|string',
+            'rol' => 'required|in:administrador,chofer,cliente,funcionario,gerente',
         ]);
 
         if ($validator->fails()) {
@@ -64,9 +65,7 @@ class UserController extends Controller
 
         $validatedData['password'] = bcrypt($request->password);
 
-        $user = User::create($validatedData);
-
-        $accessToken = $user->createToken('authToken')->accessToken;
+        User::create($validatedData);
 
         session()->flash('mensaje', 'Usuario creado exitosamente');
         return redirect()->route('user.crearUsuario');
@@ -88,6 +87,7 @@ class UserController extends Controller
                 'correo' => 'email',
                 'password' => 'nullable|string|min:6|confirmed',
                 'telefono' => 'numeric',
+                'rol' => 'required|in:admin,chofer,cliente,funcionario,gerente',
             ]);
 
             if ($validator->fails()) {

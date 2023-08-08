@@ -6,15 +6,16 @@ use App\Http\Controllers\PaqueteController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\LoteController;
 use App\Http\Controllers\EstanteriaController;
+use App\Http\Controllers\ChoferController;
+use App\Http\Controllers\Api\AuthController;
 
 Route::get('/', function () {
     return view('home');
 });
 
-Route::post('/csrf-cookie', function () {
-    return response()->json(['message' => 'CSRF cookie set']);
-});
-
+Route::get('/login', [AuthController::class, 'mostrarVistaLogin'])->name('auth.mostrarVistaLogin');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::get('/login/home', [AuthController::class, 'mostrarVistaHome'])->name('auth.mostrarVistaHome');
 
 Route::get('/users', [UserController::class, 'mostrarVistaPrincipal'])->name('user.mostrarVistaPrincipal');
 Route::get('/users/mostrarUsuarios', [UserController::class, 'mostrarUsuarios'])->name('user.mostrarUsuarios');
@@ -60,3 +61,5 @@ Route::get('/estanterias/crearEstanteria/', [EstanteriaController::class, 'mostr
 Route::post('/estanterias/crearEstanteria', [EstanteriaController::class, 'crearEstanteria'])->name('estanteria.crearEstanteria');
 Route::match(['get', 'patch'], '/estanterias/editarEstanteria/{id}', [EstanteriaController::class, 'editarEstanteria'])->name('estanteria.editarEstanteria');
 Route::match(['get', 'post', 'delete'], '/estanterias/eliminarEstanteria', [EstanteriaController::class, 'eliminarEstanteria'])->name('estanteria.eliminarEstanteria');
+
+Route::get('/mostrarChoferes', [ChoferController::class, 'mostrarChoferes'])->name('chofer.mostrarChoferes');
