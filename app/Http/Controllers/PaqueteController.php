@@ -23,10 +23,9 @@ class PaqueteController extends Controller
         $paquete = Paquete::all();
         return view('paquete.mostrarPaquetes', ['paquete' => $paquete]);
     }
-    public function buscarPaquete(Request $request)
+    public function buscarPaquete($id)
     {
-        $id = $request->input('id');
-        $paquete = Paquete::where('id', $id)->first();
+        $paquete = Paquete::find($id);
         if (!$paquete) {
             return view('paquete.buscarPaquete', ['error' => 'Paquete no encontrado']);
         }
@@ -53,7 +52,7 @@ class PaqueteController extends Controller
 
     public function editarPaquete(Request $request, $id)
     {
-        $paquete = Paquete::where('id', $id)->first();
+        $paquete = Paquete::find($id);
 
         if (!$paquete) {
             return response()->json(['error' => 'Paquete no encontrado'], 404);
@@ -81,10 +80,9 @@ class PaqueteController extends Controller
         return view('paquete.editarPaquete', ['paquete' => $paquete]);
     }
 
-    public function eliminarPaquete(Request $request)
+    public function eliminarPaquete($id)
     {
-        $id = $request->input('id');
-        $paquete = Paquete::where('id', $id)->first();
+        $paquete = Paquete::find($id);
 
         if (!$paquete) {
             $mensaje = "Paquete no encontrado";

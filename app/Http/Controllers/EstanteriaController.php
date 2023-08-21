@@ -26,10 +26,9 @@ class EstanteriaController extends Controller
         return view('estanteria.mostrarEstanterias', ['estanteria' => $estanteria]);
     }
 
-    public function buscarEstanteria(Request $request)
+    public function buscarEstanteria($id)
     {
-        $id = $request->input('id');
-        $estanteria = Estanteria::where('id', $id)->first();
+        $estanteria = Estanteria::find($id);
         if (!$estanteria) {
             return view('estanteria.buscarEstanteria', ['error' => 'Estanteria  no encontrada']);
         }
@@ -56,7 +55,7 @@ class EstanteriaController extends Controller
 
     public function editarEstanteria(Request $request, $id)
     {
-        $estanteria = Estanteria::where('id', $id)->first();
+        $estanteria = Estanteria::find($id)->first();
 
         if (!$estanteria) {
             return response()->json(['error' => 'Estanteria no encontrada'], 404);
@@ -82,10 +81,9 @@ class EstanteriaController extends Controller
         return view('estanteria.editarEstanteria', ['estanteria' => $estanteria]);
     }
 
-    public function eliminarEstanteria(Request $request)
+    public function eliminarEstanteria(Request $request, $id)
     {
-        $id = $request->input('id');
-        $estanteria = Estanteria::where('id', $id)->first();
+        $estanteria = Estanteria::find($id)->first();
 
         if (!$estanteria) {
             $mensaje = "Estanteria no encontrada";

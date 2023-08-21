@@ -26,10 +26,9 @@ class AlmacenController extends Controller
         $almacen= Almacen::all();
         return view('almacen.mostrarAlmacenes', ['almacen' => $almacen]);
     }
-    public function buscarAlmacen(Request $request)
+    public function buscarAlmacen($id)
     {
-        $id = $request->input('id');
-        $almacen = Almacen::where('id', $id)->first();
+        $almacen = Almacen::find($id);
         if (!$almacen) {
             return view('almacen.buscarAlmacen', ['error' => 'Almacen no encontrado']);
         }
@@ -62,7 +61,7 @@ class AlmacenController extends Controller
 
     public function editarAlmacen(Request $request, $id)
     {
-        $almacen = Almacen::where('id', $id)->first();
+        $almacen = Almacen::find($id);
 
         if (!$almacen) {
             return response()->json(['error' => 'Almacén no encontrado'], 404);
@@ -88,10 +87,9 @@ class AlmacenController extends Controller
         return view('almacen.editarAlmacen', ['almacen' => $almacen]);
     }
 
-    public function eliminarAlmacen(Request $request)
+    public function eliminarAlmacen($id)
     {
-        $id = $request->input('id');
-        $almacen = Almacen::where('id', $id)->first();
+        $almacen = Almacen::find($id);
 
         if (!$almacen) {
             $mensaje = "Almacen no encontrado";

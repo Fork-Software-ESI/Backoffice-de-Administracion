@@ -22,28 +22,24 @@ class UserController extends Controller
     {
         return view('users/buscarUsuario');
     }
-
+    
     public function mostrarUsuarios()
     {
         $users = User::all();
         return view('users.mostrarUsuarios', ['users' => $users]);
     }
-    public function buscarUsuario(Request $request)
+    public function buscarUsuario($username)
     {
-        $username = $request->input('username');
         $user = User::where('username', $username)->first();
         if (!$user) {
             return view('users.buscarUsuario', ['error' => 'Usuario no encontrado']);
         }
         return view('users.buscarUsuario', ['user' => $user]);
     }
-
-
-
     public function crearUsuario(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'ci' => 'required|string|max:10',
+            'ci' => 'required|alpha|max:10',
             'nombre' => 'required|string|max:20',
             'apellido' => 'required|string|max:100',
             'correo' => 'required|email',
@@ -91,7 +87,6 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails()) {
-                //dd($validator->errors()->all());
                 return redirect()->route('user.editarUsuario', ['username' => $user->username])->withErrors($validator)->withInput();
             }
 
@@ -112,9 +107,8 @@ class UserController extends Controller
         return view('users.editarUsuario', ['user' => $user]);
     }
 
-    public function eliminarUsuario(Request $request)
+    public function eliminarUsuario($username)
     {
-        $username = $request->input('username');
         $user = User::where('username', $username)->first();
 
         if (!$user) {

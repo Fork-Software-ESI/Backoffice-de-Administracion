@@ -26,10 +26,9 @@ class LoteController extends Controller
         return view('lote.mostrarLotes', ['lote' => $lote]);
     }
 
-    public function buscarLote(Request $request)
+    public function buscarLote($id)
     {
-        $id = $request->input('id');
-        $lote = Lote::where('id', $id)->first();
+        $lote = Lote::find($id);
         if (!$lote) {
             return view('lote.buscarLote', ['error' => 'Lote no encontrado']);
         }
@@ -61,7 +60,7 @@ class LoteController extends Controller
     }
     public function editarLote(Request $request, $id)
     {
-        $lote = Lote::where('id', $id)->first();
+        $lote = Lote::find($id);
 
         if (!$lote) {
             return response()->json(['error' => 'Lote no encontrado'], 404);
@@ -87,10 +86,9 @@ class LoteController extends Controller
         return view('lote.editarLote', ['lote' => $lote]);
     }
 
-    public function eliminarlote(Request $request)
+    public function eliminarlote(Request $request, $id)
     {
-        $id = $request->input('id');
-        $lote = Lote::where('id', $id)->first();
+        $lote = Lote::find($id);
 
         if (!$lote) {
             $mensaje = "Lote no encontrado";

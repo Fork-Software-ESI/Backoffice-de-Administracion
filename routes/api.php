@@ -17,11 +17,3 @@ use App\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::post('/register', [UserController::class, 'crearUsuario']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::delete('/eliminar/{username}', [UserController::class, 'EliminarUsuario']);*/
