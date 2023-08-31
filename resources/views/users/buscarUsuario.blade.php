@@ -9,14 +9,8 @@
 </head>
 
 <body>
-    <h2>Bienvenido a Buscar Usuario</h2>
-    <a href="{{ route('user.mostrarVistaPrincipal') }}">Volver al menú principal</a>
-    <form action="{{ route('user.buscarUsuario') }}" method="post">
-        @csrf
-        <label for="username">Ingrese el username del usuario:</label>
-        <input type="text" name="username" id="username" required>
-        <button type="submit">Buscar</button>
-    </form>
+    <a href="{{ route('vistaUsuario') }}">Volver al menú principal</a>
+    <br><br>
     <h2>Informacion del usuario:</h2>
     @if (isset($user))
         @if ($user)
@@ -45,8 +39,8 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('user.eliminarUsuario', ['username' => $user->username]) }}">Eliminar Usuario</a> <br>
-            <a href="{{ route('user.editarUsuario', ['username' => $user->username]) }}">Editar Usuario</a>
+            <a href="{{ route('eliminarUsuario', ['username' => $user->username]) }}">Eliminar Usuario</a> <br>
+            <a href="{{ route('editarUsuario', ['username' => $user->username]) }}">Editar Usuario</a>
         @endif
     @elseif (isset($error))
         <p>{{ $error }}</p>

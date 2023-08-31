@@ -4,19 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Estanteria;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class EstanteriaController extends Controller
 {
-    public function mostrarVistaPrincipalEstanteria(){
+    public function mostrarVistaPrincipalEstanteria()
+    {
         return view('estanteria/estanteria');
     }
-    
-    public function mostrarVistaCrearEstanteria(){
+
+    public function mostrarVistaCrearEstanteria()
+    {
         return view('estanteria/crearEstanteria');
     }
-    
-    public function mostrarVistaBuscarEstanteria(){
+
+    public function mostrarVistaBuscarEstanteria()
+    {
         return view('estanteria/buscarEstanteria');
     }
 
@@ -51,7 +55,7 @@ class EstanteriaController extends Controller
         session()->flash('mensaje', 'Estanteria creado exitosamente');
         return redirect()->route('estanteria.crearEstanteria');
     }
-    
+
 
     public function editarEstanteria(Request $request, $id)
     {
@@ -89,9 +93,11 @@ class EstanteriaController extends Controller
             $mensaje = "Estanteria no encontrada";
         }
 
-        $estanteria->delete();
+        if ($estanteria) {
+            $estanteria->deleted_at = Carbon::now();
+            $mensaje = "La estanteria con la id: " . $id . " ha sido eliminada exitosamente";
+        }
 
-        $mensaje = "La estanteria con la id: " . $id . " ha sido eliminada exitosamente";
         return view('estanteria.eliminarEstanteria', compact('mensaje', 'estanteria'));
     }
 }

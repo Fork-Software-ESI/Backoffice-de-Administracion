@@ -13,7 +13,7 @@
     @if (session('success'))
         <p>{{ session('success') }}</p>
     @endif
-    <form action="{{ route('user.editarUsuario', ['username' => $user->username]) }}" method="post">
+    <form action="{{ route('editarUsuario', ['username' => $user->username]) }}" method="post">
         @csrf
         @method('PATCH')
         <label for="ci">Cedula de identidad <input value="{{ $user->ci }}" type="text" name="ci">

@@ -9,12 +9,12 @@
 <body>
     <h1>Bienvenidos a Fork Software</h1>
     <ol>
-        <li><a href="{{ route('user.mostrarVistaPrincipal') }}">Usuarios</a></li>
-        <li><a href="{{ route('almacen.mostrarVistaPrincipalAlmacen') }}">Almacenes</a></li>
-        <li><a href="{{ route('paquete.mostrarVistaPrincipalPaquete') }}">Paquetes</a></li>
-        <li><a href="{{ route('lote.mostrarVistaPrincipalLote') }}">Lotes</a></li>
-        <li><a href="{{ route('estanteria.mostrarVistaPrincipalEstanteria') }}">Estanterias</a></li>
-        <li><a href="{{ route('chofer.mostrarChoferes') }}">Mostrar Choferes</a></li>
+        <li><a href="{{ route('vistaUsuario') }}">Usuarios</a></li>
+        {{-- <li><a href="{{ route('vistaAlmacenes') }}">Almacenes</a></li>
+        <li><a href="{{ route('vistaPaquetes') }}">Paquetes</a></li>
+        <li><a href="{{ route('vistaLotes') }}">Lotes</a></li>
+        <li><a href="{{ route('vistaEstanterias') }}">Estanterias</a></li>
+        <li><a href="{{ route('mostrarChoferes') }}">Mostrar Choferes</a></li> --}}
     </ol>
 </body>
 </html>

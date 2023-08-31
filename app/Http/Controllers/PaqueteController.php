@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Paquete;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+
 
 class PaqueteController extends Controller
 {
-    public function mostrarVistaPrincipalPaquete(){
+    public function mostrarVistaPrincipalPaquete()
+    {
         return view('paquete/paquete');
     }
     public function mostrarVistaCrearPaquete()
     {
         return view('paquete/crearPaquete');
     }
-    public function mostrarVistaBuscarPaquete(){
+    public function mostrarVistaBuscarPaquete()
+    {
         return view('paquete/buscarPaquete');
     }
     public function mostrarPaquetes()
@@ -41,7 +45,7 @@ class PaqueteController extends Controller
         if ($validator->fails()) {
             return redirect()->route('paquete.crearPaquete')->withErrors($validator)->withInput();
         }
-        
+
         $validatedData = $validator->validated();
 
         Paquete::create($validatedData);
@@ -88,9 +92,11 @@ class PaqueteController extends Controller
             $mensaje = "Paquete no encontrado";
         }
 
-        $paquete->delete();
+        if ($paquete) {
+            $paquete->deleted_at = Carbon::now();
+            $mensaje = "El paquete con la id: " . $id . " ha sido eliminado exitosamente";
+        }
 
-        $mensaje = "El paquete con la id: " . $id . " ha sido eliminado exitosamente";
         return view('paquete.eliminarPaquete', compact('mensaje', 'paquete'));
     }
 }

@@ -17,6 +17,7 @@ class CreateLotesTable extends Migration
             $table->id();
             $table->string('descripcion');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

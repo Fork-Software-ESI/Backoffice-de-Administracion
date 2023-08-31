@@ -17,6 +17,7 @@ class CreateAlmacenesTable extends Migration
             $table->id();
             $table->string('direccion');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

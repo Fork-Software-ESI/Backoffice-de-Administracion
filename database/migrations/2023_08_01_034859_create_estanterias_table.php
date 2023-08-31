@@ -18,6 +18,7 @@ class CreateEstanteriasTable extends Migration
             $table->unsignedBigInteger('almacen_id');
             $table->foreign('almacen_id')->references('id')->on('almacenes');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

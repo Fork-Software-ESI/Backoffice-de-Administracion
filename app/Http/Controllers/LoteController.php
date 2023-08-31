@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Lote;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class LoteController extends Controller
 {
@@ -94,7 +95,7 @@ class LoteController extends Controller
             $mensaje = "Lote no encontrado";
         }
         if($lote){
-            $lote->delete();
+            $lote->deleted_at = Carbon::now();
             $mensaje = "El lote con la id: " . $id . " ha sido eliminada exitosamente";
         }
         

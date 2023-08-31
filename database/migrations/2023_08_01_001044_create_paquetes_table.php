@@ -20,6 +20,7 @@ class CreatePaquetesTable extends Migration
             $table->unsignedBigInteger('lote_id')->nullable();
             $table->foreign('lote_id')->references('id')->on('lotes');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
             //
         });
     }

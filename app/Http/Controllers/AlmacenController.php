@@ -5,25 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\Almacen;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 
 class AlmacenController extends Controller
 {
-    
-    public function mostrarVistaPrincipalAlmacen(){
+
+    public function mostrarVistaPrincipalAlmacen()
+    {
         return view('almacen/almacen');
     }
     public function mostrarVistaCrearAlmacen()
     {
         return view('almacen/crearAlmacen');
     }
-    public function mostrarVistaBuscarAlmacen(){
+    public function mostrarVistaBuscarAlmacen()
+    {
         return view('almacen/buscarAlmacen');
     }
-    
+
     public function mostrarAlmacenes()
     {
-        $almacen= Almacen::all();
+        $almacen = Almacen::all();
         return view('almacen.mostrarAlmacenes', ['almacen' => $almacen]);
     }
     public function buscarAlmacen($id)
@@ -94,11 +97,12 @@ class AlmacenController extends Controller
         if (!$almacen) {
             $mensaje = "Almacen no encontrado";
         }
-        if($almacen){
-            $almacen->delete();
+
+        if ($almacen) {
+            $almacen->deleted_at = Carbon::now();
             $mensaje = "El almacen con el id: " . $id . " ha sido eliminado exitosamente";
         }
-        
+
         return view('almacen.eliminarAlmacen', compact('mensaje'));
     }
 }

@@ -3,33 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function mostrarVistaPrincipal()
-    {
-        return view('users/user');
-    }
-
-    public function mostrarVistaCrearUsuario()
-    {
-        return view('users/crearUsuario');
-    }
-
-    public function mostrarVistaBuscarUsuario()
-    {
-        return view('users/buscarUsuario');
-    }
-    
     public function mostrarUsuarios()
     {
         $users = User::all();
         return view('users.mostrarUsuarios', ['users' => $users]);
     }
-    public function buscarUsuario($username)
+    public function buscarUsuario(Request $request)
     {
+        $username = $request->post('username');
         $user = User::where('username', $username)->first();
         if (!$user) {
             return view('users.buscarUsuario', ['error' => 'Usuario no encontrado']);
@@ -39,9 +26,9 @@ class UserController extends Controller
     public function crearUsuario(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'ci' => 'required|alpha|max:10',
-            'nombre' => 'required|string|max:20',
-            'apellido' => 'required|string|max:100',
+            'ci' => 'required|string|max:10',
+            'nombre' => 'required|alpha|max:20',
+            'apellido' => 'required|alpha|max:100',
             'correo' => 'required|email',
             'username' => 'required|max:55|min:3|unique:users|regex:/^\S*$/',
             'password' => 'required|min:6|confirmed',
@@ -50,7 +37,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('user.crearUsuario')->withErrors($validator)->withInput();
+            return redirect()->route('crearUsuario')->withErrors($validator)->withInput();
         }
 
         $validatedData = $validator->validated();
@@ -64,7 +51,7 @@ class UserController extends Controller
         User::create($validatedData);
 
         session()->flash('mensaje', 'Usuario creado exitosamente');
-        return redirect()->route('user.crearUsuario');
+        return redirect()->route('crearUsuario');
     }
 
     public function editarUsuario(Request $request, $username)
@@ -100,7 +87,7 @@ class UserController extends Controller
 
             $user->update($data);
 
-            return redirect()->route('user.editarUsuario', ['username' => $user->username])
+            return redirect()->route('editarUsuario', ['username' => $user->username])
                 ->with('success', 'Usuario actualizado exitosamente');
         }
 
@@ -115,8 +102,10 @@ class UserController extends Controller
             $mensaje = "Usuario no encontrado";
         }
 
-        $user->delete();
-        $mensaje = "El usuario con el username: " . $username . " ha sido eliminado exitosamente";
+        if ($user) {
+            $user->deleted_at = Carbon::now();
+            $mensaje = "El usuario con el username: " . $username . " ha sido eliminado exitosamente";
+        }
 
         return view('users.eliminarUsuario', compact('mensaje', 'user'));
     }
