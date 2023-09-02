@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <a href="{{ route('vistaUsuario') }}" style="color: white">Volver al menú Usuario</a>
     <h1>Lista de choferes</h1>
     <table>
         <thead>

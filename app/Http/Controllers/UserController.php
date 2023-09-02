@@ -14,6 +14,7 @@ class UserController extends Controller
         $users = User::all();
         return view('users.mostrarUsuarios', ['users' => $users]);
     }
+
     public function buscarUsuario(Request $request)
     {
         $username = $request->post('username');
@@ -54,44 +55,44 @@ class UserController extends Controller
         return redirect()->route('crearUsuario');
     }
 
-    public function editarUsuario(Request $request, $username)
+    public function editarUsuario($username)
     {
         $user = User::where('username', $username)->first();
 
-        if (!$user) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        return view('users.editarUsuario', ['user' => $user]);
+    }
+
+    public function actualizarUsuario(Request $request, $username)
+    {
+        $user = User::where('username', $username)->first();
+
+        $validator = Validator::make($request->all(), [
+            'ci' => 'string|max:8',
+            'nombre' => 'string|max:20',
+            'apellido' => 'string|max:100',
+            'correo' => 'email',
+            'password' => 'nullable|string|min:6|confirmed',
+            'telefono' => 'numeric',
+            'rol' => 'required|in:admin,chofer,cliente,funcionario,gerente',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('editarUsuario', ['username' => $user->username])->withErrors($validator)->withInput();
         }
 
-        if ($request->isMethod('patch')) {
-            $validator = Validator::make($request->all(), [
-                'ci' => 'string|max:8',
-                'nombre' => 'string|max:20',
-                'apellido' => 'string|max:100',
-                'correo' => 'email',
-                'password' => 'nullable|string|min:6|confirmed',
-                'telefono' => 'numeric',
-                'rol' => 'required|in:admin,chofer,cliente,funcionario,gerente',
-            ]);
+        $data = $request->only(['ci', 'nombre', 'apellido', 'correo', 'telefono']);
 
-            if ($validator->fails()) {
-                return redirect()->route('user.editarUsuario', ['username' => $user->username])->withErrors($validator)->withInput();
-            }
+        if (!empty($request->password)) {
+            $user->password = bcrypt($request->password);
+        }
 
-            $data = $request->only(['ci', 'nombre', 'apellido', 'correo', 'telefono']);
-
-            if (!empty($request->password)) {
-                $data['password'] = bcrypt($request->password);
-            } else {
-                unset($data['password']);
-            }
-
-            $user->update($data);
-
+        if ($user->update($data)) {
             return redirect()->route('editarUsuario', ['username' => $user->username])
                 ->with('success', 'Usuario actualizado exitosamente');
+        } else {
+            return redirect()->route('editarUsuario', ['username' => $user->username])
+                ->with('error', 'Hubo un problema al actualizar el usuario');
         }
-
-        return view('users.editarUsuario', ['user' => $user]);
     }
 
     public function eliminarUsuario($username)

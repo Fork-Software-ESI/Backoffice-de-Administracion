@@ -10,20 +10,6 @@ use Carbon\Carbon;
 
 class AlmacenController extends Controller
 {
-
-    public function mostrarVistaPrincipalAlmacen()
-    {
-        return view('almacen/almacen');
-    }
-    public function mostrarVistaCrearAlmacen()
-    {
-        return view('almacen/crearAlmacen');
-    }
-    public function mostrarVistaBuscarAlmacen()
-    {
-        return view('almacen/buscarAlmacen');
-    }
-
     public function mostrarAlmacenes()
     {
         $almacen = Almacen::all();

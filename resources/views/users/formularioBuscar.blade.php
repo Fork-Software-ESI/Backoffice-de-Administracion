@@ -7,6 +7,7 @@
     <title>Usuario - Buscar Usuario</title>
 </head>
 <body>
+    <a href="{{ route('vistaUsuario') }}">Volver al menú Usuario</a>
     <h1>Bienvenido a Buscar Usuario</h1>
     <form action="{{ route('buscarUsuario') }}" method="post">
         @csrf

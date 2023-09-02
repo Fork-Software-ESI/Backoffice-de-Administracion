@@ -8,8 +8,8 @@
 </head>
 <body>
     <h2>Bienvenido a Buscar Almacen</h2>
-    <a href="{{ route('almacen.mostrarVistaPrincipalAlmacen') }}">Volver al menú principal</a>
-    <form action="{{ route('almacen.buscarAlmacen') }}" method="post">
+    <a href="{{ route('vistaAlmacen') }}">Volver al menú principal</a>
+    <form action="{{ route('buscarAlmacen') }}" method="post">
         @csrf
         <label for="id">Ingrese la id de el almacen:</label>
         <input type="number" name="id" required>

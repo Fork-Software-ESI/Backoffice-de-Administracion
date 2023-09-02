@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\AuthController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 //Route::get('/users', [UserController::class, 'mostrarVistaPrincipal'])->name('user.mostrarVistaPrincipal');
 
@@ -33,22 +33,16 @@ Route::get('/crear', function () {
 
 Route::post('/crear', [UserController::class, 'crearUsuario']);
 
-Route::match(['get', 'patch'], '/users/editarUsuario/{username}', [UserController::class, 'editarUsuario'])->name('user.editarUsuario');
+Route::get('/editar/{username}', [UserController::class, 'editarUsuario'])->name('editarUsuario');
 
-Route::get('/editar/{username}', function(){
-    return view('users.editarUsuario');
-})->name('formularioEditar');
-
-Route::patch('/actualizar/{username}', [UserController::class, 'editarUsuario'])->name('editarUsuario');
+Route::patch('/actualizar/{username}', [UserController::class, 'actualizarUsuario'])->name('actualizarUsuario');
 
 Route::match(['get', 'post', 'delete'], '/users/eliminarUsuario', [UserController::class, 'eliminarUsuario'])->name('user.eliminarUsuario');
 Route::delete('/eliminar', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
 
 //Route::get('/mostrarChoferes', [ChoferController::class, 'mostrarChoferes'])->name('chofer.mostrarChoferes');
 
-Route::get('/users', function () {
-    return view('chofer.mostrarChoferes');
-})->name('mostrarChoferes');
+Route::get('/choferes', [ChoferController::class, 'mostrarChoferes'])->name('mostrarChoferes');
 
 /*
 Route::get('/paquetes', [PaqueteController::class, 'mostrarVistaPrincipalPaquete'])->name('paquete.mostrarVistaPrincipalPaquete');
@@ -78,7 +72,31 @@ Route::get('/almacenes/crearAlmacen', [AlmacenController::class, 'mostrarVistaCr
 Route::post('/almacenes/crearAlmacen', [AlmacenController::class, 'crearAlmacen'])->name('almacen.crearAlmacen');
 Route::match(['get', 'patch'], '/almacenes/editarAlmacen/{id}', [AlmacenController::class, 'editarAlmacen'])->name('almacen.editarAlmacen');
 Route::match(['get', 'post', 'delete'], '/almacenes/eliminarAlmacen', [AlmacenController::class, 'eliminarAlmacen'])->name('almacen.eliminarAlmacen');
+*/
 
+Route::get('/menu-almacen', function () {
+    return view('almacen.almacen');
+})->name('vistaAlmacen');
+
+Route::get('/almacenes', [AlmacenController::class, 'mostrarAlmacenes'])->name('mostrarAlmacen');
+
+Route::get('/buscar', function () {
+    return view('almacen.buscarAlmacen');
+});
+
+Route::post('/buscar-almacen', [AlmacenController::class, 'buscarAlmacen'])->name('buscarAlmacen');
+
+Route::get('/crear-almacen', function () {
+    return view('users.crearAlmacen');
+})->name('crearAlmacen');
+
+Route::post('/crear-almacen', [AlmacenController::class, 'crearAlmacen']);
+
+Route::get('/editar-almacen/{id}', [AlmacenController::class, 'editarAlmacen'])->name('editarAlmacen');
+
+Route::patch('/actualizar-almacen/{id}', [AlmacenController::class, 'actualizarAlmacen'])->name('actualizarAlmacen'); //agregar funcion actualizarAlmacen en AlmacenController
+
+/*
 Route::get('/lotes', [LoteController::class, 'mostrarVistaPrincipalLote'])->name('lote.mostrarVistaPrincipalLote');
 
 Route::get('/lotes', function () {

@@ -15,6 +15,7 @@
             {{ session('mensaje') }}
         </div>
     @endif
+    <a href="{{ route('vistaUsuario') }}" style="color: white">Volver al menú Usuario</a>
     <h1>Crear usuario</h1>
     <form action="" method="post">
         @csrf
