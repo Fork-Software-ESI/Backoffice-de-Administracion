@@ -14,8 +14,13 @@ class AuthController extends Controller
         $credentials = $request->only('username', 'password');
         if (auth()->attempt($credentials)) {
             $user = auth()->user();
-            $token = $user->createToken('authToken')->accessToken;
-            return redirect()->route('home');
+            if ($user->rol == 'administrador') {
+                $token = $user->createToken('authToken')->accessToken;
+                return redirect()->route('home')->with('bienvenida', $user->nombre . ' ' . $user->apellido);
+            }
+            if ($user->rol != 'administrador') {
+                return redirect()->route('login')->with('error', 'No tiene permisos para acceder');
+            }
         }
         return redirect()->route('login')->with('error', 'Credenciales incorrectas');
     }
