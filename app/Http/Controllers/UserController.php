@@ -15,12 +15,11 @@ class UserController extends Controller
         return view('users.mostrarUsuarios', ['users' => $users]);
     }
 
-    public function buscarUsuario(Request $request)
+    public function buscarUsuario($username)
     {
-        $username = $request->post('username');
         $user = User::where('username', $username)->first();
         if (!$user) {
-            return view('users.buscarUsuario', ['error' => 'Usuario no encontrado']);
+            return view('users.formularioBuscar', ['error' => 'Usuario no encontrado']);
         }
         return view('users.buscarUsuario', ['user' => $user]);
     }

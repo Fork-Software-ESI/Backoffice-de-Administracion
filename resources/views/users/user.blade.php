@@ -11,7 +11,7 @@
     <h1>Bienvenido a la user view</h1>
     <ol>
         <li><a href="{{ route('mostrarUsuarios') }}">Mostrar usuarios</a></li>
-        <li><a href="{{ route('formularioBuscar') }}">Buscar usuarios y eliminar o editar el mismo</a></li>
+        <li><a href="{{ route('vistaBuscarUsuario') }}">Buscar usuarios y eliminar o editar el mismo</a></li>
         <li><a href="{{ route('crearUsuario') }}">Crear usuario</a></li>
         <li><a href="{{ route('mostrarChoferes') }}">Mostrar solo los choferes</a></li>
     </ol>

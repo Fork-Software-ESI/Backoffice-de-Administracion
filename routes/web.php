@@ -21,17 +21,17 @@ Route::get('/menu', function () {
 
 Route::get('/usuarios', [UserController::class, 'mostrarUsuarios'])->name('mostrarUsuarios');
 
-Route::get('/buscar', function () {
+Route::get('/buscar-usuario', function () {
     return view('users.formularioBuscar');
-})->name('formularioBuscar');
+})->name('vistaBuscarUsuario');
 
-Route::post('/buscar', [UserController::class, 'buscarUsuario'])->name('buscarUsuario');
+Route::post('/buscar-usuario/{username}', [UserController::class, 'buscarUsuario'])->name('buscarUsuario');
 
-Route::get('/crear', function () {
+Route::get('/crear-usuario', function () {
     return view('users.crearUsuario');
 })->name('crearUsuario');
 
-Route::post('/crear', [UserController::class, 'crearUsuario']);
+Route::post('/crear-usuario', [UserController::class, 'crearUsuario']);
 
 Route::get('/editar/{username}', [UserController::class, 'editarUsuario'])->name('editarUsuario');
 
@@ -80,11 +80,11 @@ Route::get('/menu-almacen', function () {
 
 Route::get('/almacenes', [AlmacenController::class, 'mostrarAlmacenes'])->name('mostrarAlmacen');
 
-Route::get('/buscar', function () {
-    return view('almacen.buscarAlmacen');
-});
+Route::get('/buscar-almacen', function () {
+    return view('almacen.formularioBuscar');
+})->name('vistaBuscarAlmacen');
 
-Route::post('/buscar-almacen', [AlmacenController::class, 'buscarAlmacen'])->name('buscarAlmacen');
+Route::post('/buscar/{id}', [AlmacenController::class, 'buscarAlmacen'])->name('buscarAlmacen');
 
 Route::get('/crear-almacen', function () {
     return view('users.crearAlmacen');
@@ -94,7 +94,7 @@ Route::post('/crear-almacen', [AlmacenController::class, 'crearAlmacen']);
 
 Route::get('/editar-almacen/{id}', [AlmacenController::class, 'editarAlmacen'])->name('editarAlmacen');
 
-Route::patch('/actualizar-almacen/{id}', [AlmacenController::class, 'actualizarAlmacen'])->name('actualizarAlmacen'); //agregar funcion actualizarAlmacen en AlmacenController
+Route::patch('/actualizar-almacen/{id}', [AlmacenController::class, 'actualizarAlmacen'])->name('actualizarAlmacen');
 
 /*
 Route::get('/lotes', [LoteController::class, 'mostrarVistaPrincipalLote'])->name('lote.mostrarVistaPrincipalLote');

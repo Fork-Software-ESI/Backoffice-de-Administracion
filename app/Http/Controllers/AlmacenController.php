@@ -17,9 +17,9 @@ class AlmacenController extends Controller
     }
     public function buscarAlmacen($id)
     {
-        $almacen = Almacen::find($id);
+        $almacen = Almacen::find($id)->first();
         if (!$almacen) {
-            return view('almacen.buscarAlmacen', ['error' => 'Almacen no encontrado']);
+            return redirect()->route('vistaBuscarAlmacen')->with(['error' => 'Almacén no encontrado']);
         }
         return view('almacen.buscarAlmacen', ['almacen' => $almacen]);
     }
@@ -50,30 +50,32 @@ class AlmacenController extends Controller
 
     public function editarAlmacen(Request $request, $id)
     {
-        $almacen = Almacen::find($id);
-
-        if (!$almacen) {
-            return response()->json(['error' => 'Almacén no encontrado'], 404);
-        }
-
-        if ($request->isMethod('patch')) {
-            $validator = Validator::make($request->all(), [
-                'direccion' => 'string|max:255',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->route('almacen.editarAlmacen', ['direccion' => $almacen->direccion])->withErrors($validator)->withInput();
-            }
-
-            $data = $request->only(['direccion']);
-
-            $almacen->update($data);
-
-            return redirect()->route('almacen.editarAlmacen', ['id' => $almacen->id])
-                ->with('success', 'Almacén actualizado exitosamente');
-        }
+        $almacen = Almacen::find($id)->first();
 
         return view('almacen.editarAlmacen', ['almacen' => $almacen]);
+    }
+
+    public function actualizarAlmacen(Request $request, $id)
+    {
+        $almacen = Almacen::find($id)->first();
+
+        $validator = Validator::make($request->all(), [
+            'direccion' => 'string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('editarAlmacen', ['direccion' => $almacen->direccion])->withErrors($validator)->withInput();
+        }
+
+        $data = $request->only(['direccion']);
+        
+        if ($almacen->update($data)) {
+            return redirect()->route('editarAlmacen', ['direccion' => $almacen->direccion])
+                ->with('success', 'Almacen actualizado exitosamente');
+        } else {
+            return redirect()->route('editarAlmacen', ['direccion' => $almacen->direccion])
+                ->with('error', 'Hubo un problema al actualizar el Almacen');
+        }
     }
 
     public function eliminarAlmacen($id)

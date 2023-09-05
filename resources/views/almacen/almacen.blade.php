@@ -10,7 +10,7 @@
     <h1>Bienvenido a la view de almacen</h1>
     <ol>
         <li><a href="{{ route('mostrarAlmacen') }}">Mostrar almacenes</a></li>
-        <li><a href="{{ route('buscarAlmacen') }}">Buscar almacen y eliminar o editar el mismo</a></li>
+        <li><a href="{{ route('vistaBuscarAlmacen') }}">Buscar almacen y eliminar o editar el mismo</a></li>
         <li><a href="{{ route('crearAlmacen') }}">Crear almacen</a></li>
     </ol>
 </body>

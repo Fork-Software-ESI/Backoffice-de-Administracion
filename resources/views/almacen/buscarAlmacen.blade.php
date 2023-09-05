@@ -7,14 +7,8 @@
     <title>Buscar Almacen</title>
 </head>
 <body>
-    <h2>Bienvenido a Buscar Almacen</h2>
     <a href="{{ route('vistaAlmacen') }}">Volver al menú principal</a>
-    <form action="{{ route('buscarAlmacen') }}" method="post">
-        @csrf
-        <label for="id">Ingrese la id de el almacen:</label>
-        <input type="number" name="id" required>
-        <button type="submit">Buscar</button>
-    </form>
+    <h2>Bienvenido a Buscar Almacen</h2>
     <h2>Informacion del almacen:</h2>
     @if (isset($almacen))
         @if ($almacen)
@@ -34,7 +28,7 @@
             </table>
 
             <a href="{{ route('almacen.eliminarAlmacen', ['id' => $almacen->id]) }}">Eliminar Almacen</a> <br>
-            <a href="{{ route('almacen.editarAlmacen', ['id' => $almacen->id]) }}">Editar Almacen</a>
+            <a href="{{ route('editarAlmacen', ['id' => $almacen->id]) }}">Editar Almacen</a>
         @endif
     @elseif (isset($error))
         <p>{{ $error }}</p>
