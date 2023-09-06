@@ -10,28 +10,27 @@
     <a href="{{ route('vistaAlmacen') }}">Volver al menú principal</a>
     <h2>Bienvenido a Buscar Almacen</h2>
     <h2>Informacion del almacen:</h2>
-    @if (isset($almacen))
-        @if ($almacen)
-            <table>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Direccion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ $almacen->id }}</td>
-                        <td>{{ $almacen->direccion }}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <a href="{{ route('almacen.eliminarAlmacen', ['id' => $almacen->id]) }}">Eliminar Almacen</a> <br>
-            <a href="{{ route('editarAlmacen', ['id' => $almacen->id]) }}">Editar Almacen</a>
-        @endif
-    @elseif (isset($error))
-        <p>{{ $error }}</p>
-    @endif
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Direccion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $almacen->id }}</td>
+                    <td>{{ $almacen->direccion }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+        
+        <form method="POST" action="{{ route('eliminarAlmacen', ['id' => $almacen->id]) }}">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Eliminar Almacen</button>
+        </form><br>
+        <a href="{{ route('editarAlmacen', ['id' => $almacen->id]) }}">Editar Almacen</a>
 </body>
 </html>

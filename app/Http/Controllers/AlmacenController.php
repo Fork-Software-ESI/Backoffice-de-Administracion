@@ -15,11 +15,12 @@ class AlmacenController extends Controller
         $almacen = Almacen::all();
         return view('almacen.mostrarAlmacenes', ['almacen' => $almacen]);
     }
-    public function buscarAlmacen($id)
+    public function buscarAlmacen(Request $request)
     {
-        $almacen = Almacen::find($id)->first();
+        $id = $request->input('id');
+        $almacen = Almacen::find($id);
         if (!$almacen) {
-            return redirect()->route('vistaBuscarAlmacen')->with(['error' => 'Almacén no encontrado']);
+            return redirect()->route('vistaBuscarAlmacen')->with(['mensaje' => 'Almacén no encontrado']);
         }
         return view('almacen.buscarAlmacen', ['almacen' => $almacen]);
     }
@@ -40,15 +41,13 @@ class AlmacenController extends Controller
             return response()->json(['error' => 'La direccion de el almacen ya está en uso'], 422);
         }
 
-        Almacen::create([
-            'direccion' => $validatedData['direccion'],
-        ]);
+        Almacen::create($validatedData);
 
         session()->flash('mensaje', 'Almacen creado exitosamente');
-        return redirect()->route('almacen.crearAlmacen');
+        return redirect()->route('crearAlmacen');
     }
 
-    public function editarAlmacen(Request $request, $id)
+    public function editarAlmacen($id)
     {
         $almacen = Almacen::find($id)->first();
 
@@ -64,18 +63,17 @@ class AlmacenController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('editarAlmacen', ['direccion' => $almacen->direccion])->withErrors($validator)->withInput();
+            return redirect()->route('editarAlmacen', ['id' => $almacen->id])->withErrors($validator)->withInput();
         }
 
         $data = $request->only(['direccion']);
         
-        if ($almacen->update($data)) {
-            return redirect()->route('editarAlmacen', ['direccion' => $almacen->direccion])
-                ->with('success', 'Almacen actualizado exitosamente');
-        } else {
-            return redirect()->route('editarAlmacen', ['direccion' => $almacen->direccion])
-                ->with('error', 'Hubo un problema al actualizar el Almacen');
+        if (!$almacen->update($data)) {
+            return redirect()->route('vistaBuscarAlmacen', ['id' => $almacen->id])
+                ->with('mensaje', 'Hubo un problema al actualizar el Almacen');
         }
+        return redirect()->route('vistaBuscarAlmacen', ['id' => $almacen->id])
+                ->with('mensaje', 'Almacen actualizado exitosamente');
     }
 
     public function eliminarAlmacen($id)
@@ -83,14 +81,12 @@ class AlmacenController extends Controller
         $almacen = Almacen::find($id);
 
         if (!$almacen) {
-            $mensaje = "Almacen no encontrado";
+            return redirect()->route('vistaBuscarAlmacen')->with('mensaje', 'Almacen no encontrado');
         }
 
-        if ($almacen) {
-            $almacen->deleted_at = Carbon::now();
-            $mensaje = "El almacen con el id: " . $id . " ha sido eliminado exitosamente";
-        }
+        $almacen->deleted_at = now();
+        $almacen->save();
 
-        return view('almacen.eliminarAlmacen', compact('mensaje'));
+        return redirect()->route('vistaBuscarAlmacen')->with('mensaje', 'Almacen eliminado con éxito');
     }
 }

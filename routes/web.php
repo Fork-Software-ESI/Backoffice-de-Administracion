@@ -42,43 +42,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::patch('/actualizar-usuario/{username}', [UserController::class, 'actualizarUsuario'])->name('actualizarUsuario');
 
-    //Route::match(['get', 'post', 'delete'], '/users/eliminarUsuario', [UserController::class, 'eliminarUsuario'])->name('user.eliminarUsuario');
-
     Route::delete('/eliminar-user/{id}', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
-
-    //Route::delete('/eliminar', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
 
     Route::get('/choferes', [ChoferController::class, 'mostrarChoferes'])->name('mostrarChoferes');
 
-    /*
-    Route::get('/paquetes', [PaqueteController::class, 'mostrarVistaPrincipalPaquete'])->name('paquete.mostrarVistaPrincipalPaquete');
-    
-    Route::get('/paquetes', function () {
-    return view('paquete.paquete');
-    })->name('vistaPaquetes');
-    
-    Route::get('/paquetes/mostrarPaquetes', [PaqueteController::class, 'mostrarPaquetes'])->name('paquete.mostrarPaquetes');
-    Route::get('/paquetes/buscarPaquete', [PaqueteController::class, 'mostrarVistaBuscarPaquete'])->name('paquete.buscarPaquete');
-    Route::post('/paquetes/buscarPaquete', [PaqueteController::class, 'buscarPaquete'])->name('paquete.buscarPaquete');
-    Route::get('/paquetes/crearPaquete', [PaqueteController::class, 'mostrarVistaCrearPaquete'])->name('paquete.vistaCrearPaquete');
-    Route::post('/paquetes/crearPaquete', [PaqueteController::class, 'crearPaquete'])->name('paquete.crearPaquete');
-    Route::match(['get', 'patch'], '/paquetes/editarPaquete/{id}', [PaqueteController::class, 'editarPaquete'])->name('paquete.editarPaquete');
-    Route::match(['get', 'post', 'delete'], '/paquetes/eliminarPaquete', [PaqueteController::class, 'eliminarPaquete'])->name('paquete.eliminarPaquete');
-    
-    Route::get('/almacenes', [AlmacenController::class, 'mostrarVistaPrincipalAlmacen'])->name('almacen.mostrarVistaPrincipalAlmacen');
-    
-    Route::get('/almacenes', function () {
-    return view('almacen.almacen');
-    })->name('vistaAlmacenes');
-    
-    Route::get('/almacenes/mostrarAlmacenes', [AlmacenController::class, 'mostrarAlmacenes'])->name('almacen.mostrarAlmacenes');
-    Route::get('/almacenes/buscarAlmacen', [AlmacenController::class, 'mostrarVistaBuscarAlmacen'])->name('almacen.vistaBuscarAlmacen');
-    Route::post('/almacenes/buscarAlmacen', [AlmacenController::class, 'buscarAlmacen'])->name('almacen.buscarAlmacen');
-    Route::get('/almacenes/crearAlmacen', [AlmacenController::class, 'mostrarVistaCrearAlmacen'])->name('almacen.vistaCrearAlmacen');
-    Route::post('/almacenes/crearAlmacen', [AlmacenController::class, 'crearAlmacen'])->name('almacen.crearAlmacen');
-    Route::match(['get', 'patch'], '/almacenes/editarAlmacen/{id}', [AlmacenController::class, 'editarAlmacen'])->name('almacen.editarAlmacen');
-    Route::match(['get', 'post', 'delete'], '/almacenes/eliminarAlmacen', [AlmacenController::class, 'eliminarAlmacen'])->name('almacen.eliminarAlmacen');
-    */
+    //
 
     Route::get('/menu-almacen', function () {
         return view('almacen.almacen');
@@ -90,10 +58,10 @@ Route::middleware(['auth'])->group(function () {
         return view('almacen.formularioBuscar');
     })->name('vistaBuscarAlmacen');
 
-    Route::post('/buscar/{id}', [AlmacenController::class, 'buscarAlmacen'])->name('buscarAlmacen');
+    Route::post('/buscar-almacen', [AlmacenController::class, 'buscarAlmacen'])->name('buscarAlmacen');
 
     Route::get('/crear-almacen', function () {
-        return view('users.crearAlmacen');
+        return view('almacen.crearAlmacen');
     })->name('crearAlmacen');
 
     Route::post('/crear-almacen', [AlmacenController::class, 'crearAlmacen']);
@@ -101,6 +69,34 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/editar-almacen/{id}', [AlmacenController::class, 'editarAlmacen'])->name('editarAlmacen');
 
     Route::patch('/actualizar-almacen/{id}', [AlmacenController::class, 'actualizarAlmacen'])->name('actualizarAlmacen');
+
+    Route::delete('/eliminar-almacen/{id}', [AlmacenController::class, 'eliminarAlmacen'])->name('eliminarAlmacen');
+
+    //
+
+    Route::get('/menu-paquete', function () {
+        return view('paquete.paquete');
+    })->name('vistaPaquete');
+
+    Route::get('/paquetes', [PaqueteController::class, 'mostrarPaquetes'])->name('mostrarPaquete');
+
+    Route::get('/buscar-paquete', function () {
+        return view('paquete.formularioBuscar');
+    })->name('vistaBuscarPaquete');
+
+    Route::post('/buscar-paquete', [PaqueteController::class, 'buscarPaquete'])->name('buscarPaquete');
+
+    Route::get('/crear-paquete', function () {
+        return view('paquete.crearPaquete');
+    })->name('crearPaquete');
+
+    Route::post('/crear-paquete', [PaqueteController::class, 'crearPaquete']);
+
+    Route::get('/editar-paquete/{id}', [PaqueteController::class, 'editarPaquete'])->name('editarPaquete');
+
+    Route::patch('/actualizar-paquete/{id}', [PaqueteController::class, 'actualizarPaquete'])->name('actualizarPaquete');
+
+    Route::delete('/eliminar-paquete/{id}', [PaqueteController::class, 'eliminarPaquete'])->name('eliminarPaquete');
 
     /*
     Route::get('/lotes', [LoteController::class, 'mostrarVistaPrincipalLote'])->name('lote.mostrarVistaPrincipalLote');

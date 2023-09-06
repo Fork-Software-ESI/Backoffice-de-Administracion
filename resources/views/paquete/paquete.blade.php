@@ -7,11 +7,12 @@
     <title>Paquete</title>
 </head>
 <body>
+    <a href="{{ route('home') }}">Volver al menú principal</a>
     <h2>Bienvenido a la view de Paquete</h2>    
     <ol>
-        <li><a href="{{ route('paquete.mostrarPaquetes') }}">Mostrar paquetes</a></li>
-        <li><a href="{{ route('paquete.buscarPaquete') }}">Buscar paquete y eliminarlo o editarlo</a></li>
-        <li><a href="{{ route('paquete.crearPaquete') }}">Crear paquete</a></li>
+        <li><a href="{{ route('mostrarPaquete') }}">Mostrar paquetes</a></li>
+        <li><a href="{{ route('vistaBuscarPaquete') }}">Buscar paquete y eliminarlo o editarlo</a></li>
+        <li><a href="{{ route('crearPaquete') }}">Crear paquete</a></li>
     </ol>
 </body>
 </html>

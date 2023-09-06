@@ -7,14 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="{{ route('vistaAlmacen') }}">Volver al menú principal</a><br>
+    <a href="{{ route('vistaPaquete') }}">Volver al menú principal</a><br>
     @if (session('mensaje'))
         {{ session('mensaje') }}
     @endif
-    <h2>Bienvenido a Buscar Almacen</h2>
-    <form action="{{ route('buscarAlmacen') }}" method="post">
+    <h2>Bienvenido a Buscar Paquete</h2>
+    <form action="{{ route('buscarPaquete') }}" method="post">
         @csrf
-        <label for="id">Ingrese la id del almacen:</label>
+        <label for="id">Ingrese la id del Paquete:</label>
         <input type="number" name="id" id="id" required>
         <button type="submit">Buscar</button>
     </form>

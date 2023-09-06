@@ -7,6 +7,7 @@
     <title>Almacen</title>
 </head>
 <body>
+    <a href="{{ route('home') }}">Volver al menú principal</a>
     <h1>Bienvenido a la view de almacen</h1>
     <ol>
         <li><a href="{{ route('mostrarAlmacen') }}">Mostrar almacenes</a></li>

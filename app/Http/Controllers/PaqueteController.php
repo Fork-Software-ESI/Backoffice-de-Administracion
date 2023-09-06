@@ -10,28 +10,17 @@ use Carbon\Carbon;
 
 class PaqueteController extends Controller
 {
-    public function mostrarVistaPrincipalPaquete()
-    {
-        return view('paquete/paquete');
-    }
-    public function mostrarVistaCrearPaquete()
-    {
-        return view('paquete/crearPaquete');
-    }
-    public function mostrarVistaBuscarPaquete()
-    {
-        return view('paquete/buscarPaquete');
-    }
     public function mostrarPaquetes()
     {
         $paquete = Paquete::all();
         return view('paquete.mostrarPaquetes', ['paquete' => $paquete]);
     }
-    public function buscarPaquete($id)
+    public function buscarPaquete(Request $request)
     {
+        $id = $request->input('id');
         $paquete = Paquete::find($id);
         if (!$paquete) {
-            return view('paquete.buscarPaquete', ['error' => 'Paquete no encontrado']);
+            return redirect()->route('vistaBuscarPaquete')->with(['mensaje' => 'Almacén no encontrado']);
         }
         return view('paquete.buscarPaquete', ['paquete' => $paquete]);
     }
@@ -44,7 +33,7 @@ class PaqueteController extends Controller
             'estanteria_id' => 'nullable|exists:estanterias,id',
         ]);
         if ($validator->fails()) {
-            return redirect()->route('paquete.crearPaquete')->withErrors($validator)->withInput();
+            return redirect()->route('crearPaquete')->withErrors($validator)->withInput();
         }
 
         $validatedData = $validator->validated();
@@ -52,52 +41,49 @@ class PaqueteController extends Controller
         Paquete::create($validatedData);
 
         session()->flash('mensaje', 'Paquete creado exitosamente');
-        return redirect()->route('paquete.crearPaquete');
+        return redirect()->route('crearPaquete');
     }
 
-    public function editarPaquete(Request $request, $id)
+    public function editarPaquete($id)
     {
         $paquete = Paquete::find($id);
 
-        if (!$paquete) {
-            return response()->json(['error' => 'Paquete no encontrado'], 404);
-        }
-
-        if ($request->isMethod('patch')) {
-            $validator = Validator::make($request->all(), [
-                'descripcion' => 'string',
-                'peso_kg' => 'numeric',
-                'lote_id' => 'exists:lotes,id',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->route('paquete.editarPaquete', ['id' => $paquete->id])->withErrors($validator)->withInput();
-            }
-
-            $data = $request->only(['descripcion', 'peso_kg', 'lote_id']);
-
-            $paquete->update($data);
-
-            return redirect()->route('paquete.editarPaquete', ['id' => $paquete->id])
-                ->with('success', 'Paquete actualizado exitosamente');
-        }
-
         return view('paquete.editarPaquete', ['paquete' => $paquete]);
     }
+
+
+    public function actualizarPaquete(Request $request, $id)
+    {
+        $paquete = Paquete::find($id);
+
+        $validator = Validator::make($request->all(), [
+            'descripcion' => 'string',
+            'peso_kg' => 'numeric',
+            'lote_id' => 'exists:lotes,id',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('editarPaquete', ['id' => $paquete->id])->withErrors($validator)->withInput();
+        }
+
+        $data = $request->only(['descripcion', 'peso_kg']);
+
+        if (!$paquete->update($data)) {
+            return redirect()->route('vistaBuscarAlmacen', ['id' => $paquete->id])
+                ->with('mensaje', 'Hubo un problema al actualizar el Almacen');
+        }
+        return redirect()->route('vistaBuscarPaquete', ['id' => $paquete->id])
+        ->with('mensaje', 'Paquete actualizado exitosamente');
+    }
+    
 
     public function eliminarPaquete($id)
     {
         $paquete = Paquete::find($id);
 
-        if (!$paquete) {
-            $mensaje = "Paquete no encontrado";
-        }
+        $paquete->deleted_at = now();
+        $paquete->save();
 
-        if ($paquete) {
-            $paquete->deleted_at = Carbon::now();
-            $mensaje = "El paquete con la id: " . $id . " ha sido eliminado exitosamente";
-        }
-
-        return view('paquete.eliminarPaquete', compact('mensaje', 'paquete'));
+        return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'Paquete eliminado con éxito');
     }
 }

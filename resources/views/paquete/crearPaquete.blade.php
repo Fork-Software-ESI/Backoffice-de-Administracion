@@ -7,6 +7,7 @@
     <title>Paquete -  Crear Paquete</title>
 </head>
 <body>
+    <a href="{{ route('vistaPaquete') }}">Volver al menú principal</a>
     @if (session('mensaje'))
         <div class="mensaje-exito">
             {{ session('mensaje') }}

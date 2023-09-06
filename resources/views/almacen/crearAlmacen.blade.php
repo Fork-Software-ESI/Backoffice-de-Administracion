@@ -7,6 +7,7 @@
     <title>Almacen - Crear Almacen</title>
 </head>
 <body>
+    <a href="{{ route('vistaAlmacen') }}">Volver al menú Usuario</a>
     @if (session('mensaje'))
         <div class="mensaje-exito">
             {{ session('mensaje') }}

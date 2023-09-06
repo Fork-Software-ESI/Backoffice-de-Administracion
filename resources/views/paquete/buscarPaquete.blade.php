@@ -7,41 +7,34 @@
     <title>Paquete - Buscar Paquete</title>
 </head>
 <body>
+    <a href="{{ route('vistaPaquete') }}">Volver al menú principal</a>
     <h2>Bienvenido a Buscar Paquete</h2>
-    <a href="{{ route('paquete.mostrarVistaPrincipalPaquete') }}">Volver al menú principal</a>
-    <form action="{{ route('paquete.buscarPaquete') }}" method="post">
-        @csrf
-        <label for="id">Ingrese la id del paquete:</label>
-        <input type="number" name="id" id="id" required>
-        <button type="submit">Buscar</button>
-    </form>
     <h2>Informacion del paquete:</h2>
-    @if (isset($paquete))
-        @if ($paquete)
-            <table>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Descripcion</th>
-                        <th>Peso_Kg</th>
-                        <th>Lote_Id</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ $paquete->id }}</td>
-                        <td>{{ $paquete->descripcion }}</td>
-                        <td>{{ $paquete->peso_kg }}</td>
-                        <td>{{ $paquete->lote_id }}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <a href="{{ route('paquete.eliminarPaquete', ['id' => $paquete->id]) }}">Eliminar Paquete</a> <br>
-            <a href="{{ route('paquete.editarPaquete', ['id' => $paquete->id]) }}">Editar Paquete</a>
-        @endif
-    @elseif (isset($error))
-        <p>{{ $error }}</p>
-    @endif
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Descripcion</th>
+                    <th>Peso_Kg</th>
+                    <th>Lote_Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $paquete->id }}</td>
+                    <td>{{ $paquete->descripcion }}</td>
+                    <td>{{ $paquete->peso_kg }}</td>
+                    <td>{{ $paquete->lote_id }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+        
+        <form method="POST" action="{{ route('eliminarPaquete', ['id' => $paquete->id]) }}">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Eliminar Paquete</button>
+        </form><br>
+        <a href="{{ route('editarPaquete', ['id' => $paquete->id]) }}">Editar Paquete</a>
 </body>
 </html>

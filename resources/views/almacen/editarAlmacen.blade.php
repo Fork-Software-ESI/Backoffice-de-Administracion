@@ -7,11 +7,9 @@
     <title>Almacen - Editar Almacen</title>
 </head>
 <body>
+    <a href="{{ route('vistaAlmacen') }}">Volver al menú Usuario</a>
     <h2>Bienvenido a editar almacen</h2>
-    @if (session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
-    <form action="{{ route('almacen.editarAlmacen', ['id' => $almacen->id]) }}" method="post">
+    <form action="{{ route('actualizarAlmacen', ['id' => $almacen->id]) }}" method="post">
         @csrf
         @method('PATCH')
         <label for="direccion">direccion <input value="{{ $almacen->direccion }}" type="text" name="direccion">

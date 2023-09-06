@@ -40,14 +40,13 @@
                 </tr>
             </tbody>
         </table>
-
+        <br><br>
         <form method="POST" action="{{ route('eliminarUsuario', ['id' => $user->id]) }}">
             @csrf
             @method('DELETE')
             <button type="submit">Eliminar Usuario</button>
         </form>
-
-
+        <br>
         <a href="{{ route('editarUsuario', ['username' => $user->username]) }}">Editar Usuario</a>
 </body>
 

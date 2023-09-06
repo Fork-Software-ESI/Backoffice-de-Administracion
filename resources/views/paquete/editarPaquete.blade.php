@@ -7,14 +7,11 @@
     <title>Paquete - Editar Paquete</title>
 </head>
 <body>
+    <a href="{{ route('vistaPaquete') }}">Volver al menú principal</a>
     <h1>Editar Paquete</h1>
-    @if (session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
-    <form action="{{ route('paquete.editarPaquete', ['id' => $paquete->id]) }}" method="post">
+    <form action="{{ route('actualizarPaquete', ['id' => $paquete->id]) }}" method="post">
         @csrf
         @method('PATCH')
-        @csrf
         <label for="descripcion">Descripcion <input value="{{ $paquete->descripcion }}" type="text" name="descripcion">
             @error('descripcion')
                 <br>

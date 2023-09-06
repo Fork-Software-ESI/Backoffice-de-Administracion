@@ -92,22 +92,17 @@ class UserController extends Controller
             $user->password = bcrypt($request->password);
         }
 
-        if ($user->update($data)) {
-            return redirect()->route('editarUsuario', ['username' => $user->username])
-                ->with('success', 'Usuario actualizado exitosamente');
-        } else {
-            return redirect()->route('editarUsuario', ['username' => $user->username])
-                ->with('error', 'Hubo un problema al actualizar el usuario');
+        if (!$user->update($data)) {  
+            return redirect()->route('vistaBuscarUsuario', ['username' => $user->username])
+                ->with('mensaje', 'Hubo un problema al actualizar el usuario');
         }
+        return redirect()->route('vistaBuscarUsuario', ['username' => $user->username])
+                ->with('mensaje', 'Usuario actualizado exitosamente');
     }
 
     public function eliminarUsuario($id)
     {
         $user = User::find($id);
-
-        if (!$user) {
-            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario no encontrado');
-        }
 
         $user->deleted_at = now();
         $user->save();

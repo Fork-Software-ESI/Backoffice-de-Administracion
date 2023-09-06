@@ -11,9 +11,6 @@
 <body>
     <a href="{{ route('vistaUsuario') }}">Volver al menú Usuario</a>
     <h1>Editar Usuario</h1>
-    @if (session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
     <form action="{{ route('actualizarUsuario', ['username' => $user->username]) }}" method="post">
         @csrf
         @method('PATCH')
