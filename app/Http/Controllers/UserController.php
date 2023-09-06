@@ -11,9 +11,10 @@ class UserController extends Controller
 {
     public function mostrarUsuarios()
     {
-        $users = User::all();
+        $users = User::whereNull('deleted_at')->get();
         return view('users.mostrarUsuarios', ['users' => $users]);
     }
+
 
     public function buscarUsuario(Request $request)
     {
@@ -59,12 +60,17 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)->first();
 
+        if ($user->deleted_at != null) {
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes modificar un usuario eliminado');
+        }
+
         return view('users.editarUsuario', ['user' => $user]);
     }
 
     public function actualizarUsuario(Request $request, $username)
     {
         $user = User::where('username', $username)->first();
+
 
         $validator = Validator::make($request->all(), [
             'ci' => 'string|max:8',

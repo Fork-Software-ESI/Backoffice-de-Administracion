@@ -8,7 +8,6 @@ use App\Models\User;
 class AuthController extends Controller
 {
 
-    protected $redirectTo = '/home';
     public function login(Request $request)
     {
         $credentials = $request->only('username', 'password');
