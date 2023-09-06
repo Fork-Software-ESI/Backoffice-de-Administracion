@@ -19,6 +19,8 @@ class CreatePaquetesTable extends Migration
             $table->integer('peso_kg');
             $table->unsignedBigInteger('lote_id')->nullable();
             $table->foreign('lote_id')->references('id')->on('lotes');
+            $table->unsignedBigInteger('estanteria_id')->nullable();
+            $table->foreign('estanteria_id')->references('id')->on('estanterias');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             //

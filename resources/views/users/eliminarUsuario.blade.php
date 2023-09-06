@@ -8,8 +8,8 @@
 </head>
 <body>
     <h1>Bienvenido a Eliminar Usuario</h1>
-    @if(isset($mensaje))
-        <p>{{ $mensaje }}</p>
+    @if(session('mensaje'))
+        {{ session('mensaje') }}
     @endif
 </body>
 </html>

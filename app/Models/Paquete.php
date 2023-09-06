@@ -12,6 +12,7 @@ class Paquete extends Model
         'descripcion',
         'peso_kg',
         'lote_id',
+        'estanteria_id',
     ];
 
     protected $table = 'paquetes';

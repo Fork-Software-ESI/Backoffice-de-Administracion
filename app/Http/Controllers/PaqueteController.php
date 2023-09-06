@@ -41,6 +41,7 @@ class PaqueteController extends Controller
             'descripcion' => 'required|string',
             'peso_kg' => 'required',
             'lote_id' => 'nullable|exists:lotes,id',
+            'estanteria_id' => 'nullable|exists:estanterias,id',
         ]);
         if ($validator->fails()) {
             return redirect()->route('paquete.crearPaquete')->withErrors($validator)->withInput();

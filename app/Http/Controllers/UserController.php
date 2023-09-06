@@ -15,11 +15,12 @@ class UserController extends Controller
         return view('users.mostrarUsuarios', ['users' => $users]);
     }
 
-    public function buscarUsuario($username)
+    public function buscarUsuario(Request $request)
     {
+        $username = $request->input('username');
         $user = User::where('username', $username)->first();
         if (!$user) {
-            return view('users.formularioBuscar', ['error' => 'Usuario no encontrado']);
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario no encontrado');
         }
         return view('users.buscarUsuario', ['user' => $user]);
     }
@@ -72,7 +73,7 @@ class UserController extends Controller
             'correo' => 'email',
             'password' => 'nullable|string|min:6|confirmed',
             'telefono' => 'numeric',
-            'rol' => 'required|in:admin,chofer,cliente,funcionario,gerente',
+            'rol' => 'required|in:administrador,chofer,cliente,funcionario,gerente',
         ]);
 
         if ($validator->fails()) {
@@ -94,19 +95,17 @@ class UserController extends Controller
         }
     }
 
-    public function eliminarUsuario($username)
+    public function eliminarUsuario($id)
     {
-        $user = User::where('username', $username)->first();
+        $user = User::find($id);
 
         if (!$user) {
-            $mensaje = "Usuario no encontrado";
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario no encontrado');
         }
 
-        if ($user) {
-            $user->deleted_at = Carbon::now();
-            $mensaje = "El usuario con el username: " . $username . " ha sido eliminado exitosamente";
-        }
+        $user->deleted_at = now();
+        $user->save();
 
-        return view('users.eliminarUsuario', compact('mensaje', 'user'));
+        return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario eliminado con éxito');
     }
 }

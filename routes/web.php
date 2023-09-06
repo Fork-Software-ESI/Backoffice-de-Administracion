@@ -13,8 +13,6 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-//Route::get('/users', [UserController::class, 'mostrarVistaPrincipal'])->name('user.mostrarVistaPrincipal');
-
 Route::get('/menu', function () {
     return view('users.user');
 })->name('vistaUsuario');
@@ -25,7 +23,7 @@ Route::get('/buscar-usuario', function () {
     return view('users.formularioBuscar');
 })->name('vistaBuscarUsuario');
 
-Route::post('/buscar-usuario/{username}', [UserController::class, 'buscarUsuario'])->name('buscarUsuario');
+Route::post('/buscar-usuario', [UserController::class, 'buscarUsuario'])->name('buscarUsuario');
 
 Route::get('/crear-usuario', function () {
     return view('users.crearUsuario');
@@ -33,14 +31,15 @@ Route::get('/crear-usuario', function () {
 
 Route::post('/crear-usuario', [UserController::class, 'crearUsuario']);
 
-Route::get('/editar/{username}', [UserController::class, 'editarUsuario'])->name('editarUsuario');
+Route::get('/editar-usuario/{username}', [UserController::class, 'editarUsuario'])->name('editarUsuario');
 
-Route::patch('/actualizar/{username}', [UserController::class, 'actualizarUsuario'])->name('actualizarUsuario');
+Route::patch('/actualizar-usuario/{username}', [UserController::class, 'actualizarUsuario'])->name('actualizarUsuario');
 
-Route::match(['get', 'post', 'delete'], '/users/eliminarUsuario', [UserController::class, 'eliminarUsuario'])->name('user.eliminarUsuario');
-Route::delete('/eliminar', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
+//Route::match(['get', 'post', 'delete'], '/users/eliminarUsuario', [UserController::class, 'eliminarUsuario'])->name('user.eliminarUsuario');
 
-//Route::get('/mostrarChoferes', [ChoferController::class, 'mostrarChoferes'])->name('chofer.mostrarChoferes');
+Route::delete('/eliminar-user/{id}', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
+
+//Route::delete('/eliminar', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
 
 Route::get('/choferes', [ChoferController::class, 'mostrarChoferes'])->name('mostrarChoferes');
 
