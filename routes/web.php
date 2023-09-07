@@ -7,6 +7,7 @@ use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\LoteController;
 use App\Http\Controllers\EstanteriaController;
 use App\Http\Controllers\ChoferController;
+use App\Http\Controllers\CamionController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
@@ -98,34 +99,81 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/eliminar-paquete/{id}', [PaqueteController::class, 'eliminarPaquete'])->name('eliminarPaquete');
 
-    /*
-    Route::get('/lotes', [LoteController::class, 'mostrarVistaPrincipalLote'])->name('lote.mostrarVistaPrincipalLote');
+    //
+
+    Route::get('/menu-lote', function () {
+        return view('lote.lote');
+    })->name('vistaLote');
+
+    Route::get('/lotes', [LoteController::class, 'mostrarLotes'])->name('mostrarLote');
+
+    Route::get('/buscar-lote', function () {
+        return view('lote.formularioBuscar');
+    })->name('vistaBuscarLote');
+
+    Route::post('/buscar-lote', [LoteController::class, 'buscarLote'])->name('buscarLote');
+
+    Route::get('/crear-lote', function () {
+        return view('lote.crearLote');
+    })->name('crearLote');
+
+    Route::post('/crear-lote', [LoteController::class, 'crearLote']);
+
+    Route::get('/editar-lote/{id}', [LoteController::class, 'editarLote'])->name('editarLote');
+
+    Route::patch('/actualizar-lote/{id}', [LoteController::class, 'actualizarLote'])->name('actualizarLote');
+
+    Route::delete('/eliminar-lote/{id}', [LoteController::class, 'eliminarLote'])->name('eliminarLote');
     
-    Route::get('/lotes', function () {
-    return view('lote.lote');
-    })->name('vistaLotes');
+    //
+
+    Route::get('/menu-estanteria', function () {
+        return view('estanteria.estanteria');
+    })->name('vistaEstanteria');
+
+    Route::get('/estanterias', [EstanteriaController::class, 'mostrarEstanterias'])->name('mostrarEstanteria');
+
+    Route::get('/buscar-estanteria', function () {
+        return view('estanteria.formularioBuscar');
+    })->name('vistaBuscarEstanteria');
+
+    Route::post('/buscar-estanteria', [EstanteriaController::class, 'buscarEstanteria'])->name('buscarEstanteria');
+
+    Route::get('/crear-estanteria', function () {
+        return view('estanteria.crearEstanteria');
+    })->name('crearEstanteria');
+
+    Route::post('/crear-estanteria', [EstanteriaController::class, 'crearEstanteria']);
+
+    Route::get('/editar-estanteria/{id}', [EstanteriaController::class, 'editarEstanteria'])->name('editarEstanteria');
+
+    Route::patch('/actualizar-estanteria/{id}', [EstanteriaController::class, 'actualizarEstanteria'])->name('actualizarEstanteria');
+
+    Route::delete('/eliminar-estanteria/{id}', [EstanteriaController::class, 'eliminarEstanteria'])->name('eliminarEstanteria');
     
-    Route::get('/lotes/mostrarLotes', [LoteController::class, 'mostrarLotes'])->name('lote.mostrarLotes');
-    Route::get('/lotes/buscarLote', [LoteController::class, 'mostrarVistaBuscarLote'])->name('lote.vistaBuscarLote');
-    Route::post('/lotes/buscarLote', [LoteController::class, 'buscarLote'])->name('lote.buscarLote');
-    Route::get('/lotes/crearLote', [LoteController::class, 'mostrarVistaCrearLote'])->name('lote.vistaCrearLote');
-    Route::post('/lotes/crearLote', [LoteController::class, 'crearLote'])->name('lote.crearLote');
-    Route::match(['get', 'patch'], '/lotes/editarLote/{id}', [LoteController::class, 'editarLote'])->name('lote.editarLote');
-    Route::match(['get', 'post', 'delete'], '/lotes/eliminarLote', [LoteController::class, 'eliminarLote'])->name('lote.eliminarLote');
-    
-    Route::get('/estanterias', [EstanteriaController::class, 'mostrarVistaPrincipalEstanteria'])->name('estanteria.mostrarVistaPrincipalEstanteria');
-    
-    Route::get('/estanterias', function () {
-    return view('estanteria.estanteria');
-    })->name('vistaEstanterias');
-    
-    Route::get('/estanterias/mostrarEstanteria', [EstanteriaController::class, 'mostrarEstanteria'])->name('estanteria.mostrarEstanterias');
-    Route::get('/estanterias/buscarEstanteria', [EstanteriaController::class, 'mostrarVistaBuscarEstanteria'])->name('estanteria.vistaBuscarEstanteria');
-    Route::post('/estanterias/buscarEstanteria', [EstanteriaController::class, 'buscarEstanteria'])->name('estanteria.buscarEstanteria');
-    Route::get('/estanterias/crearEstanteria/', [EstanteriaController::class, 'mostrarVistaCrearEstanteria'])->name('estanteria.mostrarVistaCrearEstanteria');
-    Route::post('/estanterias/crearEstanteria', [EstanteriaController::class, 'crearEstanteria'])->name('estanteria.crearEstanteria');
-    Route::match(['get', 'patch'], '/estanterias/editarEstanteria/{id}', [EstanteriaController::class, 'editarEstanteria'])->name('estanteria.editarEstanteria');
-    Route::match(['get', 'post', 'delete'], '/estanterias/eliminarEstanteria', [EstanteriaController::class, 'eliminarEstanteria'])->name('estanteria.eliminarEstanteria');
-    
-    */
+    //
+
+    Route::get('/menu-camion', function () {
+        return view('camion.camion');
+    })->name('vistaCamion');
+
+    Route::get('/camiones', [CamionController::class, 'mostrarCamiones'])->name('mostrarCamion');
+
+    Route::get('/buscar-camion', function () {
+        return view('camion.formularioBuscar');
+    })->name('vistaBuscarCamion');
+
+    Route::post('/buscar-camion', [CamionController::class, 'buscarCamion'])->name('buscarCamion');
+
+    Route::get('/crear-camion', function () {
+        return view('camion.crearCamion');
+    })->name('crearCamion');
+
+    Route::post('/crear-camion', [CamionController::class, 'crearCamion']);
+
+    Route::get('/editar-camion/{id}', [CamionController::class, 'editarCamion'])->name('editarCamion');
+
+    Route::patch('/actualizar-camion/{id}', [CamionController::class, 'actualizarCamion'])->name('actualizarCamion');
+
+    Route::delete('/eliminar-camion/{id}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
 });

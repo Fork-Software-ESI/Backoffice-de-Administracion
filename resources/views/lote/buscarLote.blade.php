@@ -7,17 +7,9 @@
     <title>Lote - Buscar Lote</title>
 </head>
 <body>
+    <a href="{{ route('vistaLote') }}">Volver al menú principal</a>
     <h1>Bienvenido a Buscar Lote</h1>
-    <a href="{{ route('lote.mostrarVistaPrincipalLote') }}">Volver al menú principal</a>
-    <form action="{{ route('lote.buscarLote') }}" method="post">
-        @csrf
-        <label for="id">Ingrese la id de el lote:</label>
-        <input type="number" name="id" required>
-        <button type="submit">Buscar</button>
-    </form>
     <h2>Informacion del lote:</h2>
-    @if (isset($lote))
-        @if ($lote)
             <table>
                 <thead>
                     <tr>
@@ -32,12 +24,12 @@
                     </tr>
                 </tbody>
             </table>
-
-            <a href="{{ route('lote.eliminarLote', ['id' => $lote->id]) }}">Eliminar Lote</a> <br>
-            <a href="{{ route('lote.editarLote', ['id' => $lote->id]) }}">Editar Lote</a>
-        @endif
-    @elseif (isset($error))
-        <p>{{ $error }}</p>
-    @endif
+        <br><br>
+        <form method="POST" action="{{ route('eliminarLote', ['id' => $lote->id]) }}">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Eliminar Lote</button>
+        </form><br>
+        <a href="{{ route('editarLote', ['id' => $lote->id]) }}">Editar Lote</a>
 </body>
 </html>

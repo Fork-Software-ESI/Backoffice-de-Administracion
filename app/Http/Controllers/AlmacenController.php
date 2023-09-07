@@ -49,7 +49,7 @@ class AlmacenController extends Controller
 
     public function editarAlmacen($id)
     {
-        $almacen = Almacen::find($id)->first();
+        $almacen = Almacen::find($id);
 
         return view('almacen.editarAlmacen', ['almacen' => $almacen]);
     }

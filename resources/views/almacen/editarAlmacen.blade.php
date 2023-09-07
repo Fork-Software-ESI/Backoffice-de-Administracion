@@ -7,7 +7,7 @@
     <title>Almacen - Editar Almacen</title>
 </head>
 <body>
-    <a href="{{ route('vistaAlmacen') }}">Volver al menú Usuario</a>
+    <a href="{{ route('vistaAlmacen') }}">Volver al menú Almacen</a>
     <h2>Bienvenido a editar almacen</h2>
     <form action="{{ route('actualizarAlmacen', ['id' => $almacen->id]) }}" method="post">
         @csrf

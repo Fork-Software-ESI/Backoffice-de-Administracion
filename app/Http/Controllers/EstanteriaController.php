@@ -9,32 +9,18 @@ use Illuminate\Support\Facades\Validator;
 
 class EstanteriaController extends Controller
 {
-    public function mostrarVistaPrincipalEstanteria()
-    {
-        return view('estanteria/estanteria');
-    }
-
-    public function mostrarVistaCrearEstanteria()
-    {
-        return view('estanteria/crearEstanteria');
-    }
-
-    public function mostrarVistaBuscarEstanteria()
-    {
-        return view('estanteria/buscarEstanteria');
-    }
-
     public function mostrarEstanteria()
     {
         $estanteria = Estanteria::all();
         return view('estanteria.mostrarEstanterias', ['estanteria' => $estanteria]);
     }
 
-    public function buscarEstanteria($id)
+    public function buscarEstanteria(Request $request)
     {
+        $id = $request->input('id');
         $estanteria = Estanteria::find($id);
         if (!$estanteria) {
-            return view('estanteria.buscarEstanteria', ['error' => 'Estanteria  no encontrada']);
+            return redirect()->route('vistaBuscarEstanteria')->with(['mensaje' => 'Estanteria no encontrado']);
         }
         return view('estanteria.buscarEstanteria', ['estanteria' => $estanteria]);
     }
@@ -57,47 +43,42 @@ class EstanteriaController extends Controller
     }
 
 
-    public function editarEstanteria(Request $request, $id)
+    public function editarEstanteria($id)
     {
-        $estanteria = Estanteria::find($id)->first();
-
-        if (!$estanteria) {
-            return response()->json(['error' => 'Estanteria no encontrada'], 404);
-        }
-
-        if ($request->isMethod('patch')) {
-            $validator = Validator::make($request->all(), [
-                'almacen_id' => 'exists:almacenes,id',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->route('estanteria.editarEstanteria', ['id' => $estanteria->id])->withErrors($validator)->withInput();
-            }
-
-            $data = $request->only(['almacen_id']);
-
-            $estanteria->update($data);
-
-            return redirect()->route('estanteria.editarPaquete', ['id' => $estanteria->id])
-                ->with('success', 'Estanteria actualizada exitosamente');
-        }
+        $estanteria = Estanteria::find($id);
 
         return view('estanteria.editarEstanteria', ['estanteria' => $estanteria]);
     }
 
-    public function eliminarEstanteria(Request $request, $id)
+    public function actualizarEstanteria(Request $request, $id)
     {
-        $estanteria = Estanteria::find($id)->first();
+        $estanteria = Estanteria::find($id);
 
-        if (!$estanteria) {
-            $mensaje = "Estanteria no encontrada";
+        $validator = Validator::make($request->all(), [
+            'almacen_id' => 'exists:almacenes,id',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('estanteria.editarEstanteria', ['id' => $estanteria->id])->withErrors($validator)->withInput();
         }
 
-        if ($estanteria) {
-            $estanteria->deleted_at = Carbon::now();
-            $mensaje = "La estanteria con la id: " . $id . " ha sido eliminada exitosamente";
-        }
+        $data = $request->only(['almacen_id']);
 
-        return view('estanteria.eliminarEstanteria', compact('mensaje', 'estanteria'));
+        if(!$estanteria->update($data)){
+            return redirect()->route('vistaBuscarEstanteria', ['id' => $estanteria->id])
+            ->with('mensaje', 'Error al actualizar Estanteria');
+        }
+        return redirect()->route('vistaBuscarEstanteria', ['id' => $estanteria->id])
+            ->with('mensaje', 'Estanteria actualizada exitosamente');
+    }
+
+    public function eliminarEstanteria($id)
+    {
+        $estanteria = Estanteria::find($id);
+
+        $estanteria->deleted_at = now();
+        $estanteria->save();
+
+        return redirect()->route('vistaBuscarEstanteria')->with('mensaje', 'Estanteria eliminada con éxito');
     }
 }

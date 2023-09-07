@@ -7,17 +7,9 @@
     <title>Buscar Estanteria</title>
 </head>
 <body>
+    <a href="{{ route('vistaEstanteria') }}">Volver al menú Estanteria</a><br>
     <h2>Bienvenido a Buscar Estanteria</h2>
-    <a href="{{ route('estanteria.mostrarVistaPrincipalEstanteria') }}">Volver al menú principal</a>
-    <form action="{{ route('estanteria.buscarEstanteria') }}" method="post">
-        @csrf
-        <label for="id">Ingrese la id de el estanteria:</label>
-        <input type="number" name="id" required>
-        <button type="submit">Buscar</button>
-    </form>
     <h2>Informacion del estanteria:</h2>
-    @if (isset($estanteria))
-        @if ($estanteria)
             <table>
                 <thead>
                     <tr>
@@ -33,11 +25,11 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('estanteria.eliminarEstanteria', ['id' => $estanteria->id]) }}">Eliminar Estanteria</a> <br>
-            <a href="{{ route('estanteria.editarEstanteria', ['id' => $estanteria->id]) }}">Editar Estanteria</a>
-        @endif
-    @elseif (isset($error))
-        <p>{{ $error }}</p>
-    @endif
+            <form method="POST" action="{{ route('eliminarEstanteria', ['id' => $estanteria->id]) }}">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Eliminar Estanteria</button>
+            </form><br>
+            <a href="{{ route('editarEstanteria', ['id' => $estanteria->id]) }}">Editar Estanteria</a>
 </body>
 </html>

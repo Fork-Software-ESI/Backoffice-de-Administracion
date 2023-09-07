@@ -7,7 +7,7 @@
     <title>Lote - Crear Lote</title>
 </head>
 <body>
-    <h1>Bienvenido a Crear Lote</h1>
+<a href="{{ route('vistaLote') }}">Volver al menú Lote</a>
     @if (session('mensaje'))
         <div class="mensaje-exito">
             {{ session('mensaje') }}
