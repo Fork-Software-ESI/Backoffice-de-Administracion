@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use \App\Models\Camion;
+use App\Models\Camion;
 
 class CamionController extends Controller
 {
@@ -73,10 +73,6 @@ class CamionController extends Controller
     public function eliminarCamion($matricula)
     {
         $camion = Camion::find($matricula);
-
-        if (!$camion) {
-            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'Camión no encontrado');
-        }
 
         $camion->deleted_at = now();
         $camion->save();

@@ -80,10 +80,6 @@ class AlmacenController extends Controller
     {
         $almacen = Almacen::find($id);
 
-        if (!$almacen) {
-            return redirect()->route('vistaBuscarAlmacen')->with('mensaje', 'Almacen no encontrado');
-        }
-
         $almacen->deleted_at = now();
         $almacen->save();
 

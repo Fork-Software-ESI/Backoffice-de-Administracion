@@ -19,8 +19,8 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $almacen->matricula }}</td>
-                    <td>{{ $almacen->pesoMaximoKg }}</td>
+                    <td>{{ $camion->matricula }}</td>
+                    <td>{{ $camion->pesoMaximoKg }}</td>
                 </tr>
             </tbody>
         </table>
@@ -31,6 +31,6 @@
             @method('DELETE')
             <button type="submit">Eliminar Camión</button>
         </form><br>
-        <a href="{{ route('editarCamion', ['id' => $camion->matricula]) }}">Editar Camión</a>
+        <a href="{{ route('editarCamion', ['matricula' => $camion->matricula]) }}">Editar Camión</a>
 </body>
 </html>

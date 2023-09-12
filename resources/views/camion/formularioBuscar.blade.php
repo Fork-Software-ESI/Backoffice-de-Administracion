@@ -15,7 +15,7 @@
     <form action="{{ route('buscarCamion') }}" method="post">
         @csrf
         <label for="matricula">Ingrese la matricula del camion:</label>
-        <input type="number" name="matricula" id="matricula" required>
+        <input type="text" name="matricula" id="matricula" required>
         <button type="submit">Buscar</button>
     </form>
 </body>

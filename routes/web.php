@@ -171,9 +171,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/crear-camion', [CamionController::class, 'crearCamion']);
 
-    Route::get('/editar-camion/{id}', [CamionController::class, 'editarCamion'])->name('editarCamion');
+    Route::get('/editar-camion/{matricula}', [CamionController::class, 'editarCamion'])->name('editarCamion');
 
-    Route::patch('/actualizar-camion/{id}', [CamionController::class, 'actualizarCamion'])->name('actualizarCamion');
+    Route::patch('/actualizar-camion/{matricula}', [CamionController::class, 'actualizarCamion'])->name('actualizarCamion');
 
-    Route::delete('/eliminar-camion/{id}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
+    Route::delete('/eliminar-camion/{matricula}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
 });

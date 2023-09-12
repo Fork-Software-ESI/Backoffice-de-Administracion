@@ -16,10 +16,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($camion as $camion)
+            @foreach ($camion as $camiones)
                 <tr>
-                    <td>{{ $camion->matricula }}</td>
-                    <td>{{ $camion->pesoMaximoKg }}</td>
+                    <td>{{ $camiones->matricula }}</td>
+                    <td>{{ $camiones->pesoMaximoKg }}</td>
                 </tr>
             @endforeach
         </tbody>
