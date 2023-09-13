@@ -25,30 +25,36 @@ class UserController extends Controller
         }
         return view('users.buscarUsuario', ['user' => $user]);
     }
-    public function crearUsuario(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'ci' => 'required|string|max:10',
-            'nombre' => 'required|alpha|max:20',
-            'apellido' => 'required|alpha|max:100',
-            'correo' => 'required|email',
-            'username' => 'required|max:55|min:3|unique:users|regex:/^\S*$/',
-            'password' => 'required|min:6|confirmed',
-            'telefono' => 'required|string',
-            'rol' => 'required|in:administrador,chofer,cliente,funcionario,gerente',
-        ]);
+        public function crearUsuario(Request $request)
+        {
+            $validator = Validator::make($request->all(), [
+                'ci' => 'required|string|max:10',
+                'nombre' => 'required|alpha|max:20',
+                'apellido' => 'required|alpha|max:100',
+                'correo' => 'required|email',
+                'username' => 'required|max:55|min:3|unique:users|regex:/^\S*$/',
+                'password' => 'required|min:6|confirmed',
+                'telefono' => 'required|string',
+                'rol' => 'required|in:administrador,chofer,cliente,funcionario,gerente',
+            ]);
 
-        if ($validator->fails()) {
-            return redirect()->route('crearUsuario')->withErrors($validator)->withInput();
-        }
+            if ($validator->fails()) {
+                return redirect()->route('crearUsuario')->withErrors($validator)->withInput();
+            }
 
-        $validatedData = $validator->validated();
+            $validatedData = $validator->validated();
 
-        if (User::where('username', $validatedData['username'])->exists()) {
-            return response()->json(['error' => 'El nombre de usuario ya está en uso'], 422);
-        }
+            if (User::where('username', $validatedData['username'])->exists()) {
+                return response()->json(['error' => 'El nombre de usuario ya está en uso'], 422);
+            }
 
+            $contadorUsuariosConMismaCi = User::where('ci', $validatedData['ci'])->count();
+            if ($contadorUsuariosConMismaCi >= 2)
+                return redirect()->route('crearUsuario')->with('mensaje-error', 'Ya existen 2 usuarios con la misma cédula');
         $validatedData['password'] = bcrypt($request->password);
+        $userConMismaCedula = User::where('ci', $validatedData['ci'])->first();
+
+        
 
         User::create($validatedData);
 
@@ -104,6 +110,14 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
+        $actual = auth()->user();
+
+        if($user->username=="superadmin"){
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes eliminar al superadmin');
+        }
+        if($user->username == $actual->username) {
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes eliminarte a ti mismo');
+        }
         $user->deleted_at = now();
         $user->save();
 

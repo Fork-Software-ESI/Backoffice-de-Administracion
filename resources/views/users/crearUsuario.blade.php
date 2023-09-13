@@ -15,6 +15,11 @@
             {{ session('mensaje') }}
         </div>
     @endif
+    @if (session('mensaje-error'))
+        <div class="mensaje-error">
+            {{ session('mensaje-error') }}
+        </div>
+    @endif
     <a href="{{ route('vistaUsuario') }}" style="color: white">Volver al menú Usuario</a>
     <h1>Crear usuario</h1>
     <form action="" method="post">

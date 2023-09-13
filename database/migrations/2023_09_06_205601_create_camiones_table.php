@@ -14,9 +14,11 @@ class CreateCamionesTable extends Migration
     public function up()
     {
         Schema::create('camiones', function (Blueprint $table) {
-            $table->string('matricula')->primary();
+            $table->bigIncrements('id');
+            $table->string('matricula')->unique();
             $table->integer('pesoMaximoKg');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
