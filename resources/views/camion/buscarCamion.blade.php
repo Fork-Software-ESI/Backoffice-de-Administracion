@@ -13,12 +13,14 @@
         <table>
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Matricula</th>
                     <th>Peso Máximo Kg</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
+                    <td>{{ $cmaion->id }}</td>
                     <td>{{ $camion->matricula }}</td>
                     <td>{{ $camion->pesoMaximoKg }}</td>
                 </tr>
@@ -26,11 +28,11 @@
         </table>
         <br><br>
         
-        <form method="POST" action="{{ route('eliminarCamion', ['matricula' => $camion->matricula]) }}">
+        <form method="POST" action="{{ route('eliminarCamion', ['id' => $camion->id]) }}">
             @csrf
             @method('DELETE')
             <button type="submit">Eliminar Camión</button>
         </form><br>
-        <a href="{{ route('editarCamion', ['matricula' => $camion->matricula]) }}">Editar Camión</a>
+        <a href="{{ route('editarCamion', ['id' => $camion->id]) }}">Editar Camión</a>
 </body>
 </html>

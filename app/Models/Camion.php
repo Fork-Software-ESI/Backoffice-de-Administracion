@@ -12,6 +12,6 @@ class Camion extends Model
         'matricula',
         'pesoMaximoKg'
     ];
-    protected $primaryKey = 'matricula';
+    protected $primaryKey = 'id';
     protected $table='camiones';
 }

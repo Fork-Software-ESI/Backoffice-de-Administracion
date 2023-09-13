@@ -15,8 +15,8 @@ class CamionController extends Controller
     }
     public function buscarCamion(Request $request)
     {
-        $matricula = $request->input('matricula');
-        $camion = Camion::find($matricula);
+        $id = $request->input('id');
+        $camion = Camion::find($id);
         if (!$camion) {
             return redirect()->route('vistaBuscarCamion')->with(['mensaje' => 'Camión no encontrado']);
         }
@@ -26,18 +26,18 @@ class CamionController extends Controller
     public function crearCamion(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'matricula' => 'required|string',
+            'matricula' => 'required|string|unique:camiones|regex:/^[A-Za-z]{3}[0-9]{4}$/',
             'pesoMaximoKg' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            return redirect()->route('crearCamion')->withErrors($validator)->withInput();
         }
 
         $validatedData = $validator->validated();
 
         if (Camion::where('matricula', $validatedData['matricula'])->exists()) {
-            return response()->json(['error' => 'La matricula del almacen ya existe'], 422);
+            return redirect()->route('crearCamion')->with('mensaje', 'La matricula del camión ya existe');
         }
 
         Camion::create($validatedData);
@@ -48,31 +48,36 @@ class CamionController extends Controller
 
     public function actualizarCamion(Request $request, $matricula)
     {
-        $camion = Camion::find($matricula)->first();
+        $camion = Camion::where('matricula', $matricula)->first();
+
 
         $validator = Validator::make($request->all(), [
-            'matricula' => 'string',
+            'matricula' => 'string|unique:camiones|regex:/^[A-Za-z]{3}[0-9]{4}$/',
             'pesoMaximoKg' => 'numeric',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('editarCamion', ['matricula' => $camion->matricula])->withErrors($validator)->withInput();
+            return redirect()->route('editarCamion', ['id' => $camion->id])->withErrors($validator)->withInput();
         }
 
-        return redirect()->route('vistaBuscarCamion', ['matricula' => $camion->matricula])
+        return redirect()->route('vistaBuscarCamion', ['id' => $camion->id])
             ->with('mensaje', 'Camión actualizado exitosamente');
     }
 
-    public function editarAlmacen($matricula)
+    public function editarCamion($matricula)
     {
-        $camion = Camion::find($matricula);
+        $camion = Camion::where('matricula', $matricula)->first();
+
+        if ($camion->deleted_at != null) {
+            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'No puedes modificar un camión eliminado');
+        }
 
         return view('camion.editarCamion', ['camion' => $camion]);
     }
 
-    public function eliminarCamion($matricula)
+    public function eliminarCamion($id)
     {
-        $camion = Camion::find($matricula);
+        $camion = Camion::find($id);
 
         $camion->deleted_at = now();
         $camion->save();

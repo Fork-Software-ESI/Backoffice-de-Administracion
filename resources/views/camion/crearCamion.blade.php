@@ -16,7 +16,7 @@
     <h1>Crear Camión</h1>
     <form action="" method="post">
         @csrf
-        <label for="matricula">Matricula <input value="{{ old('matricula') }}" type="text" name="matricula" required>
+        <label for="matricula">Matricula <input value="{{ old('matricula') }}" type="text" name="matricula" required> <small>Formato abc1234</small> 
             @error('matricula')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
