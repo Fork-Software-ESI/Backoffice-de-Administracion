@@ -7,6 +7,7 @@
     <title>Paquete - Mostrar Paquetes</title>
 </head>
 <body>
+    <a href="{{ route('vistaPaquete') }}">Volver al menú de Paquete</a><br>
     <h2>Lista de paquetes</h2>
     <table>
         <thead>

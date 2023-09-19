@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a><br>
     <h1>Mostrar Estanteria</h1>
     <table>
         <thead>

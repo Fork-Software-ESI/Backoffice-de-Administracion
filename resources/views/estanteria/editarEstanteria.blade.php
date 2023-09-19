@@ -6,7 +6,7 @@
     <title>Estanterias - Crear estanteria</title>
 </head>
 <body>
-    <a href="{{ route('vistaEstanteria') }}">Volver al menú Estanteria</a>
+    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a>
     <h2>Bienvenido a editar estanteria</h2>
     @if (session('success'))
         <p>{{ session('success') }}</p>

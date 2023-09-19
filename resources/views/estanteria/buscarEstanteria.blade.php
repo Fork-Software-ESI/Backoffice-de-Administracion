@@ -7,7 +7,7 @@
     <title>Buscar Estanteria</title>
 </head>
 <body>
-    <a href="{{ route('vistaEstanteria') }}">Volver al menú Estanteria</a><br>
+    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a><br>
     <h2>Bienvenido a Buscar Estanteria</h2>
     <h2>Informacion del estanteria:</h2>
             <table>

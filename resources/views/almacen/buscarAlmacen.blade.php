@@ -7,7 +7,7 @@
     <title>Buscar Almacen</title>
 </head>
 <body>
-    <a href="{{ route('vistaAlmacen') }}">Volver al menú principal</a>
+    <a href="{{ route('vistaAlmacen') }}">Volver al menú de Almacen</a>
     <h2>Bienvenido a Buscar Almacen</h2>
     <h2>Informacion del almacen:</h2>
         <table>

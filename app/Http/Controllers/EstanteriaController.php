@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class EstanteriaController extends Controller
 {
-    public function mostrarEstanteria()
+    public function mostrarEstanterias()
     {
         $estanteria = Estanteria::all();
         return view('estanteria.mostrarEstanterias', ['estanteria' => $estanteria]);

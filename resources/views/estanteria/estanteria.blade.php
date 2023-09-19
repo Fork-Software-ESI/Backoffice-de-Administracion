@@ -6,7 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>bienvenido a la view de estanterias</h1>
+    <a href="{{ route('home') }}">Volver al menú principal</a>
+    <h1>Bienvenido a la view de estanterias</h1>
     <ol>
         <li><a href="{{ route('mostrarEstanteria') }}">Mostrar estanterias</a></li>
         <li><a href="{{ route('vistaBuscarEstanteria') }}">Buscar estanteria y eliminar o editar la misma</a></li>

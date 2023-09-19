@@ -7,7 +7,7 @@
     <title>Paquete - Editar Paquete</title>
 </head>
 <body>
-    <a href="{{ route('vistaPaquete') }}">Volver al menú principal</a>
+    <a href="{{ route('vistaPaquete') }}">Volver al menú de Paquete</a><br>
     <h1>Editar Paquete</h1>
     <form action="{{ route('actualizarPaquete', ['id' => $paquete->id]) }}" method="post">
         @csrf

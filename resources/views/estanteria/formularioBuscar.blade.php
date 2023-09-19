@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="{{ route('vistaEstanteria') }}">Volver al menú Estanteria</a><br>
+    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a><br>
     @if (session('mensaje'))
         {{ session('mensaje') }}
     @endif

@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="{{ route('vistaAlmacen') }}">Volver al menú principal</a><br>
+    <a href="{{ route('vistaAlmacen') }}">Volver al menú Almacen</a><br>
     @if (session('mensaje'))
         {{ session('mensaje') }}
     @endif

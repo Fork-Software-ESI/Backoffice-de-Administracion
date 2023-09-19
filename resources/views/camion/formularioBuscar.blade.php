@@ -7,7 +7,7 @@
     <title>Camion - Buscar</title>
 </head>
 <body>
-    <a href="{{ route('vistaCamion') }}">Volver al menú principal</a><br>
+    <a href="{{ route('vistaCamion') }}">Volver al menú de Camión</a><br>
     @if (session('mensaje'))
         {{ session('mensaje') }}
     @endif

@@ -7,7 +7,7 @@
     <title>Buscar Camion</title>
 </head>
 <body>
-    <a href="{{ route('vistaCamion') }}">Volver al menú principal</a>
+    <a href="{{ route('vistaCamion') }}">Volver al menú de Camión</a>
     <h2>Bienvenido a Buscar Camion</h2>
     <h2>Informacion del camión:</h2>
         <table>
