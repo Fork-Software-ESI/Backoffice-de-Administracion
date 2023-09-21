@@ -7,31 +7,33 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Usuario
+ * Class User
  * 
- * @property string $NomUsuario
- * @property string $Contrasenia
+ * @property string $username
+ * @property string $password
  * 
  * @property Collection|Persona[] $personas
  *
  * @package App\Models
  */
-class Usuario extends Model
+class User extends Model
 {
-	protected $table = 'usuario';
-	protected $primaryKey = 'NomUsuario';
+	use HasFactory;
+	protected $table = 'users';
+	protected $primaryKey = 'username';
 	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $fillable = [
-		'Contrasenia'
+		'password'
 	];
 
 	public function personas()
 	{
-		return $this->belongsToMany(Persona::class, 'persona_usuario', 'NomUsuario', 'ID');
+		return $this->belongsToMany(Persona::class, 'persona_usuario', 'username', 'ID');
 	}
 }

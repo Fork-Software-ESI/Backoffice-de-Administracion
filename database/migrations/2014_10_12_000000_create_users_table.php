@@ -15,21 +15,15 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('ci');
-            $table->string('nombre');
-            $table->string('apellido');
-            $table->string('correo');
+            $table->smallInteger('ID')->autoIncrement();
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('telefono');
-            $table->string('rol');
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });
-        $seeder = new SuperAdminSeeder();
-        $seeder->run();
+        /*$seeder = new SuperAdminSeeder();
+        $seeder->run();*/
     }
 
     /**
