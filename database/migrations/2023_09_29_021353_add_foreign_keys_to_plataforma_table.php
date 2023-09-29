@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->smallInteger('ID', true);
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('plataforma', function (Blueprint $table) {
+            $table->foreign(['ID_Almacen'], 'plataforma_ibfk_1')->references(['ID'])->on('almacen');
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::table('plataforma', function (Blueprint $table) {
+            $table->dropForeign('plataforma_ibfk_1');
+        });
     }
 };
