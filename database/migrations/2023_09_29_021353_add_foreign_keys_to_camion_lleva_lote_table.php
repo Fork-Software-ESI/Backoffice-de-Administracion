@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->smallInteger('ID', true);
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('camion_lleva_lote', function (Blueprint $table) {
+            $table->foreign(['ID_Lote'], 'camion_lleva_lote_ibfk_1')->references(['ID_Lote'])->on('lote_camion');
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::table('camion_lleva_lote', function (Blueprint $table) {
+            $table->dropForeign('camion_lleva_lote_ibfk_1');
+        });
     }
 };

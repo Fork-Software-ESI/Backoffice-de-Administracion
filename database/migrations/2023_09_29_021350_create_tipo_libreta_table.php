@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->smallInteger('ID', true);
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('tipo_libreta', function (Blueprint $table) {
+            $table->string('Tipo', 2)->primary();
+            $table->smallInteger('PesoMaximoKg');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('tipo_libreta');
     }
 };

@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->smallInteger('ID', true);
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('lote_camion', function (Blueprint $table) {
+            $table->smallInteger('ID_Camion')->index('ID_Camion');
+            $table->smallInteger('ID_Lote')->primary();
+            $table->dateTime('Fecha_Hora_Inicio');
+            $table->string('Estado', 50);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('lote_camion');
     }
 };

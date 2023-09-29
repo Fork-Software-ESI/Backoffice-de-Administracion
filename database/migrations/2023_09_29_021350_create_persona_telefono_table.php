@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->smallInteger('ID', true);
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('persona_telefono', function (Blueprint $table) {
+            $table->smallInteger('ID');
+            $table->string('Telefono', 50);
+
+            $table->primary(['ID', 'Telefono']);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('persona_telefono');
     }
 };

@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->smallInteger('ID', true);
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('camion_plataforma_salida', function (Blueprint $table) {
+            $table->smallInteger('ID_Camion');
+            $table->smallInteger('ID_Almacen');
+            $table->smallInteger('Numero_Plataforma');
+            $table->dateTime('Fecha_Hora_Salida');
+            $table->primary(['ID_Camion', 'ID_Almacen', 'Numero_Plataforma'], 'camion_plataforma_salida_pk');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('camion_plataforma_salida');
     }
 };
