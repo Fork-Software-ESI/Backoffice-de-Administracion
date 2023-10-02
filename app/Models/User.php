@@ -1,36 +1,59 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * Class User
- * 
- * @property string $username
- * @property string $password
- * 
- * @property Collection|Persona[] $personas
- *
- * @package App\Models
- */
-class User extends Model
+class User extends Model implements Authenticatable
 {
-	use HasFactory;
+	use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
+
 	protected $table = 'users';
-	protected $primaryKey = 'username';
-	public $incrementing = false;
-	public $timestamps = false;
+	protected $primaryKey = 'ID';
+	public $incrementing = true;
+	public $timestamps = true;
+	protected $dates = ['deleted_at'];
 
 	protected $fillable = [
-		'password'
+		'username',
+		'password',
+		'remember_token',
 	];
+
+	public function getAuthIdentifierName()
+	{
+		return 'ID';
+	}
+
+	public function getAuthIdentifier()
+	{
+		return $this->ID;
+	}
+
+	public function getAuthPassword()
+	{
+		return $this->password;
+	}
+
+	public function getRememberToken()
+	{
+		return 'remember_token';
+	}
+
+	public function getRememberTokenName()
+	{
+		return 'remember_token';
+	}
+	public function setRememberToken($value)
+	{
+		$this->remember_token = $value;
+	}
+
 
 	public function personas()
 	{

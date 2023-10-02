@@ -12,24 +12,27 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $usuario = User::where('username', $request->username)->first();
-        $personaUsuario = PersonaUsuario::where('ID_Usuario', $usuario->ID)->first();
-        $persona = Persona::where('ID', $personaUsuario->ID_Persona)->first();
+        $user = User::where('username', $request->username)->first();
 
-        $esAdministrador = Administrador::where('ID_Persona', $persona->ID)->exists();
-
-        $credentials = $request->only('username', 'password');
-
-        if ($esAdministrador && auth()->attempt($credentials)) {
-            $user = auth()->user();
-            $token = $user->createToken('authToken')->accessToken;
-            return redirect()->route('home')->with('bienvenida', $persona->Nombre . ' ' . $persona->Apellido);
-        } elseif (!$esAdministrador) {
-            return redirect()->route('login')->with('error', 'No tiene permisos para acceder');
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Usuario no encontrado');
         }
 
-        return redirect()->route('login')->with('error', 'Credenciales incorrectas');
+        if (password_verify($request->password, $user->password)) {
+            $personaUsuario = PersonaUsuario::where('ID_Usuario', $user->ID)->first();
+            $persona = Persona::where('ID', $personaUsuario->ID_Persona)->first();
+            $esAdministrador = Administrador::where('ID', $persona->ID)->exists();
+            if ($esAdministrador) {
+            $token = $user->createToken('auth_token')->accessToken;
+            $user->token = $token;
+            auth()->login($user);
+            return redirect()->route('home')->with('bienvenida', $user->username);
+            }
+            return redirect()->route('login')->with('error', 'No tienes permisos para acceder');
+        }
+            return redirect()->route('login')->with('error', 'Contraseña incorrecta');
     }
+
 
     public function logout(Request $request)
     {
