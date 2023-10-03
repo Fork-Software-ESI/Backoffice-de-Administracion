@@ -24,17 +24,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
-                <tr>
-                    <td>{{ $user->ci }}</td>
-                    <td>{{ $user->nombre }}</td>
-                    <td>{{ $user->apellido }}</td>
-                    <td>{{ $user->correo }}</td>
-                    <td>{{ $user->username }}</td>
-                    <td>{{ $user->telefono }}</td>
-                    <td>{{ $user->rol }}</td>
-                </tr>
-            @endforeach
+            @foreach ($datos as $usuario)
+            <tr>
+                <td>{{ $usuario['ci'] }}</td>
+                <td>{{ $usuario['nombre'] }}</td>
+                <td>{{ $usuario['apellido'] }}</td>
+                <td>{{ $usuario['correo'] }}</td>
+                <td>{{ $usuario['username'] }}</td>
+                <td>{{ $usuario['telefono'] }}</td>
+                <td>{{ $usuario['rol'] }}</td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
 </body>

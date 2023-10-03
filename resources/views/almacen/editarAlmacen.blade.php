@@ -9,11 +9,11 @@
 <body>
     <a href="{{ route('vistaAlmacen') }}">Volver al menú Almacen</a>
     <h2>Bienvenido a editar almacen</h2>
-    <form action="{{ route('actualizarAlmacen', ['id' => $almacen->id]) }}" method="post">
+    <form action="{{ route('actualizarAlmacen', ['id' => $almacen->ID]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="direccion">direccion <input value="{{ $almacen->direccion }}" type="text" name="direccion">
-            @error('direccion')
+        <label for="Direccion">Direccion <input value="{{ $almacen->Direccion }}" type="text" name="Direccion">
+            @error('Direccion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror

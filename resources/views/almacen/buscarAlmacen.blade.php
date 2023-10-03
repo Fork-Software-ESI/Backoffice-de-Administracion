@@ -15,22 +15,24 @@
                 <tr>
                     <th>Id</th>
                     <th>Direccion</th>
+                    <th>Eliminado</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $almacen->id }}</td>
-                    <td>{{ $almacen->direccion }}</td>
+                    <td>{{ $almacen->ID }}</td>
+                    <td>{{ $almacen->Direccion }}</td>
+                    <td>{{ $almacen->deleted_at }}</td>
                 </tr>
             </tbody>
         </table>
         <br><br>
         
-        <form method="POST" action="{{ route('eliminarAlmacen', ['id' => $almacen->id]) }}">
+        <form method="POST" action="{{ route('eliminarAlmacen', ['id' => $almacen->ID]) }}">
             @csrf
             @method('DELETE')
             <button type="submit">Eliminar Almacen</button>
         </form><br>
-        <a href="{{ route('editarAlmacen', ['id' => $almacen->id]) }}">Editar Almacen</a>
+        <a href="{{ route('editarAlmacen', ['id' => $almacen->ID]) }}">Editar Almacen</a>
 </body>
 </html>
