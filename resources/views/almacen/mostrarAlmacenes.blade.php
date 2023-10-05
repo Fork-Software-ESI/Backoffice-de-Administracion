@@ -11,15 +11,15 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <th>Direccion</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($almacen as $almacen)
                 <tr>
-                    <td>{{ $almacen->id }}</td>
-                    <td>{{ $almacen->direccion }}</td>
+                    <td>{{ $almacen->ID }}</td>
+                    <td>{{ $almacen->Direccion }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -12,13 +12,13 @@ class AlmacenController extends Controller
 {
     public function mostrarAlmacenes()
     {
-        $almacen = Almacen::all();
+        $almacen = Almacen::all()->whereNull('deleted_at');
         return view('almacen.mostrarAlmacenes', ['almacen' => $almacen]);
     }
     public function buscarAlmacen(Request $request)
     {
-        $id = $request->input('id');
-        $almacen = Almacen::find($id);
+        $ID = $request->input('id');
+        $almacen = Almacen::find($ID);
         if (!$almacen) {
             return redirect()->route('vistaBuscarAlmacen')->with(['mensaje' => 'Almacén no encontrado']);
         }
@@ -28,7 +28,7 @@ class AlmacenController extends Controller
     public function crearAlmacen(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'direccion' => 'required|string',
+            'Direccion' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -37,8 +37,8 @@ class AlmacenController extends Controller
 
         $validatedData = $validator->validated();
 
-        if (Almacen::where('direccion', $validatedData['direccion'])->exists()) {
-            return response()->json(['error' => 'La direccion de el almacen ya está en uso'], 422);
+        if (Almacen::where('Direccion', $validatedData['Direccion'])->exists()) {
+            return response()->json(['error' => 'La direccion del almacen ya está en uso'], 422);
         }
 
         Almacen::create($validatedData);
@@ -47,39 +47,45 @@ class AlmacenController extends Controller
         return redirect()->route('crearAlmacen');
     }
 
-    public function editarAlmacen($id)
+    public function editarAlmacen($ID)
     {
-        $almacen = Almacen::find($id);
-
+        $almacen = Almacen::find($ID);
+        if($almacen->deleted_at != null)
+            return redirect()->route('vistaBuscarAlmacen')->with(['mensaje' => 'No puedes editar un almacén eliminado']);
         return view('almacen.editarAlmacen', ['almacen' => $almacen]);
     }
-
-    public function actualizarAlmacen(Request $request, $id)
+    public function actualizarAlmacen(Request $request, $ID)
     {
-        $almacen = Almacen::find($id)->first();
-
+        $almacen = Almacen::find($ID);
+    
         $validator = Validator::make($request->all(), [
-            'direccion' => 'string|max:255',
+            'Direccion' => 'string|max:255',
         ]);
-
+    
         if ($validator->fails()) {
-            return redirect()->route('editarAlmacen', ['id' => $almacen->id])->withErrors($validator)->withInput();
+            return redirect()->route('editarAlmacen', ['id' => $almacen->ID])->withErrors($validator)->withInput();
         }
+    
+        $data = $request->only(['Direccion']);
 
-        $data = $request->only(['direccion']);
-        
-        if (!$almacen->update($data)) {
-            return redirect()->route('vistaBuscarAlmacen', ['id' => $almacen->id])
-                ->with('mensaje', 'Hubo un problema al actualizar el Almacen');
+        if ($almacen->Direccion == $data['Direccion']) {
+            return redirect()->route('vistaBuscarAlmacen', ['id' => $almacen->ID])->with('mensaje', 'No se realizaron cambios');
         }
-        return redirect()->route('vistaBuscarAlmacen', ['id' => $almacen->id])
-                ->with('mensaje', 'Almacen actualizado exitosamente');
+        if ($almacen->update($data)) {
+            $almacen->save();
+            return redirect()->route('vistaBuscarAlmacen', ['id' => $almacen->ID])->with('mensaje', 'Almacen actualizado exitosamente');
+        } else {
+            return redirect()->route('vistaBuscarAlmacen', ['id' => $almacen->ID])->with('mensaje', 'Hubo un problema al actualizar el Almacen');
+        }
     }
+    
 
-    public function eliminarAlmacen($id)
+    public function eliminarAlmacen($ID)
     {
-        $almacen = Almacen::find($id);
+        $almacen = Almacen::find($ID);
 
+        if($almacen->deleted_at != null)
+            return redirect()->route('vistaBuscarAlmacen')->with(['mensaje' => 'Este almacen ya está eliminado']);
         $almacen->deleted_at = now();
         $almacen->save();
 

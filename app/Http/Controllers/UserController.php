@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Persona;
+use App\Models\Administrador;
+use App\Models\Cliente;
+use App\Models\Chofer;
+use App\Models\GerenteAlmacen;
+use App\Models\FuncionarioAlmacen;
+use App\Models\PersonaTelefono;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +19,48 @@ class UserController extends Controller
     public function mostrarUsuarios()
     {
         $users = User::whereNull('deleted_at')->get();
-        return view('users.mostrarUsuarios', ['users' => $users]);
+
+        $datos = [];
+
+        foreach ($users as $user){
+            $persona = Persona::where('ID', $user->ID)->first();
+            $telefono = PersonaTelefono::where('ID', $persona->ID);
+            
+            $rol = '';
+
+            if(Administrador::where('ID', $user->ID)->exists()){
+                $rol = 'Administrador';
+            }
+            if(Chofer::where('ID', $user->ID)->exists()){
+                $rol = 'Chofer';
+            }
+            if(Cliente::where('ID', $user->ID)->exists()){
+                $rol = 'Cliente';
+            }
+            if(FuncionarioAlmacen::where('ID', $user->ID)->exists()){
+                $rol = 'Funcionario';
+            }
+            if(GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()){
+                $rol = 'Gerente';
+            }
+            if($telefono == null){
+                $telefono = 'No tiene';
+            }
+
+            $datos[] = [
+                'ci' => $persona->CI,
+                'nombre' => $persona->Nombre,
+                'apellido' => $persona->Apellido,
+                'correo' => $persona->Correo,
+                'username' => $user->username,
+                'telefono' => $telefono->Telefono,
+                'rol' => $rol,
+            ];
+
+            
+        }
+
+        return view('users.mostrarUsuarios', ['datos' => $datos]);
     }
 
 

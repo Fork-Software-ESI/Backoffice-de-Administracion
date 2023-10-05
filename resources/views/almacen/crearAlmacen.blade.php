@@ -16,8 +16,8 @@
     <h1>Crear Almacen</h1>
     <form action="" method="post">
         @csrf
-        <label for="direccion">Direccion <input value="{{ old('direccion') }}" type="text" name="direccion" required>
-            @error('direccion')
+        <label for="Direccion">Direccion <input value="{{ old('Direccion') }}" type="text" name="Direccion" required>
+            @error('Direccion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
