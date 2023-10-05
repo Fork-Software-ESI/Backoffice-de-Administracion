@@ -24,8 +24,9 @@ class UserController extends Controller
 
         foreach ($users as $user){
             $persona = Persona::where('ID', $user->ID)->first();
-            $telefono = PersonaTelefono::where('ID', $persona->ID);
-            
+
+            $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+
             $rol = '';
 
             if(Administrador::where('ID', $user->ID)->exists()){
