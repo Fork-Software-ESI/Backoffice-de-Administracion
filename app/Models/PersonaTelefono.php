@@ -28,6 +28,10 @@ class PersonaTelefono extends Model
 		'ID' => 'int'
 	];
 
+	protected $fillable = [
+		'Telefono'
+	];
+
 	public function persona()
 	{
 		return $this->belongsTo(Persona::class, 'ID');
