@@ -28,26 +28,26 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->ci }}</td>
-                    <td>{{ $user->nombre }}</td>
-                    <td>{{ $user->apellido }}</td>
-                    <td>{{ $user->correo }}</td>
-                    <td>{{ $user->username }}</td>
-                    <td>{{ $user->telefono }}</td>
-                    <td>{{ $user->rol }}</td>
-                    <td>{{ $user->deleted_at }}</td>
+                    <td>{{ $datos['id'] }}</td>
+                    <td>{{ $datos['ci'] }}</td>
+                    <td>{{ $datos['nombre'] }}</td>
+                    <td>{{ $datos['apellido'] }}</td>
+                    <td>{{ $datos['correo'] }}</td>
+                    <td>{{ $datos['username'] }}</td>
+                    <td>{{ $datos['telefono'] }}</td>
+                    <td>{{ $datos['rol'] }}</td>
+                    <td>{{ $datos['deleted_at'] }}</td>
                 </tr>
             </tbody>
         </table>
         <br><br>
-        <form method="POST" action="{{ route('eliminarUsuario', ['id' => $user->id]) }}">
+        <form method="POST" action="{{ route('eliminarUsuario', ['id' => $datos['id']]) }}">
             @csrf
             @method('DELETE')
             <button type="submit">Eliminar Usuario</button>
         </form>
         <br>
-        <a href="{{ route('editarUsuario', ['username' => $user->username]) }}">Editar Usuario</a>
+        <a href="{{ route('editarUsuario', ['username' => $datos['username']]) }}">Editar Usuario</a>
 </body>
 
 </html>

@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function mostrarUsuarios()
     {
-        $users = User::whereNull('deleted_at')->get();
+        $users = User::all();
 
         $datos = [];
 
@@ -44,9 +44,10 @@ class UserController extends Controller
             if(GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()){
                 $rol = 'Gerente';
             }
-            if($telefono == null){
-                $telefono = 'No tiene';
-            }
+
+            $telefonoA = $telefono ? $telefono->Telefono : 'No tiene';
+
+            $deletedAt = $user->deleted_at;
 
             $datos[] = [
                 'ci' => $persona->CI,
@@ -54,8 +55,9 @@ class UserController extends Controller
                 'apellido' => $persona->Apellido,
                 'correo' => $persona->Correo,
                 'username' => $user->username,
-                'telefono' => $telefono->Telefono,
+                'telefono' => $telefonoA,
                 'rol' => $rol,
+                'deleted_at' => $deletedAt,
             ];
 
             
@@ -69,10 +71,42 @@ class UserController extends Controller
     {
         $username = $request->input('username');
         $user = User::where('username', $username)->first();
+    
         if (!$user) {
-            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario no encontrado');
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No existe un usuario con ese nombre de usuario');
         }
-        return view('users.buscarUsuario', ['user' => $user]);
+    
+        $persona = Persona::find($user->ID);
+        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+        $rol = '';
+    
+        if (Administrador::where('ID', $user->ID)->exists()) {
+            $rol = 'Administrador';
+        } elseif (Chofer::where('ID', $user->ID)->exists()) {
+            $rol = 'Chofer';
+        } elseif (Cliente::where('ID', $user->ID)->exists()) {
+            $rol = 'Cliente';
+        } elseif (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
+            $rol = 'Funcionario';
+        } elseif (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
+            $rol = 'Gerente';
+        }
+        
+        $deletedAt = $user->deleted_at;
+
+        $datos = [
+            'id' => $user->ID,
+            'ci' => $persona->CI,
+            'nombre' => $persona->Nombre,
+            'apellido' => $persona->Apellido,
+            'correo' => $persona->Correo,
+            'username' => $user->username,
+            'telefono' => $telefono ? $telefono->Telefono : 'No tiene',
+            'rol' => $rol,
+            'deleted_at' => $deletedAt,
+        ];
+    
+        return view('users.buscarUsuario', ['user' => $user, 'datos' => $datos]);
     }
     public function crearUsuario(Request $request)
     {
@@ -132,7 +166,6 @@ class UserController extends Controller
     public function actualizarUsuario(Request $request, $username)
     {
         $user = User::where('username', $username)->first();
-
 
         $validator = Validator::make($request->all(), [
             'ci' => 'string|max:8',
