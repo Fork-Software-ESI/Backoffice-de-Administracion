@@ -26,7 +26,7 @@ class PaqueteEstante extends Model
 	protected $table = 'paquete_estante';
 	protected $primaryKey = 'ID_Paquete';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Paquete' => 'int',

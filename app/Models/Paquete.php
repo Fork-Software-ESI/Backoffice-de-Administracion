@@ -31,7 +31,7 @@ class Paquete extends Model
 {
 	protected $table = 'paquete';
 	protected $primaryKey = 'ID';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Cliente' => 'int',

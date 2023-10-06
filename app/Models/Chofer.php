@@ -25,7 +25,7 @@ class Chofer extends Model
 	protected $table = 'chofer';
 	protected $primaryKey = 'ID';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID' => 'int'

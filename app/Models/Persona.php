@@ -32,7 +32,7 @@ class Persona extends Model
 {
 	protected $table = 'persona';
 	protected $primaryKey = 'ID';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'CI' => 'int'

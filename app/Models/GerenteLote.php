@@ -24,7 +24,7 @@ class GerenteLote extends Model
 	protected $table = 'gerente_lote';
 	protected $primaryKey = 'ID_Lote';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Gerente' => 'int',

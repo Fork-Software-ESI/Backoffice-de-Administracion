@@ -24,7 +24,7 @@ class GerentePaquete extends Model
 	protected $table = 'gerente_paquete';
 	protected $primaryKey = 'ID_Paquete';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Gerente' => 'int',

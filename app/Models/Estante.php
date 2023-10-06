@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 class Estante extends Model
 {
 	protected $table = 'estante';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Almacen' => 'int'

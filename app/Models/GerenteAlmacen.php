@@ -28,7 +28,7 @@ class GerenteAlmacen extends Model
 	protected $table = 'gerente_almacen';
 	protected $primaryKey = 'ID_Gerente';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Gerente' => 'int',

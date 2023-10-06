@@ -24,7 +24,7 @@ class GerenteForma extends Model
 	protected $table = 'gerente_forma';
 	protected $primaryKey = 'ID_Paquete';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Gerente' => 'int',

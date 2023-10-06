@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 class Plataforma extends Model
 {
 	protected $table = 'plataforma';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Almacen' => 'int'

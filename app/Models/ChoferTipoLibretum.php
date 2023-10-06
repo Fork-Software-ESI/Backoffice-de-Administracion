@@ -23,7 +23,7 @@ class ChoferTipoLibretum extends Model
 {
 	protected $table = 'chofer_tipo_libreta';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID' => 'int'

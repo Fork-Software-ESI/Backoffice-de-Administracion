@@ -24,7 +24,7 @@ class FuncionarioPaqueteEstante extends Model
 	protected $table = 'funcionario_paquete_estante';
 	protected $primaryKey = 'ID_Paquete';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Funcionario' => 'int',

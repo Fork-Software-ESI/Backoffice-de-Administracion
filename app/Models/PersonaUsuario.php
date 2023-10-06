@@ -23,7 +23,7 @@ class PersonaUsuario extends Model
 {
 	protected $table = 'persona_usuario';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'ID' => 'int'

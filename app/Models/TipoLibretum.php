@@ -24,7 +24,7 @@ class TipoLibretum extends Model
 	protected $table = 'tipo_libreta';
 	protected $primaryKey = 'Tipo';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'PesoMaximoKg' => 'int'
