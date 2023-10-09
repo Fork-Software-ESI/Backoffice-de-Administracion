@@ -10,6 +10,23 @@ use Carbon\Carbon;
 
 class PaqueteController extends Controller
 {
+    public function validarDireccion($direccion)
+{
+    $apiKey = '7a6TfdGhaJbpPMG2ehCfSExHYsnzdkIb5a0YlJzjU5U';
+    $address = urlencode($direccion);
+    $countryName = "Uruguay";
+    $url = "https://geocode.search.hereapi.com/v1/geocode?apiKey=$apiKey&q=$address&country=$countryName";
+    
+    $response = @file_get_contents($url);
+    $data = json_decode($response);
+
+    if ($data == null || empty($data->items)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
     public function mostrarPaquetes()
     {
         $paquete = Paquete::all();
@@ -28,9 +45,7 @@ class PaqueteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'descripcion' => 'required|string',
-            'peso_kg' => 'required',
-            'lote_id' => 'nullable|exists:lotes,id',
-            'estanteria_id' => 'nullable|exists:estanterias,id',
+            'peso_kg' => 'required'
         ]);
         if ($validator->fails()) {
             return redirect()->route('crearPaquete')->withErrors($validator)->withInput();
