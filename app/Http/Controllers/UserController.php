@@ -132,12 +132,12 @@ class UserController extends Controller
             return response()->json(['error' => 'El nombre de usuario ya está en uso'], 422);
         }
 
-        $contadorUsuariosConMismaCi = User::where('ci', $validatedData['ci'])->whereNull('deleted_at')->count();
+        $contadorUsuariosConMismaCi = Persona::where('ci', $validatedData['ci'])->count();
         if ($contadorUsuariosConMismaCi >= 2)
             return redirect()->route('crearUsuario')->with('mensaje-error', 'Ya existen 2 usuarios con la misma cédula');
         $validatedData['password'] = bcrypt($request->password);
 
-        $userConMismaCedula = User::where('ci', $validatedData['ci'])->whereNull('deleted_at')->first();
+        $userConMismaCedula = Persona::where('ci', $validatedData['ci'])->first();
 
         if ($contadorUsuariosConMismaCi == 1 && $userConMismaCedula->rol == 'cliente' && $validatedData['rol'] == 'cliente') {
             return redirect()->route('crearUsuario')->with('mensaje-error', 'Ya existe un cliente con la misma cédula');
@@ -147,7 +147,56 @@ class UserController extends Controller
             return redirect()->route('crearUsuario')->with('mensaje-error', 'Una misma persona no puede ocupar dos cargos distintos');
         }
 
-        User::create($validatedData);
+        $user = User::create([
+            'username' => $validatedData['username'],
+            'password' => $validatedData['password'],
+        ]);
+
+        $user -> save();
+
+        $persona = Persona::create([
+            'CI' => $validatedData['ci'],
+            'Nombre' => $validatedData['nombre'],
+            'Apellido' => $validatedData['apellido'],
+            'Correo' => $validatedData['correo'],
+        ]);
+
+        $telefono = new PersonaTelefono([
+            'Telefono' => $validatedData['telefono'],
+        ]);
+
+        $persona -> persona_telefonos() -> save($telefono);
+
+        if ($validatedData['rol'] == 'administrador') {
+            $rol = Administrador::create([
+                'ID' => $persona->ID,
+            ]);
+            $rol -> save();
+        } 
+        if ($validatedData['rol'] == 'chofer') {
+            $rol = Chofer::create([
+                'ID' => $persona->ID,
+            ]);
+            $rol -> save();
+        } 
+        if ($validatedData['rol'] == 'cliente') {
+            $rol = Cliente::create([
+                'ID' => $persona->ID,
+            ]);
+            $rol -> save();
+        } 
+        if ($validatedData['rol'] == 'funcionario') {
+            $rol = FuncionarioAlmacen::create([
+                'ID' => $persona->ID,
+            ]);
+            $rol -> save();
+        } 
+        if ($validatedData['rol'] == 'gerente') {
+            $rol = GerenteAlmacen::create([
+                'ID_Gerente' => $persona->ID,
+            ]);
+            $rol -> save();
+        }
 
         session()->flash('mensaje', 'Usuario creado exitosamente');
         return redirect()->route('crearUsuario');
