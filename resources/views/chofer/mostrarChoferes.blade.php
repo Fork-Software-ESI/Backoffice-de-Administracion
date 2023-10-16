@@ -21,18 +21,20 @@
                 <th>Username</th>
                 <th>Teléfono</th>
                 <th>Rol</th>
+                <th>Eliminado</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($chofer as $chofer)
+            @foreach ($datos as $usuario)
                 <tr>
-                    <td>{{ $chofer->ci }}</td>
-                    <td>{{ $chofer->nombre }}</td>
-                    <td>{{ $chofer->apellido }}</td>
-                    <td>{{ $chofer->correo }}</td>
-                    <td>{{ $chofer->username }}</td>
-                    <td>{{ $chofer->telefono }}</td>
-                    <td>{{ $chofer->rol }}</td>
+                    <td>{{ $usuario['ci'] }}</td>
+                    <td>{{ $usuario['nombre'] }}</td>
+                    <td>{{ $usuario['apellido'] }}</td>
+                    <td>{{ $usuario['correo'] }}</td>
+                    <td>{{ $usuario['username'] }}</td>
+                    <td>{{ $usuario['telefono'] }}</td>
+                    <td>{{ $usuario['rol'] }}</td>
+                    <td>{{ $usuario['deleted_at'] }}</td>
                 </tr>
             @endforeach
         </tbody>
