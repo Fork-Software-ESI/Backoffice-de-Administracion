@@ -24,6 +24,9 @@ class Administrador extends Model
 	public $incrementing = false;
 	public $timestamps = false;
 
+	protected $fillable = [
+		'ID'
+	];
 	protected $casts = [
 		'ID' => 'int'
 	];

@@ -23,7 +23,7 @@ class PersonaTelefono extends Model
 	protected $primaryKey = ['ID', 'Telefono'];
 	protected $table = 'persona_telefono';
 	public $incrementing = false;
-	public $timestamps = true;
+	public $timestamps = false;
 	
 	protected $fillable = [
 		'Telefono'
