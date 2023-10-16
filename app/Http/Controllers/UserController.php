@@ -105,7 +105,7 @@ class UserController extends Controller
             'rol' => $rol,
             'deleted_at' => $deletedAt,
         ];
-    
+        
         return view('users.buscarUsuario', ['user' => $user, 'datos' => $datos]);
     }
     public function crearUsuario(Request $request)
@@ -198,6 +198,10 @@ class UserController extends Controller
     public function eliminarUsuario($id)
     {
         $user = User::find($id);
+
+        if ($user->deleted_at != null) {
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes eliminar un usuario ya eliminado');
+        }
 
         $actual = auth()->user();
 
