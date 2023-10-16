@@ -18,15 +18,15 @@ class UserController extends Controller
 {
     public function mostrarUsuarios()
     {
-        $users = User::all();
+        $users = User::withTrashed()->get();
 
         $datos = [];
 
         foreach ($users as $user){
-            $persona = Persona::where('ID', $user->ID)->first();
-
+            $persona = Persona::where('ID', $user->ID)->firstOrNew();
+            
             $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
-
+            
             $rol = '';
 
             if(Administrador::where('ID', $user->ID)->exists()){
@@ -59,10 +59,7 @@ class UserController extends Controller
                 'rol' => $rol,
                 'deleted_at' => $deletedAt,
             ];
-
-            
         }
-
         return view('users.mostrarUsuarios', ['datos' => $datos]);
     }
 
@@ -82,13 +79,17 @@ class UserController extends Controller
     
         if (Administrador::where('ID', $user->ID)->exists()) {
             $rol = 'Administrador';
-        } elseif (Chofer::where('ID', $user->ID)->exists()) {
+        } 
+        if (Chofer::where('ID', $user->ID)->exists()) {
             $rol = 'Chofer';
-        } elseif (Cliente::where('ID', $user->ID)->exists()) {
+        } 
+        if (Cliente::where('ID', $user->ID)->exists()) {
             $rol = 'Cliente';
-        } elseif (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
+        } 
+        if (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
             $rol = 'Funcionario';
-        } elseif (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
+        } 
+        if (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
             $rol = 'Gerente';
         }
         
