@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('paquete', function (Blueprint $table) {
             $table->foreign(['ID_Cliente'], 'paquete_ibfk_1')->references(['ID'])->on('cliente');
+            $table->foreign(['ID_Estado'], 'paquete_ibfk_2')->references(['ID'])->on('estadop');
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('paquete', function (Blueprint $table) {
             $table->dropForeign('paquete_ibfk_1');
+            $table->dropForeign('paquete_ibfk_2');
         });
     }
 };

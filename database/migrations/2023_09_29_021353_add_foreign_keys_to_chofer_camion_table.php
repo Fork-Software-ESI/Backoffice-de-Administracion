@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('chofer_camion', function (Blueprint $table) {
             $table->foreign(['ID_Camion'], 'chofer_camion_ibfk_1')->references(['ID'])->on('camion');
             $table->foreign(['ID_Chofer'], 'chofer_camion_ibfk_2')->references(['ID'])->on('chofer');
+            $table->foreign(['ID_Estado'], 'chofer_camion_ibfk_3')->references(['ID'])->on('estadoc');
         });
     }
 
@@ -29,6 +30,7 @@ return new class extends Migration
         Schema::table('chofer_camion', function (Blueprint $table) {
             $table->dropForeign('chofer_camion_ibfk_1');
             $table->dropForeign('chofer_camion_ibfk_2');
+            $table->dropForeign('chofer_camion_ibfk_3');
         });
     }
 };

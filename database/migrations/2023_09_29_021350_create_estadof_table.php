@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('persona_usuario', function (Blueprint $table) {
-            $table->smallInteger('ID_Persona')->primary();
-            $table->smallInteger('ID_Usuario')->index('ID_Usuario')->unique('ID_Usuario');
+        Schema::create('estadof', function (Blueprint $table) {
+            $table->smallInteger('ID', true);
+            $table->string('Estado');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('persona_usuario');
+        Schema::dropIfExists('estadof');
     }
 };
