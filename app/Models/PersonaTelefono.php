@@ -25,7 +25,9 @@ class PersonaTelefono extends Model
 	public $incrementing = false;
 	public $timestamps = true;
 	
-
+	protected $fillable = [
+		'Telefono'
+	];
 	protected $casts = [
 		'ID' => 'int'
 	];

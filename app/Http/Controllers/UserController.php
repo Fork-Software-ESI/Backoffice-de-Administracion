@@ -23,10 +23,10 @@ class UserController extends Controller
         $datos = [];
 
         foreach ($users as $user){
-            $persona = Persona::where('ID', $user->ID)->first();
-
+            $persona = Persona::where('ID', $user->ID)->firstOrNew();
+            
             $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
-
+            
             $rol = '';
 
             if(Administrador::where('ID', $user->ID)->exists()){
@@ -44,9 +44,8 @@ class UserController extends Controller
             if(GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()){
                 $rol = 'Gerente';
             }
-            if($telefono == null){
-                $telefono = 'No tiene';
-            }
+
+            $telefonoA = $telefono ? $telefono->Telefono : 'No tiene';
 
             $datos[] = [
                 'ci' => $persona->CI,
@@ -54,13 +53,10 @@ class UserController extends Controller
                 'apellido' => $persona->Apellido,
                 'correo' => $persona->Correo,
                 'username' => $user->username,
-                'telefono' => $telefono->Telefono,
+                'telefono' => $telefonoA,
                 'rol' => $rol,
             ];
-
-            
         }
-
         return view('users.mostrarUsuarios', ['datos' => $datos]);
     }
 
@@ -68,11 +64,47 @@ class UserController extends Controller
     public function buscarUsuario(Request $request)
     {
         $username = $request->input('username');
-        $user = User::where('username', $username)->first();
+        $user = User::where('username', $username)->withTrashed()->first();
+    
         if (!$user) {
-            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario no encontrado');
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No existe un usuario con ese nombre de usuario');
         }
-        return view('users.buscarUsuario', ['user' => $user]);
+    
+        $persona = Persona::find($user->ID);
+        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+        $rol = '';
+    
+        if (Administrador::where('ID', $user->ID)->exists()) {
+            $rol = 'Administrador';
+        } 
+        if (Chofer::where('ID', $user->ID)->exists()) {
+            $rol = 'Chofer';
+        } 
+        if (Cliente::where('ID', $user->ID)->exists()) {
+            $rol = 'Cliente';
+        } 
+        if (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
+            $rol = 'Funcionario';
+        } 
+        if (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
+            $rol = 'Gerente';
+        }
+        
+        $deletedAt = $user->deleted_at;
+
+        $datos = [
+            'id' => $user->ID,
+            'ci' => $persona->CI,
+            'nombre' => $persona->Nombre,
+            'apellido' => $persona->Apellido,
+            'correo' => $persona->Correo,
+            'username' => $user->username,
+            'telefono' => $telefono ? $telefono->Telefono : 'No tiene',
+            'rol' => $rol,
+            'deleted_at' => $deletedAt,
+        ];
+        
+        return view('users.buscarUsuario', ['user' => $user, 'datos' => $datos]);
     }
     public function crearUsuario(Request $request)
     {
@@ -97,12 +129,12 @@ class UserController extends Controller
             return response()->json(['error' => 'El nombre de usuario ya está en uso'], 422);
         }
 
-        $contadorUsuariosConMismaCi = User::where('ci', $validatedData['ci'])->whereNull('deleted_at')->count();
+        $contadorUsuariosConMismaCi = Persona::where('ci', $validatedData['ci'])->count();
         if ($contadorUsuariosConMismaCi >= 2)
             return redirect()->route('crearUsuario')->with('mensaje-error', 'Ya existen 2 usuarios con la misma cédula');
         $validatedData['password'] = bcrypt($request->password);
 
-        $userConMismaCedula = User::where('ci', $validatedData['ci'])->whereNull('deleted_at')->first();
+        $userConMismaCedula = Persona::where('ci', $validatedData['ci'])->first();
 
         if ($contadorUsuariosConMismaCi == 1 && $userConMismaCedula->rol == 'cliente' && $validatedData['rol'] == 'cliente') {
             return redirect()->route('crearUsuario')->with('mensaje-error', 'Ya existe un cliente con la misma cédula');
@@ -112,7 +144,56 @@ class UserController extends Controller
             return redirect()->route('crearUsuario')->with('mensaje-error', 'Una misma persona no puede ocupar dos cargos distintos');
         }
 
-        User::create($validatedData);
+        $user = User::create([
+            'username' => $validatedData['username'],
+            'password' => $validatedData['password'],
+        ]);
+
+        $user -> save();
+
+        $persona = Persona::create([
+            'CI' => $validatedData['ci'],
+            'Nombre' => $validatedData['nombre'],
+            'Apellido' => $validatedData['apellido'],
+            'Correo' => $validatedData['correo'],
+        ]);
+
+        $telefono = new PersonaTelefono([
+            'Telefono' => $validatedData['telefono'],
+        ]);
+
+        $persona -> persona_telefonos() -> save($telefono);
+
+        if ($validatedData['rol'] == 'administrador') {
+            $rol = Administrador::create([
+                'ID' => $persona->ID,
+            ]);
+            $rol -> save();
+        } 
+        if ($validatedData['rol'] == 'chofer') {
+            $rol = Chofer::create([
+                'ID' => $persona->ID,
+            ]);
+            $rol -> save();
+        } 
+        if ($validatedData['rol'] == 'cliente') {
+            $rol = Cliente::create([
+                'ID' => $persona->ID,
+            ]);
+            $rol -> save();
+        } 
+        if ($validatedData['rol'] == 'funcionario') {
+            $rol = FuncionarioAlmacen::create([
+                'ID' => $persona->ID,
+            ]);
+            $rol -> save();
+        } 
+        if ($validatedData['rol'] == 'gerente') {
+            $rol = GerenteAlmacen::create([
+                'ID_Gerente' => $persona->ID,
+            ]);
+            $rol -> save();
+        }
 
         session()->flash('mensaje', 'Usuario creado exitosamente');
         return redirect()->route('crearUsuario');
@@ -126,13 +207,42 @@ class UserController extends Controller
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes modificar un usuario eliminado');
         }
 
-        return view('users.editarUsuario', ['user' => $user]);
+        $persona = Persona::find($user->ID);
+        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+        $rol = '';
+
+        if (Administrador::where('ID', $user->ID)->exists()) {
+            $rol = 'Administrador';
+        } 
+        if (Chofer::where('ID', $user->ID)->exists()) {
+            $rol = 'Chofer';
+        } 
+        if (Cliente::where('ID', $user->ID)->exists()) {
+            $rol = 'Cliente';
+        } 
+        if (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
+            $rol = 'Funcionario';
+        } 
+        if (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
+            $rol = 'Gerente';
+        }
+
+        $datos = [
+            'ci' => $persona->CI,
+            'nombre' => $persona->Nombre,
+            'apellido' => $persona->Apellido,
+            'correo' => $persona->Correo,
+            'username' => $user->username,
+            'telefono' => $telefono ? $telefono->Telefono : 'No tiene',
+            'rol' => $rol,
+        ];
+
+        return view('users.editarUsuario', ['datos' => $datos]);
     }
 
     public function actualizarUsuario(Request $request, $username)
     {
         $user = User::where('username', $username)->first();
-
 
         $validator = Validator::make($request->all(), [
             'ci' => 'string|max:8',
@@ -165,6 +275,10 @@ class UserController extends Controller
     public function eliminarUsuario($id)
     {
         $user = User::find($id);
+
+        if ($user->deleted_at != null) {
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes eliminar un usuario ya eliminado');
+        }
 
         $actual = auth()->user();
 
