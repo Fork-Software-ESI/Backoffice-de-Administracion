@@ -17,7 +17,7 @@ return new class extends Migration
             $table->smallInteger('ID_Chofer');
             $table->smallInteger('ID_Camion')->index('ID_Camion');
             $table->dateTime('Fecha_Hora_Inicio');
-            $table->string('Estado', 50);
+            $table->smallInteger('ID_Estado')->index('ID_Estado');
 
             $table->primary(['ID_Chofer', 'ID_Camion']);
             $table->timestamps();
