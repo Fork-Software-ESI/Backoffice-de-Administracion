@@ -20,6 +20,7 @@ return new class extends Migration
             $table->smallInteger('Peso_Kg');
             $table->smallInteger('ID_Estado')->index('ID_Estado');
             $table->string('Destino');
+            $table->string('Codigo')->unique('Codigo');
             $table->timestamps();
             $table->softDeletes();
         });
