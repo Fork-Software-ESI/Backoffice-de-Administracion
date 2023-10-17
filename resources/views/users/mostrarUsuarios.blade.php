@@ -21,7 +21,6 @@
                 <th>Username</th>
                 <th>Teléfono</th>
                 <th>Rol</th>
-                <th>Eliminado</th>
             </tr>
         </thead>
         <tbody>
@@ -34,7 +33,6 @@
                 <td>{{ $usuario['username'] }}</td>
                 <td>{{ $usuario['telefono'] }}</td>
                 <td>{{ $usuario['rol'] }}</td>
-                <td>{{ $usuario['deleted_at'] }}</td>
             </tr>
             @endforeach
         </tbody>

@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function mostrarUsuarios()
     {
-        $users = User::withTrashed()->get();
+        $users = User::whereNull('deleted_at')->get();
 
         $datos = [];
 
@@ -47,8 +47,6 @@ class UserController extends Controller
 
             $telefonoA = $telefono ? $telefono->Telefono : 'No tiene';
 
-            $deletedAt = $user->deleted_at;
-
             $datos[] = [
                 'ci' => $persona->CI,
                 'nombre' => $persona->Nombre,
@@ -57,7 +55,6 @@ class UserController extends Controller
                 'username' => $user->username,
                 'telefono' => $telefonoA,
                 'rol' => $rol,
-                'deleted_at' => $deletedAt,
             ];
         }
         return view('users.mostrarUsuarios', ['datos' => $datos]);
@@ -67,7 +64,7 @@ class UserController extends Controller
     public function buscarUsuario(Request $request)
     {
         $username = $request->input('username');
-        $user = User::where('username', $username)->first();
+        $user = User::where('username', $username)->withTrashed()->first();
     
         if (!$user) {
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No existe un usuario con ese nombre de usuario');
@@ -210,7 +207,37 @@ class UserController extends Controller
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes modificar un usuario eliminado');
         }
 
-        return view('users.editarUsuario', ['user' => $user]);
+        $persona = Persona::find($user->ID);
+        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+        $rol = '';
+
+        if (Administrador::where('ID', $user->ID)->exists()) {
+            $rol = 'Administrador';
+        } 
+        if (Chofer::where('ID', $user->ID)->exists()) {
+            $rol = 'Chofer';
+        } 
+        if (Cliente::where('ID', $user->ID)->exists()) {
+            $rol = 'Cliente';
+        } 
+        if (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
+            $rol = 'Funcionario';
+        } 
+        if (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
+            $rol = 'Gerente';
+        }
+
+        $datos = [
+            'ci' => $persona->CI,
+            'nombre' => $persona->Nombre,
+            'apellido' => $persona->Apellido,
+            'correo' => $persona->Correo,
+            'username' => $user->username,
+            'telefono' => $telefono ? $telefono->Telefono : 'No tiene',
+            'rol' => $rol,
+        ];
+
+        return view('users.editarUsuario', ['datos' => $datos]);
     }
 
     public function actualizarUsuario(Request $request, $username)
