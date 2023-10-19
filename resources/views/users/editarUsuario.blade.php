@@ -11,35 +11,35 @@
 <body>
     <a href="{{ route('vistaUsuario') }}">Volver al menú Usuario</a>
     <h1>Editar Usuario</h1>
-    <form action="{{ route('actualizarUsuario', ['username' => $user->username]) }}" method="post">
+    <form action="{{ route('actualizarUsuario', ['username' => $datos['username']]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="ci">Cedula de identidad <input value="{{ $user->ci }}" type="text" name="ci">
+        <label for="ci">Cedula de identidad <input value="{{ $datos['ci'] }}" type="text" name="ci">
             <label>Con digito verificador, sin puntos ni guiones</label>
             @error('ci')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="nombre">Nombre <input value="{{ $user->nombre }}" type="text" name="nombre">
+        <label for="nombre">Nombre <input value="{{ $datos['nombre'] }}" type="text" name="nombre">
             @error('nombre')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="apellido">Apellido <input value="{{ $user->apellido }}" type="text" name="apellido">
+        <label for="apellido">Apellido <input value="{{ $datos['apellido'] }}" type="text" name="apellido">
             @error('apellido')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="correo">Correo <input value="{{ $user->correo }}" type="email" name="correo">
+        <label for="correo">Correo <input value="{{ $datos['correo'] }}" type="email" name="correo">
             @error('correo')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="telefono">Telefono <input value="{{ $user->telefono }}" type="text" name="telefono">
+        <label for="telefono">Telefono <input value="{{ $datos['telefono'] }}" type="text" name="telefono">
             @error('telefono')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
@@ -57,13 +57,13 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="roles"> Seleccione su rol
+        <label for="roles">Seleccione su rol
             <select name="rol" id="rol">
-                <option value="administrador">Administrador</option>
-                <option value="cliente">Cliente</option>
-                <option value="gerente">Gerente</option>
-                <option value="funcionario">Funcionario</option>
-                <option value="chofer">Chofer</option>
+                <option value="administrador" {{ $datos['rol'] === 'Administrador' ? 'selected' : '' }}>Administrador</option>
+                <option value="cliente" {{ $datos['rol'] === 'Cliente' ? 'selected' : '' }}>Cliente</option>
+                <option value="gerente" {{ $datos['rol'] === 'Gerente' ? 'selected' : '' }}>Gerente</option>
+                <option value="funcionario" {{ $datos['rol'] === 'Funcionario' ? 'selected' : '' }}>Funcionario</option>
+                <option value="chofer" {{ $datos['rol'] === 'Chofer' ? 'selected' : '' }}>Chofer</option>
             </select>
         </label><br><br>
         <button type="submit">Actualizar Usuario</button>

@@ -250,7 +250,7 @@ class UserController extends Controller
             'apellido' => 'string|max:100',
             'correo' => 'email',
             'password' => 'nullable|string|min:6|confirmed',
-            'telefono' => 'numeric',
+            'telefono' => 'string|max:20',
             'rol' => 'required|in:administrador,chofer,cliente,funcionario,gerente',
         ]);
 
@@ -258,16 +258,57 @@ class UserController extends Controller
             return redirect()->route('editarUsuario', ['username' => $user->username])->withErrors($validator)->withInput();
         }
 
-        $data = $request->only(['ci', 'nombre', 'apellido', 'correo', 'telefono']);
+        $data = $request->only(['ci', 'nombre', 'apellido', 'correo', 'telefono', 'rol']);
 
         if (!empty($request->password)) {
             $user->password = bcrypt($request->password);
         }
 
-        if (!$user->update($data)) {
-            return redirect()->route('vistaBuscarUsuario', ['username' => $user->username])
-                ->with('mensaje', 'Hubo un problema al actualizar el usuario');
+        $persona = Persona::find($user->ID);
+        $persona -> update([
+            'CI' => $data['ci'],
+            'Nombre' => $data['nombre'],
+            'Apellido' => $data['apellido'],
+            'Correo' => $data['correo'],
+        ]);
+        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+        $telefono -> update([
+            'Telefono' => $data['telefono'],
+        ]);
+
+        $rol = $data['rol'];
+
+        if ($rol == 'administrador') {
+            $rol = Administrador::where('ID', $persona->ID)->first();
+            $rol -> update([
+                'ID' => $persona->ID,
+            ]);
         }
+        if ($rol == 'chofer') {
+            $rol = Chofer::where('ID', $persona->ID)->first();
+            $rol -> update([
+                'ID' => $persona->ID,
+            ]);
+        }
+        if ($rol == 'cliente') {
+            $rol = Cliente::where('ID', $persona->ID)->first();
+            $rol -> update([
+                'ID' => $persona->ID,
+            ]);
+        }
+        if ($rol == 'funcionario') {
+            $rol = FuncionarioAlmacen::where('ID', $persona->ID)->first();
+            $rol -> update([
+                'ID' => $persona->ID,
+            ]);
+        }
+        if ($rol == 'gerente') {
+            $rol = GerenteAlmacen::where('ID_Gerente', $persona->ID)->first();
+            $rol -> update([
+                'ID_Gerente' => $persona->ID,
+            ]);
+        }
+        
         return redirect()->route('vistaBuscarUsuario', ['username' => $user->username])
             ->with('mensaje', 'Usuario actualizado exitosamente');
     }

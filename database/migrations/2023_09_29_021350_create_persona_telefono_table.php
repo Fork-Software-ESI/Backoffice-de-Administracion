@@ -14,20 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('persona_telefono', function (Blueprint $table) {
-            $table->smallInteger('ID');
-            $table->string('Telefono', 50);
-
-            $table->primary(['ID', 'Telefono']);
+            $table->increments('ID');
+            $table->smallInteger('ID_Persona');
+            $table->string('Telefono');
             $table->timestamps();
-            $table->softDeletes();
+            $table->unique(['ID_Persona', 'Telefono']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('persona_telefono');
