@@ -25,17 +25,22 @@ class PersonaUsuario extends Model
 	public $incrementing = false;
 	public $timestamps = false;
 
+	protected $fillable = [
+		'ID_Persona',
+		'ID_Usuario'
+	];
+
 	protected $casts = [
 		'ID' => 'int'
 	];
 
 	public function persona()
 	{
-		return $this->belongsTo(Persona::class, 'ID');
+		return $this->belongsTo(Persona::class, 'ID_Persona', 'ID');
 	}
 
 	public function usuario()
 	{
-		return $this->belongsTo(Usuario::class, 'NomUsuario');
+		return $this->belongsTo(Usuario::class, 'ID_Usuario', 'ID');
 	}
 }

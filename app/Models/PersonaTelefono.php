@@ -9,10 +9,10 @@ class PersonaTelefono extends Model
     protected $table = 'persona_telefono';
     public $timestamps = false;
 
-    protected $fillable = ['ID', 'Telefono'];
+    protected $fillable = ['ID', 'ID_Persona', 'Telefono'];
 
     public function persona()
     {
-        return $this->belongsTo(Persona::class, 'ID');
+        return $this->belongsTo(Persona::class, 'ID_Persona', 'ID');
     }
 }

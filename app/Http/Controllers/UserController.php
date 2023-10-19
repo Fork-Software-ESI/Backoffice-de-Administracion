@@ -10,6 +10,7 @@ use App\Models\Chofer;
 use App\Models\GerenteAlmacen;
 use App\Models\FuncionarioAlmacen;
 use App\Models\PersonaTelefono;
+use App\Models\PersonaUsuario;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -157,7 +158,16 @@ class UserController extends Controller
             'Apellido' => $validatedData['apellido'],
             'Correo' => $validatedData['correo'],
         ]);
-        $telefono = new PersonaTelefono([
+
+        $persona -> save();
+
+        $persona_usuario = PersonaUsuario::create([
+            'ID_Usuario' => $user -> ID,
+            'ID_Persona' => $persona -> ID,
+        ]);
+
+        $telefono = PersonaTelefono::create([
+            'ID_Persona' => $persona -> ID,
             'Telefono' => $validatedData['telefono'],
         ]);
 
@@ -270,6 +280,7 @@ class UserController extends Controller
             'Apellido' => $data['apellido'],
             'Correo' => $data['correo'],
         ]);
+
         $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
         $telefono -> update([
             'Telefono' => $data['telefono'],
