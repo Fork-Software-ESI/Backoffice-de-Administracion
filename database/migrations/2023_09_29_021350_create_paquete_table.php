@@ -18,8 +18,9 @@ return new class extends Migration
             $table->smallInteger('ID_Cliente')->index('ID_Cliente');
             $table->string('Descripcion', 50)->nullable();
             $table->smallInteger('Peso_Kg');
-            $table->string('Estado', 50);
+            $table->smallInteger('ID_Estado')->index('ID_Estado');
             $table->string('Destino');
+            $table->string('Codigo')->unique('Codigo');
             $table->timestamps();
             $table->softDeletes();
         });

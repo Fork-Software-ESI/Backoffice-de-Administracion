@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('forma', function (Blueprint $table) {
             $table->smallInteger('ID_Lote')->index('ID_Lote');
             $table->smallInteger('ID_Paquete')->primary();
-            $table->string('Estado', 50);
+            $table->smallInteger('ID_Estado')->index('ID_Estado');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -157,7 +157,6 @@ class UserController extends Controller
             'Apellido' => $validatedData['apellido'],
             'Correo' => $validatedData['correo'],
         ]);
-
         $telefono = new PersonaTelefono([
             'Telefono' => $validatedData['telefono'],
         ]);
