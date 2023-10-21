@@ -61,7 +61,6 @@ class UserController extends Controller
         return view('users.mostrarUsuarios', ['datos' => $datos]);
     }
 
-
     public function buscarUsuario(Request $request)
     {
         $username = $request->input('username');
@@ -166,6 +165,8 @@ class UserController extends Controller
             'ID_Persona' => $persona -> ID,
         ]);
 
+        $persona_usuario -> save();
+
         $telefono = PersonaTelefono::create([
             'ID_Persona' => $persona -> ID,
             'Telefono' => $validatedData['telefono'],
@@ -246,12 +247,16 @@ class UserController extends Controller
             'rol' => $rol,
         ];
 
+        session() -> put('rol', $rol);
+
         return view('users.editarUsuario', ['datos' => $datos]);
     }
 
     public function actualizarUsuario(Request $request, $username)
     {
         $user = User::where('username', $username)->first();
+
+        $rolAnterior = session('rol');
 
         $validator = Validator::make($request->all(), [
             'ci' => 'string|max:8',
@@ -281,44 +286,67 @@ class UserController extends Controller
             'Correo' => $data['correo'],
         ]);
 
-        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
-        $telefono -> update([
+        $personaTelefono = PersonaTelefono::where('ID_Persona', $persona->ID)->first();
+        $personaTelefono -> update([
             'Telefono' => $data['telefono'],
         ]);
 
+
         $rol = $data['rol'];
 
-        if ($rol == 'administrador') {
-            $rol = Administrador::where('ID', $persona->ID)->first();
-            $rol -> update([
-                'ID' => $persona->ID,
-            ]);
+        if($rol != $rolAnterior){
+            if ($rol == 'administrador') {
+                $rol = Administrador::create([
+                    'ID' => $persona->ID,
+                ]);
+                $rol -> save();
+            } 
+            if ($rol == 'chofer') {
+                $rol = Chofer::create([
+                    'ID' => $persona->ID,
+                ]);
+                $rol -> save();
+            } 
+            if ($rol == 'cliente') {
+                $rol = Cliente::create([
+                    'ID' => $persona->ID,
+                ]);
+                $rol -> save();
+            } 
+            if ($rol == 'funcionario') {
+                $rol = FuncionarioAlmacen::create([
+                    'ID' => $persona->ID,
+                ]);
+                $rol -> save();
+            } 
+            if ($rol == 'gerente') {
+                $rol = GerenteAlmacen::create([
+                    'ID_Gerente' => $persona->ID,
+                ]);
+                $rol -> save();
+            }
+            if ($rolAnterior == 'Administrador') {
+                $rol = Administrador::where('ID', $persona->ID)->first();
+                $rol->delete();
+            }
+            if ($rolAnterior == 'Chofer') {
+                $rol = Chofer::where('ID', $persona->ID)->first();
+                $rol->delete();
+            }
+            if ($rolAnterior == 'Cliente') {
+                $rol = Cliente::where('ID', $persona->ID)->first();
+                $rol->delete();
+            }
+            if ($rolAnterior == 'Funcionario') {
+                $rol = FuncionarioAlmacen::where('ID', $persona->ID)->first();
+                $rol->delete();
+            }
+            if ($rolAnterior == 'Gerente') {
+                $rol = GerenteAlmacen::where('ID_Gerente', $persona->ID)->first();
+                $rol->delete();
+            }
         }
-        if ($rol == 'chofer') {
-            $rol = Chofer::where('ID', $persona->ID)->first();
-            $rol -> update([
-                'ID' => $persona->ID,
-            ]);
-        }
-        if ($rol == 'cliente') {
-            $rol = Cliente::where('ID', $persona->ID)->first();
-            $rol -> update([
-                'ID' => $persona->ID,
-            ]);
-        }
-        if ($rol == 'funcionario') {
-            $rol = FuncionarioAlmacen::where('ID', $persona->ID)->first();
-            $rol -> update([
-                'ID' => $persona->ID,
-            ]);
-        }
-        if ($rol == 'gerente') {
-            $rol = GerenteAlmacen::where('ID_Gerente', $persona->ID)->first();
-            $rol -> update([
-                'ID_Gerente' => $persona->ID,
-            ]);
-        }
-        
+
         return redirect()->route('vistaBuscarUsuario', ['username' => $user->username])
             ->with('mensaje', 'Usuario actualizado exitosamente');
     }
@@ -341,6 +369,42 @@ class UserController extends Controller
         }
         $user->deleted_at = now();
         $user->save();
+
+        $persona = Persona::find($user->ID);
+        $persona->deleted_at = now();
+        $persona->save();
+
+        $personaUsuario = PersonaUsuario::where('ID_Usuario', $user->ID)->first();
+        $personaUsuario->deleted_at = now();
+        $personaUsuario->save();
+
+        if (Administrador::where('ID', $user->ID)->exists()) {
+            $rol = Administrador::where('ID', $user->ID)->first();
+            $rol->deleted_at = now();
+            $rol->save();
+        }
+        if (Chofer::where('ID', $user->ID)->exists()) {
+            $rol = Chofer::where('ID', $user->ID)->first();
+            $rol->deleted_at = now();
+            $rol->save();
+        }
+        if (Cliente::where('ID', $user->ID)->exists()) {
+            $rol = Cliente::where('ID', $user->ID)->first();
+            $rol->deleted_at = now();
+            $rol->save();
+        }
+        if (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
+            $rol = FuncionarioAlmacen::where('ID', $user->ID)->first();
+            $rol->deleted_at = now();
+            $rol->save();
+        }
+        if (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
+            $rol = GerenteAlmacen::where('ID_Gerente', $user->ID)->first();
+            $rol->deleted_at = now();
+            $rol->save();
+        }
+
+        //deleted_at persona telefono base de datos
 
         return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario eliminado con éxito');
     }
