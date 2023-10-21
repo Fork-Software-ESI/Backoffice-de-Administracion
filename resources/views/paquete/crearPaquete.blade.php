@@ -16,20 +16,32 @@
     <h1>Crear Paquete</h1>
     <form action="" method="post">
         @csrf
-        <label for="descripcion">Descripcion <input value="{{ old('descripcion') }}" type="text" name="descripcion" required>
-            @error('descripcion')
+        <label for="Descripcion">Descripcion <input value="{{ old('Descripcion') }}" type="text" name="Descripcion" required>
+            @error('Descripcion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label> <br> <br>
-        <label for="peso_kg">Peso en kg <input value="{{ old('peso_kg') }}" type="text" name="peso_kg" required>
-            @error('peso_kg')
+        <label for="Peso_Kg">Peso en kg <input value="{{ old('Peso_Kg') }}" type="text" name="Peso_Kg" required>
+            @error('Peso_Kg')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="lote_id">Id del lote <input value="{{ old('lote_id') }}" type="" name="lote_id">
-            @error('lote_id')
+        <label for="ID_Cliente">Id del cliente <input value="{{ old('ID_Cliente') }}" type="" name="ID_Cliente">
+            @error('ID_Cliente')
+                <br>
+                <small style="color:red;">{{ $message }}</small>
+            @enderror
+        </label><br><br>
+        <label for="ID_Estado">Estado <select name="ID_Estado" id="">
+            <option value="1">En almacen</option>
+            <option value="2">En transito</option>
+            <option value="3">Entregado</option>
+        </select>
+        </label><br><br>
+        <label for="Destino">Destino <input value="{{ old('Destino') }}" type="" name="Destino">
+            @error('Destino')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror

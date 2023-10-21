@@ -27,6 +27,9 @@ class FuncionarioAlmacen extends Model
 	public $incrementing = false;
 	public $timestamps = true;
 
+	protected $fillable = [
+		'ID'
+	];
 	protected $casts = [
 		'ID' => 'int'
 	];
