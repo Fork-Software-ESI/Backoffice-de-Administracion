@@ -15,21 +15,29 @@
                     <tr>
                         <th>Id</th>
                         <th>Descripcion</th>
+                        <th>Peso_Kg</th>
+                        <th>Creado</th>
+                        <th>Actualizado</th>
+                        <th>Eliminado</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $lote->id }}</td>
-                        <td>{{ $lote->descripcion }}</td>
+                        <td>{{ $lote->ID }}</td>
+                        <td>{{ $lote->Descripcion }}</td>
+                        <td>{{ $lote->Peso_Kg }}</td>
+                        <td>{{ $lote->created_at }}</td>
+                        <td>{{ $lote->updated_at }}</td>
+                        <td>{{ $lote->deleted_at }}</td>
                     </tr>
                 </tbody>
             </table>
         <br><br>
-        <form method="POST" action="{{ route('eliminarLote', ['id' => $lote->id]) }}">
+        <form method="POST" action="{{ route('eliminarLote', ['id' => $lote->ID]) }}">
             @csrf
             @method('DELETE')
             <button type="submit">Eliminar Lote</button>
         </form><br>
-        <a href="{{ route('editarLote', ['id' => $lote->id]) }}">Editar Lote</a>
+        <a href="{{ route('editarLote', ['id' => $lote->ID]) }}">Editar Lote</a>
 </body>
 </html>

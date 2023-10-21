@@ -12,12 +12,19 @@
     <form action="{{ route('actualizarLote', ['id' => $lote->id]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="descripcion">Descripcion <input value="{{ $lote->descripcion }}" type="text" name="descripcion">
+        <label for="descripcion">Descripcion <input value="{{ $lote->Descripcion }}" type="text" name="descripcion">
             @error('descripcion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
+        <label for="peso_kg">Peso_Kg <input value="{{ $lote->Peso_Kg }}" type="text" name="peso_kg">
+            @error('peso_kg')
+                <br>
+                <small style="color:red;">{{ $message }}</small>
+            @enderror
+        </label><br><br>
         <button type="submit">Actualizar lote</button>
+    </form>
 </body>
 </html>
