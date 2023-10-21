@@ -36,6 +36,7 @@ class GerenteAlmacen extends Model
 	];
 
 	protected $fillable = [
+		'ID_Gerente',
 		'ID_Almacen'
 	];
 

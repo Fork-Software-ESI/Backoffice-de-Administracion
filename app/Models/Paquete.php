@@ -40,10 +40,12 @@ class Paquete extends Model
 
 	protected $fillable = [
 		'ID_Cliente',
+		'ID_Estado',
 		'Descripcion',
 		'Peso_Kg',
 		'Estado',
-		'Destino'
+		'Destino',
+		'Codigo'
 	];
 
 	public function cliente()

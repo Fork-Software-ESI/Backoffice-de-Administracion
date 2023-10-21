@@ -15,6 +15,7 @@ class AlmacenController extends Controller
         $almacen = Almacen::all()->whereNull('deleted_at');
         return view('almacen.mostrarAlmacenes', ['almacen' => $almacen]);
     }
+    
     public function buscarAlmacen(Request $request)
     {
         $ID = $request->input('id');

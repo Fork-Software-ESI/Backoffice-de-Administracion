@@ -11,14 +11,14 @@ use Carbon\Carbon;
 class PaqueteController extends Controller
 {
     public function validarDireccion($direccion)
-{
-    $apiKey = '7a6TfdGhaJbpPMG2ehCfSExHYsnzdkIb5a0YlJzjU5U';
-    $address = urlencode($direccion);
-    $countryName = "Uruguay";
-    $url = "https://geocode.search.hereapi.com/v1/geocode?apiKey=$apiKey&q=$address&country=$countryName";
-    
-    $response = @file_get_contents($url);
-    $data = json_decode($response);
+    {
+        $apiKey = '7a6TfdGhaJbpPMG2ehCfSExHYsnzdkIb5a0YlJzjU5U';
+        $address = urlencode($direccion);
+        $countryName = "Uruguay";
+        $url = "https://geocode.search.hereapi.com/v1/geocode?apiKey=$apiKey&q=$address&country=$countryName";
+
+        $response = @file_get_contents($url);
+        $data = json_decode($response);
 
     if ($data == null || empty($data->items)) {
         return true;
@@ -29,18 +29,25 @@ class PaqueteController extends Controller
     public function crearPaquete(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'descripcion' => 'required|string',
-            'peso_kg' => 'required'
+            'Descripcion' => 'string',
+            'Peso_Kg' => 'required|numeric|min:1',
+            'ID_Cliente' => 'required|exists:cliente,ID',
+            'ID_Estado' => 'required|exists:estadop,ID',
+            'Destino' => 'required|string',
         ]);
         if ($validator->fails()) {
             return redirect()->route('crearPaquete')->withErrors($validator)->withInput();
         }
-
         $validatedData = $validator->validated();
 
+        $validez = $this->validarDireccion($validatedData['Destino']);
+        if (!$validez) {
+            return redirect()->route('crearPaquete')->withErrors(['Destino' => 'La dirección ingresada no es válida'])->withInput();
+        }
+        $validatedData['Codigo'] = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
         Paquete::create($validatedData);
 
-        session()->flash('mensaje', 'Paquete creado exitosamente');
+        session()->flash('mensaje', 'Paquete creado exitosamente, codigo: ' . $validatedData['Codigo']);
         return redirect()->route('crearPaquete');
     }
 
@@ -103,7 +110,7 @@ class PaqueteController extends Controller
         return redirect()->route('vistaBuscarPaquete', ['id' => $paquete->ID])
         ->with('mensaje', 'Paquete actualizado de forma exitosa');
     }
-    
+
 
     public function eliminarPaquete($id)
     {
