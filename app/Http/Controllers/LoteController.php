@@ -29,6 +29,7 @@ class LoteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'descripcion' => 'required|string',
+            'peso_kg' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +42,10 @@ class LoteController extends Controller
             return response()->json(['error' => 'La descripcion de el lote ya está en uso'], 422);
         }
 
-        Lote::create($validatedData);
+        Lote::create([
+            'Descripcion' => $validatedData['descripcion'],
+            'Peso_Kg' => $validatedData['peso_kg'],
+        ]);
 
         session()->flash('mensaje', 'Lote creado exitosamente');
         return redirect()->route('crearLote');
