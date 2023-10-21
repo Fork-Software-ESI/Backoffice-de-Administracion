@@ -9,32 +9,44 @@
 <body>
     <a href="{{ route('vistaPaquete') }}">Volver al menú de Paquete</a><br>
     <h2>Bienvenido a Buscar Paquete</h2>
-    <h2>Informacion del paquete:</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Descripcion</th>
-                    <th>Peso_Kg</th>
-                    <th>Lote_Id</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ $paquete->id }}</td>
-                    <td>{{ $paquete->descripcion }}</td>
-                    <td>{{ $paquete->peso_kg }}</td>
-                    <td>{{ $paquete->lote_id }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <br><br>
-        
-        <form method="POST" action="{{ route('eliminarPaquete', ['id' => $paquete->id]) }}">
-            @csrf
-            @method('DELETE')
-            <button type="submit">Eliminar Paquete</button>
-        </form><br>
-        <a href="{{ route('editarPaquete', ['id' => $paquete->id]) }}">Editar Paquete</a>
+    <h2>Información del paquete:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID_Cliente</th>
+                <th>Descripcion</th>
+                <th>Peso_Kg</th>
+                <th>ID_Estado</th>
+                <th>Destino</th>
+                <th>Codigo</th>
+                <th>Creado</th>
+                <th>Actualizado</th>
+                <th>Eliminado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ $paquete->ID }}</td>
+                <td>{{ $paquete->ID_Cliente }}</td>
+                <td>{{ $paquete->Descripcion }}</td>
+                <td>{{ $paquete->Peso_Kg }}</td>
+                <td>{{ $paquete->ID_Estado }}</td>
+                <td>{{ $paquete->Destino }}</td>
+                <td>{{ $paquete->Codigo }}</td>
+                <td>{{ $paquete->created_at }}</td>
+                <td>{{ $paquete->updated_at }}</td>
+                <td>{{ $paquete->deleted_at }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <form method="POST" action="{{ route('eliminarPaquete', ['id' => $paquete->ID]) }}">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Eliminar Paquete</button>
+    </form>
+    <a href="{{ route('editarPaquete', ['id' => $paquete->ID]) }}">Editar Paquete</a>    
+
 </body>
 </html>
