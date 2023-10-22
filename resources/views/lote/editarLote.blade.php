@@ -9,7 +9,7 @@
 <body>
     <a href="{{ route('vistaLote') }}">Volver al menú Usuario</a>
     <h2>Bienvenido a Editar Lote</h2>
-    <form action="{{ route('actualizarLote', ['id' => $lote->id]) }}" method="post">
+    <form action="{{ route('actualizarLote', ['id' => $lote->ID]) }}" method="post">
         @csrf
         @method('PATCH')
         <label for="descripcion">Descripcion <input value="{{ $lote->Descripcion }}" type="text" name="descripcion">
