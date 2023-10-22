@@ -9,16 +9,16 @@
 <body>
     <a href="{{ route('vistaAlmacen') }}">Volver al menú Camión</a>
     <h2>Bienvenido a editar camión</h2>
-    <form action="{{ route('actualizarCamion', ['matricula' => $camion->matricula]) }}" method="post">
+    <form action="{{ route('actualizarCamion', ['matricula' => $camion->Matricula]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="matricula">matricula <input value="{{ $camion->matricula }}" type="text" name="matricula">
+        <label for="matricula">matricula <input value="{{ $camion->Matricula }}" type="text" name="matricula">
             @error('matricula')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="pesoMaximoKg">peso máximo kg <input value="{{ $camion->pesoMaximoKg }}" type="text" name="pesoMaximoKg">
+        <label for="pesoMaximoKg">peso máximo kg <input value="{{ $camion->PesoMaximoKg }}" type="text" name="pesoMaximoKg">
             @error('pesoMaximoKg')
                 <br>
                 <small style="color:red;">{{ $message }}</small>

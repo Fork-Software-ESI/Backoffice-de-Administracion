@@ -175,7 +175,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::patch('/actualizar-camion/{matricula}', [CamionController::class, 'actualizarCamion'])->name('actualizarCamion');
 
-    Route::delete('/eliminar-camion/{id}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
+    Route::delete('/eliminar-camion/{matricula}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
