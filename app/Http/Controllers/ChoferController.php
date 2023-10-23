@@ -7,7 +7,9 @@ use App\Models\Chofer;
 use App\Models\Persona;
 use App\Models\PersonaTelefono;
 use App\Models\ChoferCamion;
+use App\Models\Camion;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class ChoferController extends Controller
 {
@@ -23,7 +25,7 @@ class ChoferController extends Controller
             $telefonoA = $telefono ? $telefono->Telefono : 'No tiene';
             
             $choferCamion = ChoferCamion::where('ID_Chofer', $chofer->ID)->first();
-            $camion = $choferCamion ? $choferCamion->ID_Camion : 'No tiene';
+            $camion = $choferCamion ? Camion::find($choferCamion->ID_Camion)->Matricula : 'No tiene';
 
             $deletedAt = $user->deleted_at;
 
