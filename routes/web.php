@@ -47,6 +47,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/choferes', [ChoferController::class, 'mostrarChoferes'])->name('mostrarChoferes');
 
+    Route::get('/asignarCamion', function(){
+        return view('chofer.asignarCamion');
+    })->name('vistaAsignarCamion');
+
+    Route::post('/asignarCamion', [ChoferController::class, 'asignarCamion'])->name('asignarCamion');
+
+
     //
 
     Route::get('/menu-almacen', function () {
@@ -174,6 +181,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/editar-camion/{matricula}', [CamionController::class, 'editarCamion'])->name('editarCamion');
 
     Route::patch('/actualizar-camion/{matricula}', [CamionController::class, 'actualizarCamion'])->name('actualizarCamion');
+
+    Route::get('/asignarChofer', function(){
+        return view('camion.asignarChofer');
+    })->name('vistaAsignarChofer');
+
+    Route::post('/asignarChofer', [CamionController::class, 'asignarChofer'])->name('asignarChofer');
+
 
     Route::delete('/eliminar-camion/{matricula}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
 

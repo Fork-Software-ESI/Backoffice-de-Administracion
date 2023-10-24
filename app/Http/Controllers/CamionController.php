@@ -110,6 +110,52 @@ class CamionController extends Controller
         return redirect()->route('vistaBuscarCamion', ['matricula' => $camion->Matricula])
             ->with('mensaje', 'Camión actualizado exitosamente');
     }
+
+    public function asignarChofer(Request $request)
+    {
+        $validator = Validator::make($request -> all(),[
+            'ID_Camion' => 'required', 'numeric',
+            'ID_Chofer' => 'required', 'numeric',
+            'estado' => 'required', 'numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('vistaAsignarCamion')->withErrors($validator)->withInput();
+        }
+
+        $data = $validator->validated();
+
+        $camionID = $data['ID_Camion'];
+        $choferID = $data['ID_Chofer'];
+        $estado = $data['estado'];
+
+        $camion = Camion::find($camionID);
+        if (!$camion) {
+            return redirect()->route('vistaAsignarChofer')->with('mensaje', 'Camion no encontrado');
+        }
+        if ($camion->deleted_at != null) {
+            return redirect()->route('vistaAsignarChofer')->with('mensaje', 'No puedes asignar un chofer a un camión eliminado');
+        }
+
+        $chofer = Chofer::find($choferID);
+        if (!$chofer) {
+            return redirect()->route('vistaAsignarChofer')->with('mensaje', 'Chofer no encontrado');
+        }
+        if ($chofer->deleted_at != null) {
+            return redirect()->route('vistaAsignarChofer')->with('mensaje', 'No puedes asignar un chofer eliminado');
+        }
+
+        $choferCamion = ChoferCamion::create([
+            'ID_Camion' => $camionID,
+            'ID_Chofer' => $choferID,
+            'Estado' => $estado,
+        ]);
+
+        $choferCamion->save();
+
+        session()->flash('mensaje', 'Camion vinculado con Chofer existosamente');
+        return redirect()->route('asignarChofer');
+    }
     public function eliminarCamion($matricula)
     {
         $camion = Camion::where('Matricula', $matricula)->first();

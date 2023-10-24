@@ -13,6 +13,7 @@
         <li><a href="{{ route('mostrarCamion') }}">Mostrar camiones</a></li>
         <li><a href="{{ route('vistaBuscarCamion') }}">Buscar camión y eliminar o editar el mismo</a></li>
         <li><a href="{{ route('crearCamion') }}">Crear camión</a></li>
+        <li><a href="{{ route('asignarChofer') }}">Asigna un chofer a un camion</a></li>
     </ol>
 </body>
 </html>
