@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * Class PersonaUsuario
  * 
  * @property int $ID
- * @property string $NomUsuario
+ * @property int $ID_Usuario
+ * @property int $ID_Persona
  * 
  * @property Persona $persona
  * @property Usuario $usuario
@@ -25,17 +26,21 @@ class PersonaUsuario extends Model
 	public $incrementing = false;
 	public $timestamps = true;
 
+	protected $fillable = [
+		'ID_Usuario',
+		'ID_Persona',
+	];
 	protected $casts = [
 		'ID' => 'int'
 	];
 
-	public function persona()
-	{
-		return $this->belongsTo(Persona::class, 'ID');
-	}
-
 	public function usuario()
 	{
-		return $this->belongsTo(Usuario::class, 'NomUsuario');
+		return $this->belongsTo(Usuario::class, 'ID_Usuario', 'ID');
+	}
+
+	public function persona()
+	{
+		return $this->belongsTo(Persona::class, 'ID_Persona', 'ID');
 	}
 }

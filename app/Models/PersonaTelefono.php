@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class PersonaTelefono
  * 
  * @property int $ID
+ * @property int $ID_Persona
  * @property string $Telefono
  * 
  * @property Persona $persona
@@ -26,6 +27,7 @@ class PersonaTelefono extends Model
 	public $timestamps = true;
 	
 	protected $fillable = [
+		'ID_Persona',
 		'Telefono'
 	];
 	protected $casts = [
@@ -34,6 +36,6 @@ class PersonaTelefono extends Model
 
 	public function persona()
 	{
-		return $this->belongsTo(Persona::class, 'ID');
+		return $this->belongsTo(Persona::class, 'ID_Persona' , 'ID');
 	}
 }
