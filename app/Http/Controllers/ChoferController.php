@@ -83,7 +83,8 @@ class ChoferController extends Controller
         $choferCamion = ChoferCamion::create([
             'ID_Camion' => $camionID,
             'ID_Chofer' => $choferID,
-            'Estado' => $estado,
+            'ID_Estado' => $estado,
+            'Fecha_Hora_Inicio' => now(),
         ]);
 
         $choferCamion->save();

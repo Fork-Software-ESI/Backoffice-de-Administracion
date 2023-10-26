@@ -16,10 +16,10 @@
     <form action="{{ route('asignarChofer') }}" method="POST">
         @csrf
         <label for="ID_Chofer">ID del chofer:
-            <input type="number" name="ID_Chofer" value="{{ old('ID_Chofer') }}">
+            <input type="number" name="ID_Chofer" value="{{ old('ID_Chofer') }}" required>
         </label> <br><br>
         <label for="ID_Camion">ID del camion:
-            <input type="number" name="ID_Camion" value="{{ old('ID_Camion') }}">
+            <input type="number" name="ID_Camion" value="{{ old('ID_Camion') }}" required>
         </label> <br><br>
         <label> Ingrese el estado en que se encuentra:
             <select name="estado">
