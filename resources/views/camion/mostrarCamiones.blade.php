@@ -16,6 +16,8 @@
                 <th>Matricula</th>
                 <th>Peso Maximo en Kg</th>
                 <th>Chofer Asignado</th>
+                <th>Almacen</th>
+                <th>Plataforma</th>
                 <th>Creacion</th>
                 <th>Actualizacion</th>
                 <th>Eliminacion</th>
@@ -28,6 +30,8 @@
                     <td>{{ $camiones['matricula'] }}</td>
                     <td>{{ $camiones['pesoMaximoKg'] }}</td>
                     <td>{{ $camiones['chofer'] }}</td>
+                    <td>{{ $camiones['almacen'] }}</td>
+                    <td>{{ $camiones['plataforma'] }}</td>
                     <td>{{ $camiones['created_at'] }}</td>
                     <td>{{ $camiones['updated_at'] }}</td>
                     <td>{{ $camiones['deleted_at'] }}</td>
