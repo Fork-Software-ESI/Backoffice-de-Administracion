@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Camion;
 use App\Models\ChoferCamion;
 use App\Models\Chofer;
+use App\Models\Paquete;
+use App\Models\LoteCamion;
+use App\Models\Lote;
+use App\Models\Forma;
 use App\Models\Persona;
 
 class CamionController extends Controller
@@ -38,10 +42,26 @@ class CamionController extends Controller
     {
         $matricula = $request->input('matricula');
         $camion = Camion::where('Matricula', $matricula)->first();
+
         if (!$camion) {
             return redirect()->route('vistaBuscarCamion')->with(['mensaje' => 'Camión no encontrado']);
         }
-        return view('camion.buscarCamion', ['camion' => $camion]);
+
+        $choferCamion = ChoferCamion::where('ID_Camion', $camion->ID)->first();
+        $chofer = Persona::find($choferCamion->ID_Chofer);
+        $nombre = $chofer ? $chofer->Nombre : 'No tiene';
+
+        $datos = [
+            'id' => $camion->ID,
+            'matricula' => $camion->Matricula,
+            'pesoMaximoKg' => $camion->PesoMaximoKg,
+            'chofer' => $nombre,
+            'created_at' => $camion->created_at,
+            'updated_at' => $camion->updated_at,
+            'deleted_at' => $camion->deleted_at,
+        ];
+        
+        return view('camion.buscarCamion', ['camiones' => $datos]);
     }
 
     public function crearCamion(Request $request)
@@ -148,7 +168,8 @@ class CamionController extends Controller
         $choferCamion = ChoferCamion::create([
             'ID_Camion' => $camionID,
             'ID_Chofer' => $choferID,
-            'Estado' => $estado,
+            'ID_Estado' => $estado,
+            'Fecha_Hora_Inicio' => now(),
         ]);
 
         $choferCamion->save();
@@ -156,6 +177,56 @@ class CamionController extends Controller
         session()->flash('mensaje', 'Camion vinculado con Chofer existosamente');
         return redirect()->route('asignarChofer');
     }
+    public function contenidoCamion($matricula)
+    {
+        $camion = Camion::where('Matricula', $matricula)->first();
+        
+        if (!$camion) {
+            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no se encontró');
+        }
+
+        $choferCamion = ChoferCamion::where('ID_Camion', $camion->ID)->first();
+        
+        if (!$choferCamion) {
+            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene chofer asignado');
+        }
+
+        $chofer = Persona::find($choferCamion->ID_Chofer);
+
+        $lotesCamion = LoteCamion::where('ID_Camion', $camion->ID)->first();
+
+        if(!$lotesCamion){
+            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene lote asignado');
+        }
+
+        $lote = Lote::where('ID', $lotesCamion->ID_Lote)->first();
+
+        $forma = Forma::where('ID_Lote', $lote->ID)->first();
+        if(!$forma){
+            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene lote asignado');
+        }
+
+        $paquete = Paquete::find($forma->ID_Paquete);
+
+        $datosLote = [
+            /* 'id' => $camion->ID,
+            'matricula' => $camion->Matricula,
+            'pesoMaximoKg' => $camion->PesoMaximoKg,
+            'chofer' => $chofer->Nombre, */
+            'lote' => $lote ? $lote->ID : 'No disponible',
+            'descripcionLote' => $lote ? $lote->Descripcion : 'No disponible',
+            'pesoLote' => $lote ? $lote->Peso_Kg : 'No disponible',
+        ];
+    
+        $datosPaquete = [
+            'paquete' => $paquete ? $paquete->ID : 'No disponible',
+            'descripcionPaquete' => $paquete ? $paquete->Descripcion : 'No disponible',
+            'pesoPaquete' => $paquete ? $paquete->Peso_Kg : 'No disponible',
+        ];
+
+        return view('camion.contenidoCamion', ['datosLote' => $datosLote, 'datosPaquete' => $datosPaquete ]);
+    }
+
     public function eliminarCamion($matricula)
     {
         $camion = Camion::where('Matricula', $matricula)->first();

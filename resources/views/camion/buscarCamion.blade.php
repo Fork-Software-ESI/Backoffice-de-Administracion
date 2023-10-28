@@ -24,23 +24,24 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $camion->ID }}</td>
-                    <td>{{ $camion->Matricula }}</td>
-                    <td>{{ $camion->PesoMaximoKg }}</td>
-                    <td>{{ $camion->Chofer }}</td>
-                    <td>{{ $camion->created_at }}</td>
-                    <td>{{ $camion->updated_at }}</td>
-                    <td>{{ $camion->deleted_at }}</td>
+                    <td>{{ $camiones['id'] }}</td>
+                    <td>{{ $camiones['matricula'] }}</td>
+                    <td>{{ $camiones['pesoMaximoKg'] }}</td>
+                    <td>{{ $camiones['chofer'] }}</td>
+                    <td>{{ $camiones['created_at'] }}</td>
+                    <td>{{ $camiones['updated_at'] }}</td>
+                    <td>{{ $camiones['deleted_at'] }}</td>
                 </tr>
             </tbody>
         </table>
         <br><br>
         
-        <form method="POST" action="{{ route('eliminarCamion', ['matricula' => $camion->Matricula]) }}">
+        <form method="POST" action="{{ route('eliminarCamion', ['matricula' => $camiones['matricula']]) }}">
             @csrf
             @method('DELETE')
             <button type="submit">Eliminar Camión</button>
         </form><br>
-        <a href="{{ route('editarCamion', ['matricula' => $camion->Matricula]) }}">Editar Camión</a>
+        <a href="{{ route('editarCamion', ['matricula' => $camiones['matricula']]) }}">Editar Camión</a> <br>
+        <a href="{{ route('contenidoCamion', ['matricula' => $camiones['matricula']]) }}">Ver Contenido</a>
 </body>
 </html>

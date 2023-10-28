@@ -188,6 +188,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/asignarChofer', [CamionController::class, 'asignarChofer'])->name('asignarChofer');
 
+    Route::get('/contenido-camion/{matricula}', [CamionController::class, 'contenidoCamion'])->name('contenidoCamion');
 
     Route::delete('/eliminar-camion/{matricula}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
 
