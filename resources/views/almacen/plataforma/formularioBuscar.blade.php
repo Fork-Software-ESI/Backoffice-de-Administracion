@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="plataforma">Volver a Plataforma</a>
+    <a href="{{ route('vistaPlataforma') }}">Volver a Plataforma</a>
     <h2>Bienvenido a Buscar Plataforma</h2>
     <br><br>
     <form method="POST" action="{{ route('buscarPlataforma') }}">

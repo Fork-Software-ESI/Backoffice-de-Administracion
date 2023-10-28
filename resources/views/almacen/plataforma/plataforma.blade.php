@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="../almacen.blade.php">Volver al aparatado de Almacen</a><br>
+    <a href="{{ route('vistaAlmacen') }}">Volver al aparatado de Almacen</a><br>
     <h2>Bienvenido a Buscar Plataforma</h2>
     <ol>
         <li><a href="{{ route('mostrarPlataforma') }}">Ver Plataformas</a></li>
