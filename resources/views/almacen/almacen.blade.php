@@ -13,6 +13,7 @@
         <li><a href="{{ route('mostrarAlmacen') }}">Mostrar almacenes</a></li>
         <li><a href="{{ route('vistaBuscarAlmacen') }}">Buscar almacen y eliminar o editar el mismo</a></li>
         <li><a href="{{ route('crearAlmacen') }}">Crear almacen</a></li>
+        <li><a href="{{ route('vistaPlataforma') }}">Plataforma</a></li>
     </ol>
 </body>
 </html>

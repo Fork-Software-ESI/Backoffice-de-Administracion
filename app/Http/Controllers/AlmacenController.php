@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Almacen;
+use App\Models\Camion;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Models\Plataforma;
+use App\Models\CamionPlataforma;
 use Carbon\Carbon;
 
 
@@ -79,8 +82,6 @@ class AlmacenController extends Controller
             return redirect()->route('vistaBuscarAlmacen', ['id' => $almacen->ID])->with('mensaje', 'Hubo un problema al actualizar el Almacen');
         }
     }
-    
-
     public function eliminarAlmacen($ID)
     {
         $almacen = Almacen::find($ID);
@@ -91,5 +92,25 @@ class AlmacenController extends Controller
         $almacen->save();
 
         return redirect()->route('vistaBuscarAlmacen')->with('mensaje', 'Almacen eliminado con éxito');
+    }
+
+    public function mostrarPlataforma()
+    {
+        $plataforma = Plataforma::all()->whereNull('deleted_at');
+
+        $datos = [];
+
+        foreach($plataforma as $plataformas){
+            $camion = CamionPlataforma::where('Numero_Plataforma', $plataformas->Numero)->first();
+            $matricula = $camion ? Camion::where('ID', $camion->ID_Camion)->first()->Matricula : 'No asignado';
+            
+            $datos[] = [
+                'Numero' => $plataformas->Numero,
+                'ID_Almacen' => $plataformas->ID_Almacen,
+                'Camion' => $matricula,
+            ];
+        }
+
+        return view('almacen.plataforma.mostrarPlataforma', ['datos' => $datos]);
     }
 }

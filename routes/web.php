@@ -192,5 +192,25 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/eliminar-camion/{matricula}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
 
+    //
+
+    Route::get('/menu-plataforma', function () {
+        return view('almacen.plataforma.plataforma');
+    })->name('vistaPlataforma');
+
+    Route::get('/plataforma', [AlmacenController::class, 'mostrarPlataforma'])->name('mostrarPlataforma');
+
+    Route::get('/buscar-plataforma', function () {
+        return view('almacen.plataforma.formularioBuscar');
+    })->name('vistaBuscarPlataforma');
+
+    Route::post('/buscar-plataforma', [AlmacenController::class, 'buscarPlataforma'])->name('buscarPlataforma');
+
+    Route::get('/crear-plataforma', function () {
+        return view('almacen.plataforma.crearPlataforma');
+    })->name('vistaCrearPlataforma');
+
+    Route::post('/crear-plataforma', [AlmacenController::class, 'crearPlataforma'])->name('crearPlataforma');
+
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
