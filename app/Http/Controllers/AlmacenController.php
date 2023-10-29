@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Plataforma;
 use App\Models\CamionPlataforma;
+use App\Models\CamionPlataformaSalida;
 use Carbon\Carbon;
 
 
@@ -103,11 +104,15 @@ class AlmacenController extends Controller
         foreach($plataforma as $plataformas){
             $camion = CamionPlataforma::where('Numero_Plataforma', $plataformas->Numero)->first();
             $matricula = $camion ? Camion::where('ID', $camion->ID_Camion)->first()->Matricula : 'No asignado';
-            
+            $llegada = $camion ? $camion->Fecha_Hora_Llegada : 'No asignado';
+            $salida = $camion ? CamionPlataformaSalida::where('Numero_Plataforma', $plataformas->Numero)->first()->Fecha_Hora_Salida : 'No ha salido';
+
             $datos[] = [
                 'Numero' => $plataformas->Numero,
                 'ID_Almacen' => $plataformas->ID_Almacen,
                 'Camion' => $matricula,
+                'horaLlegada' => $llegada,
+                'horaSalida' => $salida,
             ];
         }
 

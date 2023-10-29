@@ -15,6 +15,9 @@
             <tr>
                 <th>Numero</th>
                 <th>ID_Almacen</th>
+                <th>Camion</th>
+                <th>Hora de llegada</th>
+                <th>Hora de salida</th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +26,8 @@
                     <td>{{ $plataformas['Numero'] }}</td>
                     <td>{{ $plataformas['ID_Almacen'] }}</td>
                     <td>{{ $plataformas['Camion'] }}</td>
+                    <td>{{ $plataformas['horaLlegada'] }}</td>
+                    <td>{{ $plataformas['horaSalida'] }}</td>
                 </tr>
             @endforeach
         </tbody>
