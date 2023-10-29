@@ -8,6 +8,7 @@ use App\Http\Controllers\LoteController;
 use App\Http\Controllers\EstanteriaController;
 use App\Http\Controllers\ChoferController;
 use App\Http\Controllers\CamionController;
+use App\Http\Controllers\PlataformaController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
@@ -176,6 +177,26 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/actualizar-camion/{matricula}', [CamionController::class, 'actualizarCamion'])->name('actualizarCamion');
 
     Route::delete('/eliminar-camion/{id}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
+
+    //
+
+    Route::get('/menu-plataforma', function () {
+        return view('almacen.plataforma.plataforma');
+    })->name('vistaPlataforma');
+
+    Route::get('/plataforma', [PlataformaController::class, 'mostrarPlataforma'])->name('mostrarPlataforma');
+
+    Route::get('/buscar-plataforma', function () {
+        return view('almacen.plataforma.formularioBuscar');
+    })->name('vistaBuscarPlataforma');
+
+    Route::post('/buscar-plataforma', [PlataformaController::class, 'buscarPlataforma'])->name('buscarPlataforma');
+
+    Route::get('/crear-plataforma', function () {
+        return view('almacen.plataforma.crearPlataforma');
+    })->name('vistaCrearPlataforma');
+
+    Route::post('/crear-plataforma', [PlataformaController::class, 'crearPlataforma'])->name('crearPlataforma');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
