@@ -198,5 +198,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/crear-plataforma', [PlataformaController::class, 'crearPlataforma'])->name('crearPlataforma');
 
+    Route::get('/editar-plataforma/{numero}', [PlataformaController::class, 'editarPlataforma'])->name('editarPlataforma');
+
+    Route::patch('/actualizar-plataforma/{numero}', [PlataformaController::class, 'actualizarPlataforma'])->name('actualizarPlataforma');
+
+    Route::delete('/eliminar-plataforma/{numero}', [PlataformaController::class, 'eliminarPlataforma'])->name('eliminarPlataforma');
+
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });

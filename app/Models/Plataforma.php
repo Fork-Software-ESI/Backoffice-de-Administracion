@@ -24,6 +24,12 @@ class Plataforma extends Model
 {
 	protected $table = 'plataforma';
 	public $timestamps = true;
+	protected $primaryKey = 'Numero';
+
+	protected $fillable = [
+		'Numero',
+		'ID_Almacen'
+	];
 
 	protected $casts = [
 		'ID_Almacen' => 'int'
