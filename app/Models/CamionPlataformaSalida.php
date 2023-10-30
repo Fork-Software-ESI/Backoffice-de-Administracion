@@ -26,7 +26,7 @@ class CamionPlataformaSalida extends Model
 	protected $table = 'camion_plataforma_salida';
 	public $incrementing = false;
 	public $timestamps = true;
-
+	protected $primaryKey = ['ID_Camion', 'ID_Almacen', 'Numero_Plataforma'];
 	protected $casts = [
 		'ID_Camion' => 'int',
 		'ID_Almacen' => 'int',
@@ -35,12 +35,15 @@ class CamionPlataformaSalida extends Model
 	];
 
 	protected $fillable = [
+		'ID_Camion',
+		'ID_Almacen',
+		'Numero_Plataforma',
 		'Fecha_Hora_Salida'
 	];
 
 	public function camion_plataforma()
 	{
-		return $this->belongsTo(CamionPlataforma::class, 'ID_Camion')
+		return $this->belongsTo(CamionPlataforma::class, ['ID_Camion', 'ID_Almacen', 'Numero_Plataforma'])
 					->where('camion_plataforma.ID_Camion', '=', 'camion_plataforma_salida.ID_Camion')
 					->where('camion_plataforma.ID_Almacen', '=', 'camion_plataforma_salida.ID_Almacen')
 					->where('camion_plataforma.Numero_Plataforma', '=', 'camion_plataforma_salida.Numero_Plataforma');

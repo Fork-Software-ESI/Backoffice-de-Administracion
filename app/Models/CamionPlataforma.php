@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
 class CamionPlataforma extends Model
 {
 	protected $table = 'camion_plataforma';
+
+	protected $primaryKey = ['ID_Camion', 'ID_Almacen', 'Numero_Plataforma'];
 	public $incrementing = false;
 	public $timestamps = true;
 
@@ -37,6 +39,9 @@ class CamionPlataforma extends Model
 	];
 
 	protected $fillable = [
+		'ID_Camion',
+		'ID_Almacen',
+		'Numero_Plataforma',
 		'Fecha_Hora_Llegada'
 	];
 
@@ -47,13 +52,11 @@ class CamionPlataforma extends Model
 
 	public function plataforma()
 	{
-		return $this->belongsTo(Plataforma::class, 'ID_Almacen', 'ID_Almacen')
-					->where('plataforma.ID_Almacen', '=', 'camion_plataforma.ID_Almacen')
-					->where('plataforma.Numero', '=', 'camion_plataforma.Numero_Plataforma');
+		return $this->belongsTo(Plataforma::class, ['ID_Almacen', 'Numero_Plataforma'], ['ID_Almacen', 'Numero']);
 	}
 
 	public function camion_plataforma_salida()
 	{
-		return $this->hasOne(CamionPlataformaSalida::class, 'ID_Camion');
+		return $this->hasMany(CamionPlataformaSalida::class, ['ID_Camion', 'ID_Almacen', 'Numero_Plataforma']);
 	}
 }

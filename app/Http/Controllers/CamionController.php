@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Plataforma;
+use App\Models\CamionPlataforma;
+use App\Models\CamionPlataformaSalida;
 use App\Models\Camion;
 
 class CamionController extends Controller
@@ -75,6 +78,84 @@ class CamionController extends Controller
         return view('camion.editarCamion', ['camion' => $camion]);
     }
 
+    public function marcarHora(Request $request)
+    {
+        $matricula = $request->input('matricula');
+        $hora = $request->input('hora');
+
+        $camion = Camion::where('Matricula', $matricula)->first();
+        if (!$camion) {
+            return redirect()->route('formularioHora')->with(['mensaje' => 'Camión no encontrado']);
+        }
+
+        $camionPlataforma = CamionPlataforma::where('ID_Camion', $camion->ID)->first();
+
+        if (!$camionPlataforma) {
+            return redirect()->route('formularioHora')->with(['mensaje' => 'El camión no tiene una plataforma asignada']);
+        }
+
+        $camionPlataformaSalida = CamionPlataformaSalida::where('ID_Camion', $camion->ID)->first();
+
+        if($hora == 'llegada'){
+            if ($camionPlataforma->Fecha_Hora_Llegada !== null) {
+                return redirect()->route('formularioHora')->with(['mensaje' => 'El camión ya ha llegado']);
+            }
+
+            CamionPlataforma::where('ID_Camion', $camion->ID)->update(['Fecha_Hora_Llegada' => now()]);
+
+            return redirect()->route('formularioHora')->with('mensaje','Se a marcado la hora exitosamente');
+        }
+        
+        if($camionPlataformaSalida->Fecha_Hora_Salida != null){
+            return redirect()->route('formularioHora')->with(['mensaje' => 'El camión ya ha salido']);
+        }
+        CamionPlataformaSalida::where('ID_Camion', $camion->ID)->update(['Fecha_Hora_Llegada' => now()]);
+        
+        return redirect()->route('formularioHora')->with('mensaje','Se a marcado la hora exitosamente');
+    }
+
+    public function asignarPlataforma(Request $request)
+    {
+        $matricula = $request->input('matricula');
+        $numero = $request->input('numero_plataforma');
+
+        $camion = Camion::where('matricula', $matricula)->first();
+        if (!$camion) {
+            return redirect()->route('formularioAsignarPlataforma')->with('mensaje', 'Camión no encontrado');
+        }
+
+        $plataforma = Plataforma::where('Numero', $numero)->first();
+        if (!$plataforma) {
+            return redirect()->route('formularioAsignarPlataforma')->with('mensaje', 'Plataforma no encontrada');
+        }
+        
+        $camionPlataforma = CamionPlataforma::where('ID_Camion', $camion->ID)->first();
+        if ($camionPlataforma != null) {
+            return redirect()->route('formularioAsignarPlataforma')->with('mensaje', 'El camión ya tiene una plataforma asignada');
+        }
+        $camionPlataforma = CamionPlataforma::where('Numero_Plataforma', $plataforma->Numero)->first();
+        if ($camionPlataforma != null) {
+            return redirect()->route('formularioAsignarPlataforma')->with('mensaje', 'La plataforma ya tiene un camión asignado');
+        }
+
+        $asignarPlataforma = CamionPlataforma::create([
+            'ID_Camion' => $camion->ID,
+            'ID_Almacen' => $plataforma->ID_Almacen,
+            'Numero_Plataforma' => $plataforma->Numero,
+        ]);
+
+        $asignarPlataforma->save();
+
+        $plataformaSalida = CamionPlataformaSalida::create([
+            'ID_Camion' => $camion->ID,
+            'ID_Almacen' => $plataforma->ID_Almacen,
+            'Numero_Plataforma' => $plataforma->Numero,
+        ]);
+
+        $plataformaSalida->save();
+
+        return redirect()->route('formularioAsignarPlataforma')->with('mensaje', 'Plataforma asignada exitosamente');
+    }
     public function eliminarCamion($id)
     {
         $camion = Camion::find($id);

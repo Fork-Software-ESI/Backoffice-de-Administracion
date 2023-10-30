@@ -176,6 +176,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::patch('/actualizar-camion/{matricula}', [CamionController::class, 'actualizarCamion'])->name('actualizarCamion');
 
+    Route::get('/marcar-hora', function() {
+        return view('camion.formularioHora');
+    })->name('formularioHora');
+
+    Route::post('/marcar-hora', [CamionController::class,'marcarHora'])->name('marcarHora');
+
+    Route::get('/asignar-plataforma', function(){
+        return view('camion.asignarPlataforma');
+    })->name('formularioAsignarPlataforma');
+    
+    Route::post('/asignar-plataforma', [CamionController::class,'asignarPlataforma'])->name('asignarPlataforma');
+
     Route::delete('/eliminar-camion/{id}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
 
     //

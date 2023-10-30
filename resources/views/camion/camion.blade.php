@@ -13,6 +13,8 @@
         <li><a href="{{ route('mostrarCamion') }}">Mostrar camiones</a></li>
         <li><a href="{{ route('vistaBuscarCamion') }}">Buscar camión y eliminar o editar el mismo</a></li>
         <li><a href="{{ route('crearCamion') }}">Crear camión</a></li>
+        <li><a href="{{ route('formularioHora') }}">Asignar hora de llegada o salida de plataforma</a></li>
+        <li><a href="{{ route('formularioAsignarPlataforma') }}">Asignar un camion a una plataforma</a></li>
     </ol>
 </body>
 </html>
