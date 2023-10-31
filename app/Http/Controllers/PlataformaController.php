@@ -7,6 +7,7 @@ use App\Models\Plataforma;
 use App\Models\CamionPlataforma;
 use App\Models\Camion;
 use App\Models\CamionPlataformaSalida;
+use App\Models\Almacen;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -63,5 +64,32 @@ class PlataformaController extends Controller
         ];
 
         return view('almacen.plataforma.buscarPlataforma', ['datos' => $datos]);
+    }
+
+    public function crearPlataforma(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'numero' => 'required|numeric',
+            'ID_Almacen' => 'required|numeric',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+        $validatedData = $validator->validated();
+
+        if (Plataforma::where('numero', $validatedData['numero'])->exists()) {
+            return redirect()->route('vistaCrearPlataforma')->with('mensaje','Plataforma ya existente');
+        }
+        if (!Almacen::where('ID', $validatedData['ID_Almacen'])->exists()) {
+            return redirect()->route('vistaCrearPlataforma')->with('mensaje','Almacen no existente');
+        }
+
+        $plataforma = Plataforma::create([
+            'Numero' => $validatedData['numero'],
+            'ID_Almacen' => $validatedData['ID_Almacen'],
+        ]);
+        $plataforma->save();
+        return redirect()->route('vistaCrearPlataforma')->with('mensaje', 'Se ha creado la plataforma correctamente');
     }
 }
