@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Camion - Mostrar Camiones</title>
+    <style>
+        table,th,td {
+            border: 1px solid;
+        }
+    </style>
 </head>
 <body>
 <a href="{{ route('vistaCamion') }}">Volver al menú de Camión</a>
@@ -18,9 +23,8 @@
                 <th>Chofer Asignado</th>
                 <th>Almacen</th>
                 <th>Plataforma</th>
-                <th>Creacion</th>
-                <th>Actualizacion</th>
-                <th>Eliminacion</th>
+                <th>Fecha hora llegada</th>
+                <th>Fecha hora salida</th>
             </tr>
         </thead>
         <tbody>
@@ -32,9 +36,8 @@
                     <td>{{ $camiones['chofer'] }}</td>
                     <td>{{ $camiones['almacen'] }}</td>
                     <td>{{ $camiones['plataforma'] }}</td>
-                    <td>{{ $camiones['created_at'] }}</td>
-                    <td>{{ $camiones['updated_at'] }}</td>
-                    <td>{{ $camiones['deleted_at'] }}</td>
+                    <td>{{ $camiones['horaLlegada'] }}</td>
+                    <td>{{ $camiones['horaSalida'] }}</td>
                 </tr>
             @endforeach
         </tbody>

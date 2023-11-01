@@ -14,7 +14,6 @@ use App\Models\Paquete;
 use App\Models\LoteCamion;
 use App\Models\Lote;
 use App\Models\Forma;
-use App\Models\CamionPlataforma;
 use App\Models\Persona;
 
 class CamionController extends Controller
@@ -29,8 +28,11 @@ class CamionController extends Controller
             $choferCamion = ChoferCamion::where('ID_Camion', $camiones->ID)->first();
             $nombre = $choferCamion ? Persona::find($choferCamion->ID_Chofer)->Nombre : 'No tiene';
             $camionPlataforma = CamionPlataforma::where('ID_Camion', $camiones->ID)->first();
+            $camionSalida = CamionPlataformaSalida::where('ID_Camion', $camiones->ID)->first();
             $plataforma = $camionPlataforma ? $camionPlataforma->Numero_Plataforma : 'No tiene';
             $almacen = $camionPlataforma ? $camionPlataforma->ID_Almacen : 'No tiene';
+            $horaInicio = $camionPlataforma ? $camionPlataforma->Fecha_Hora_Llegada : 'No tiene';
+            $horaSalida = $camionSalida ? $camionSalida->Fecha_Hora_Salida : 'No tiene';
 
             $data[] = [
                 'id' => $camiones->ID,
@@ -39,9 +41,8 @@ class CamionController extends Controller
                 'chofer' => $nombre,
                 'almacen' => $almacen,
                 'plataforma' => $plataforma,
-                'created_at' => $camiones->created_at,
-                'updated_at' => $camiones->updated_at,
-                'deleted_at' => $camiones->deleted_at,
+                'horaLlegada' => $horaInicio,
+                'horaSalida' => $horaSalida,
             ];
         }
         
