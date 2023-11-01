@@ -14,10 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('persona_telefono', function (Blueprint $table) {
-            $table->smallInteger('ID');
+            $table->smallInteger('ID', true);
+            $table->smallInteger('ID_Persona')->index('ID_Persona');
             $table->string('Telefono', 50);
-
-            $table->primary(['ID', 'Telefono']);
             $table->timestamps();
             $table->softDeletes();
         });
