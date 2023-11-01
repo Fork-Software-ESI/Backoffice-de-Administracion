@@ -29,6 +29,7 @@ class LoteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'descripcion' => 'required|string',
+            'peso_kg' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +42,10 @@ class LoteController extends Controller
             return response()->json(['error' => 'La descripcion de el lote ya está en uso'], 422);
         }
 
-        Lote::create($validatedData);
+        Lote::create([
+            'Descripcion' => $validatedData['descripcion'],
+            'Peso_Kg' => $validatedData['peso_kg'],
+        ]);
 
         session()->flash('mensaje', 'Lote creado exitosamente');
         return redirect()->route('crearLote');
@@ -59,19 +63,21 @@ class LoteController extends Controller
 
         $validator = Validator::make($request->all(), [
             'descripcion' => 'string|max:255',
+            'peso_kg' => 'numeric',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('editarLote', ['id' => $lote->id])->withErrors($validator)->withInput();
+            return redirect()->route('editarLote', ['id' => $lote->ID])->withErrors($validator)->withInput();
         }
 
-        $data = $request->only(['descripcion']);
+        $data = $request->only(['descripcion', 'peso_kg']);
 
-        if(!$lote->update($data)){
-            return redirect()->route('vistaBuscarLote', ['id' => $lote->id])
-            ->with('mensaje', 'Error al actualizar Lote');
-        }
-        return redirect()->route('vistaBuscarLote', ['id' => $lote->id])
+        $lote -> update([
+            'Descripcion' => $data['descripcion'],
+            'Peso_Kg' => $data['peso_kg'],
+        ]);
+
+        return redirect()->route('vistaBuscarLote', ['id' => $lote->ID])
             ->with('mensaje', 'Lote actualizado exitosamente');
     }
 

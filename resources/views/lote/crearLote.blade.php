@@ -22,6 +22,12 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
+        <label for="peso_kg">Peso_Kg <input value="{{ old('peso_kg') }}" type="text" name="peso_kg" required>
+            @error('peso_kg')
+                <br>
+                <small style="color:red;">{{ $message }}</small>
+            @enderror
+        </label><br><br>
         <button type="submit">Crear</button>
     </form>
 </body>
