@@ -25,35 +25,31 @@
                 <th>Creado</th>
                 <th>Actualizado</th>
                 <th>Eliminado</th>
-                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($paquete as $paq)
-                <tr>
-                    <td>{{ $paq->ID }}</td>
-                    <td>{{ $paq->ID_Cliente }}</td>
-                    <td>{{ $paq->Descripcion }}</td>
-                    <td>{{ $paq->Peso_Kg }}</td>
-                    <td>{{ $paq->ID_Estado }}</td>
-                    <td>{{ $paq->Destino }}</td>
-                    <td>{{ $paq->Codigo }}</td>
-                    <td>{{ $paq->created_at }}</td>
-                    <td>{{ $paq->updated_at }}</td>
-                    <td>{{ $paq->deleted_at }}</td>
-                    <td>
-                        <form method="POST" action="{{ route('eliminarPaquete', ['id' => $paq->ID]) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Eliminar Paquete</button>
-                        </form>
-                        <a href="{{ route('editarPaquete', ['id' => $paq->ID]) }}">Editar Paquete</a>
-                    </td>
-                </tr>
-            @endforeach
+            <tr>
+                <td>{{ $paquete->ID }}</td>
+                <td>{{ $paquete->ID_Cliente }}</td>
+                <td>{{ $paquete->Descripcion }}</td>
+                <td>{{ $paquete->Peso_Kg }}</td>
+                <td>{{ $paquete->ID_Estado }}</td>
+                <td>{{ $paquete->Destino }}</td>
+                <td>{{ $paquete->Codigo }}</td>
+                <td>{{ $paquete->created_at }}</td>
+                <td>{{ $paquete->updated_at }}</td>
+                <td>{{ $paquete->deleted_at }}</td>
+            </tr>
         </tbody>
     </table>
     <br><br>
+    <form method="POST" action="{{ route('eliminarPaquete', ['id' => $paquete->ID]) }}">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Eliminar Paquete</button>
+    </form>
+    <a href="{{ route('editarPaquete', ['id' => $paquete->ID]) }}">Editar Paquete</a>    
+
 </body>
 
 </html>

@@ -13,6 +13,22 @@
     </style>
 </head>
 
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        color: #000000;
+        font-family: monospace;
+        font-size: 25px;
+        text-align: left;
+    }
+    th {
+        background-color: #000000;
+        color: white;
+    }
+    tr:nth-child(even) {background-color: #f2f2f2}
+</style>
+
 <body>
     <a href="{{ route('vistaPaquete') }}">Volver al menú de Paquete</a><br>
     <h2>Lista de paquetes</h2>

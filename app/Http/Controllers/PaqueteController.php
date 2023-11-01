@@ -20,13 +20,12 @@ class PaqueteController extends Controller
         $response = @file_get_contents($url);
         $data = json_decode($response);
 
-        if ($data != null && !empty($data->items)) {
-            return true;
-        } else {
-            return false;
-        }
+    if ($data == null || empty($data->items)) {
+        return true;
+    } else {
+        return false;
     }
-
+}
     public function crearPaquete(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -62,16 +61,21 @@ class PaqueteController extends Controller
     {
         $ID = $request->input('id');
         $paquete = Paquete::find($ID);
+
         if (!$paquete) {
             return redirect()->route('vistaBuscarPaquete')->with(['mensaje' => 'Paquete no encontrado']);
         }
+
         return view('paquete.buscarPaquete', ['paquete' => $paquete]);
     }
 
     public function editarPaquete($id)
     {
         $paquete = Paquete::find($id);
-
+        
+        if($paquete -> deleted_at != null){
+            return redirect()->route('vistaBuscarPaquete')->with(['mensaje' => 'Paquete no encontrado']);
+        }
         return view('paquete.editarPaquete', ['paquete' => $paquete]);
     }
 
@@ -82,22 +86,29 @@ class PaqueteController extends Controller
 
         $validator = Validator::make($request->all(), [
             'descripcion' => 'string',
-            'peso_kg' => 'numeric',
-            'lote_id' => 'exists:lotes,id',
+            'peso_Kg' => 'numeric',
+            'ID_Cliente' => 'numeric',
+            'ID_Estado' => 'in:1,2,3',
+            'destino' => 'string',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('editarPaquete', ['id' => $paquete->id])->withErrors($validator)->withInput();
+            return redirect()->route('editarPaquete', ['id' => $paquete->ID])->withErrors($validator)->withInput();
         }
 
-        $data = $request->only(['descripcion', 'peso_kg']);
+        $data = $request->only(['descripcion', 'peso_Kg', 'ID_Cliente', 'ID_Estado', 'destino']);
+        
 
-        if (!$paquete->update($data)) {
-            return redirect()->route('vistaBuscarAlmacen', ['id' => $paquete->id])
-                ->with('mensaje', 'Hubo un problema al actualizar el Almacen');
-        }
-        return redirect()->route('vistaBuscarPaquete', ['id' => $paquete->id])
-            ->with('mensaje', 'Paquete actualizado exitosamente');
+        $paquete-> update([
+            'Descripcion' => $data['descripcion'],
+            'Peso_Kg' => $data['peso_Kg'],
+            'ID_Cliente' => $data['ID_Cliente'],
+            'ID_Estado' => $data['ID_Estado'],
+            'Destino' => $data['destino'],
+        ]);
+
+        return redirect()->route('vistaBuscarPaquete', ['id' => $paquete->ID])
+        ->with('mensaje', 'Paquete actualizado de forma exitosa');
     }
 
 

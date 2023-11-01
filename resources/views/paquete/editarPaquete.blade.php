@@ -14,33 +14,33 @@
     <form action="{{ route('actualizarPaquete', ['id' => $paquete->ID]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="Descripcion">Descripcion <input value="{{ old('Descripcion') }}" type="text" name="Descripcion"
-                required>
-            @error('Descripcion')
+        <label for="descripcion">Descripcion <input value="{{ $paquete->Descripcion }}" type="text" name="descripcion">
+            @error('descripcion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label> <br> <br>
-        <label for="Peso_Kg">Peso en kg <input value="{{ old('Peso_Kg') }}" type="text" name="Peso_Kg" required>
-            @error('Peso_Kg')
+        <label for="peso_Kg">Peso en kg <input value="{{ $paquete->Peso_Kg }}" type="text" name="peso_Kg">
+            @error('peso_Kg')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="ID_Cliente">Id del cliente <input value="{{ old('ID_Cliente') }}" type="" name="ID_Cliente">
+        <label for="ID_Cliente">Id del cliente <input value="{{ $paquete->ID_Cliente }}" type="" name="ID_Cliente">
             @error('ID_Cliente')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="ID_Estado">Estado <select name="ID_Estado" id="">
-                <option value="1">En almacen</option>
-                <option value="2">En transito</option>
-                <option value="3">Entregado</option>
+        <label for="ID_Estado">Estado 
+            <select name="ID_Estado">
+                <option value="1" {{ $paquete->ID_Estado == '1' ? 'selected' : '' }}>En almacen</option>
+                <option value="2" {{ $paquete->ID_Estado == '2' ? 'selected' : '' }}>En transito</option>
+                <option value="3" {{ $paquete->ID_Estado == '3' ? 'selected' : '' }}>Entregado</option>
             </select>
         </label><br><br>
-        <label for="Destino">Destino <input value="{{ old('Destino') }}" type="" name="Destino">
-            @error('Destino')
+        <label for="destino">Destino <input value="{{ $paquete->Destino }}" type="" name="destino">
+            @error('destino')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
