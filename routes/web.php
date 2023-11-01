@@ -48,6 +48,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/choferes', [ChoferController::class, 'mostrarChoferes'])->name('mostrarChoferes');
 
+    Route::get('/asignarCamion', function(){
+        return view('chofer.asignarCamion');
+    })->name('vistaAsignarCamion');
+
+    Route::post('/asignarCamion', [ChoferController::class, 'asignarCamion'])->name('asignarCamion');
+
+
     //
 
     Route::get('/menu-almacen', function () {
@@ -188,7 +195,15 @@ Route::middleware(['auth'])->group(function () {
     
     Route::post('/asignar-plataforma', [CamionController::class,'asignarPlataforma'])->name('asignarPlataforma');
 
-    Route::delete('/eliminar-camion/{id}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
+    Route::get('/asignarChofer', function(){
+        return view('camion.asignarChofer');
+    })->name('vistaAsignarChofer');
+
+    Route::post('/asignarChofer', [CamionController::class, 'asignarChofer'])->name('asignarChofer');
+
+    Route::get('/contenido-camion/{matricula}', [CamionController::class, 'contenidoCamion'])->name('contenidoCamion');
+
+    Route::delete('/eliminar-camion/{matricula}', [CamionController::class, 'eliminarCamion'])->name('eliminarCamion');
 
     //
 
@@ -210,11 +225,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/crear-plataforma', [PlataformaController::class, 'crearPlataforma'])->name('crearPlataforma');
 
-    Route::get('/editar-plataforma/{numero}', [PlataformaController::class, 'editarPlataforma'])->name('editarPlataforma');
-
-    Route::patch('/actualizar-plataforma/{numero}', [PlataformaController::class, 'actualizarPlataforma'])->name('actualizarPlataforma');
-
     Route::delete('/eliminar-plataforma/{numero}', [PlataformaController::class, 'eliminarPlataforma'])->name('eliminarPlataforma');
+
+    //
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });

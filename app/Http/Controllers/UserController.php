@@ -9,6 +9,7 @@ use App\Models\Cliente;
 use App\Models\Chofer;
 use App\Models\GerenteAlmacen;
 use App\Models\FuncionarioAlmacen;
+use App\Models\PersonaUsuario;
 use App\Models\PersonaTelefono;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class UserController extends Controller
         foreach ($users as $user){
             $persona = Persona::where('ID', $user->ID)->firstOrNew();
             
-            $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+            $telefono = PersonaTelefono::where('ID_Persona', $persona->ID)->first();
             
             $rol = '';
 
@@ -158,7 +159,17 @@ class UserController extends Controller
             'Correo' => $validatedData['correo'],
         ]);
 
-        $telefono = new PersonaTelefono([
+        $persona -> save();
+
+        $persona_usuario = PersonaUsuario::create([
+            'ID_Persona' => $persona->ID,
+            'ID_Usuario' => $user->ID,
+        ]);
+
+        $persona_usuario -> save();
+
+        $telefono = PersonaTelefono::create([
+            'ID_Persona' => $persona->ID,
             'Telefono' => $validatedData['telefono'],
         ]);
 

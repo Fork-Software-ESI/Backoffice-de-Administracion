@@ -72,11 +72,11 @@ class Persona extends Model
 
 	public function persona_telefonos()
 	{
-		return $this->hasMany(PersonaTelefono::class, 'ID');
+		return $this->hasMany(PersonaTelefono::class, 'ID_Persona', 'ID');
 	}
 
 	public function usuarios()
 	{
-		return $this->belongsToMany(Usuario::class, 'persona_usuario', 'ID', 'NomUsuario');
+		return $this->belongsToMany(Usuario::class, 'persona_usuario', 'ID');
 	}
 }

@@ -15,6 +15,7 @@
         <li><a href="{{ route('crearCamion') }}">Crear camión</a></li>
         <li><a href="{{ route('formularioHora') }}">Asignar hora de llegada o salida de plataforma</a></li>
         <li><a href="{{ route('formularioAsignarPlataforma') }}">Asignar un camion a una plataforma</a></li>
+        <li><a href="{{ route('asignarChofer') }}">Asigna un chofer a un camion</a></li>
     </ol>
 </body>
 </html>
