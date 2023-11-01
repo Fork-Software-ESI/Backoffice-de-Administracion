@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Plataforma
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Plataforma extends Model
 {
+	use SoftDeletes;
 	protected $table = 'plataforma';
 	public $timestamps = true;
 	protected $primaryKey = 'Numero';
@@ -34,6 +36,8 @@ class Plataforma extends Model
 	protected $casts = [
 		'ID_Almacen' => 'int'
 	];
+
+	protected $datos = ['deleted_at'];
 
 	public function almacen()
 	{

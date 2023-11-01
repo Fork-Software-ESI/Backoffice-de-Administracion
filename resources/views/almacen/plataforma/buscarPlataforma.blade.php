@@ -43,6 +43,5 @@
             @method('DELETE')
             <button type="submit">Eliminar Plataforma</button>
         </form><br>
-        <a href="{{ route('editarPlataforma', ['numero' => $datos['Numero']]) }}">Editar Plataforma</a>
 </body>
 </html>

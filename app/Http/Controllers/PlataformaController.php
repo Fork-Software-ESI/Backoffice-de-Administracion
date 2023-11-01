@@ -44,7 +44,7 @@ class PlataformaController extends Controller
         $plataforma = Plataforma::find($numero);
 
         if (!$plataforma) {
-            return redirect()->route('vistaBuscarPlataforma')->with(['mensaje' => 'Plataforma no encontrada']);
+            return redirect()->route('vistaBuscarPlataforma')->with('mensaje', 'Plataforma no encontrada');
         }
         
         $camion = CamionPlataforma::where('Numero_Plataforma', $plataforma->Numero)->first();
@@ -91,5 +91,30 @@ class PlataformaController extends Controller
         ]);
         $plataforma->save();
         return redirect()->route('vistaCrearPlataforma')->with('mensaje', 'Se ha creado la plataforma correctamente');
+    }
+
+    public function eliminarPlataforma($numero)
+    {
+        $plataforma = Plataforma::find($numero);
+        $camion = CamionPlataforma::where('Numero_Plataforma', $plataforma->Numero);
+        $camionSalida = CamionPlataformaSalida::where('Numero_Plataforma', $plataforma->Numero)->first();
+        
+        dd($plataforma, $camion, $camionSalida);
+        if (!$plataforma->deleted_at != null) {
+            return redirect()->route('vistaBuscarPlataforma')->with('mensaje', 'Plataforma ya eliminada');
+        }
+        
+        if ($camion) {
+            $camion->delete();
+        }
+
+        
+        if ($camionSalida) {
+            $camionSalida->delete();
+        }
+
+        $plataforma->delete();
+
+        return redirect()->route('bvistaBuscarPlataforma')->with('mensaje', 'Se ha eliminado la plataforma correctamente');
     }
 }

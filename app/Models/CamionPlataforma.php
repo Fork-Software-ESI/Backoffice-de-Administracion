@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class CamionPlataforma
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CamionPlataforma extends Model
 {
+	use SoftDeletes;
 	protected $table = 'camion_plataforma';
 
 	protected $primaryKey = ['ID_Camion', 'ID_Almacen', 'Numero_Plataforma'];

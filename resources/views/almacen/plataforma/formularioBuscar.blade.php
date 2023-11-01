@@ -7,7 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="{{ route('vistaPlataforma') }}">Volver a Plataforma</a>
+    <a href="{{ route('vistaPlataforma') }}">Volver a Plataforma</a> <br>
+    @if (session('mensaje'))
+            {{ session('mensaje') }}
+        </div>
+    @endif
     <h2>Bienvenido a Buscar Plataforma</h2>
     <br><br>
     <form method="POST" action="{{ route('buscarPlataforma') }}">
