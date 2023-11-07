@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Estante;
 use App\Models\PaqueteEstante;
+use App\Models\Almacen;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -49,7 +50,7 @@ class EstanteController extends Controller
     public function crearEstante(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'almacen_id' => 'exists:almacenes,id|required',
+            'ID_Almacen' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -57,10 +58,14 @@ class EstanteController extends Controller
         }
         $validatedData = $validator->validated();
 
+        $almacen = Almacen::find($validatedData['ID_Almacen']);
+        if(!$almacen){
+            return redirect()->route('estanteria.crearEstante')->withErrors(['ID_Almacen' => 'No existe el almacen'])->withInput();
+        }
+
         Estante::create($validatedData);
 
-        session()->flash('mensaje', 'Estante creado exitosamente');
-        return redirect()->route('estanteria.crearEstante');
+        return redirect()->route('crearEstante')->with('mensaje', 'Estante creado exitosamente');
     }
 
 

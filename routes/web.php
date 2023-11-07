@@ -148,7 +148,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/buscar-estanteria', [EstanteController::class, 'buscarEstante'])->name('buscarEstante');
 
     Route::get('/crear-estanteria', function () {
-        return view('estanteria.crearEstante');
+        return view('estanteria.crearEstanteria');
     })->name('crearEstante');
 
     Route::post('/crear-estanteria', [EstanteController::class, 'crearEstante']);
