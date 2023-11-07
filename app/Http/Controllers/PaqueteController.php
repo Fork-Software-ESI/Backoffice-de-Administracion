@@ -138,6 +138,11 @@ class PaqueteController extends Controller
             return redirect()->route('vistaBuscarLote')->with('mensaje', 'Lote no encontrado');
         }
 
+        $paqueteAsignado = Forma::where('ID_Paquete', $validatedData['ID_Paquete'])->first();
+        if(!$paqueteAsignado){
+            return redirect()->route('vistaAsignarLote')->with('mensaje', 'Paquete ya asignado a un lote');
+        }
+
         $forma = Forma::create([
             'ID_Lote' => $validatedData['ID_Lote'],
             'ID_Paquete' => $validatedData['ID_Paquete'],
