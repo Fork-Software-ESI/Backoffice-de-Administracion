@@ -7,7 +7,7 @@
     <title>Buscar Estanteria</title>
 </head>
 <body>
-    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a><br>
+    <a href="{{ route('vistaEstante') }}">Volver al menú de Estanteria</a><br>
     <h2>Bienvenido a Buscar Estanteria</h2>
     <h2>Informacion del estanteria:</h2>
             <table>
@@ -25,11 +25,11 @@
                 </tbody>
             </table>
 
-            <form method="POST" action="{{ route('eliminarEstanteria', ['id' => $estanteria->id]) }}">
+            <form method="POST" action="{{ route('eliminarEstante', ['id' => $estanteria->id]) }}">
                 @csrf
                 @method('DELETE')
                 <button type="submit">Eliminar Estanteria</button>
             </form><br>
-            <a href="{{ route('editarEstanteria', ['id' => $estanteria->id]) }}">Editar Estanteria</a>
+            <a href="{{ route('editarEstante', ['id' => $estanteria->id]) }}">Editar Estanteria</a>
 </body>
 </html>

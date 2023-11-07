@@ -9,9 +9,9 @@
     <a href="{{ route('home') }}">Volver al menú principal</a>
     <h1>Bienvenido a la view de estanterias</h1>
     <ol>
-        <li><a href="{{ route('mostrarEstanteria') }}">Mostrar estanterias</a></li>
-        <li><a href="{{ route('vistaBuscarEstanteria') }}">Buscar estanteria y eliminar o editar la misma</a></li>
-        <li><a href="{{ route('crearEstanteria') }}">Crear estanteria</a></li>
+        <li><a href="{{ route('mostrarEstante') }}">Mostrar estanterias</a></li>
+        <li><a href="{{ route('vistaBuscarEstante') }}">Buscar estanteria y eliminar o editar la misma</a></li>
+        <li><a href="{{ route('crearEstante') }}">Crear estanteria</a></li>
     </ol>
 </body>
 </html>

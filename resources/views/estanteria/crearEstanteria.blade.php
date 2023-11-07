@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Estanteria - Crear Estanteria</title>
+    <title>Estanteria - Crear Estante</title>
 </head>
 <body>
-    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a><br>
+    <a href="{{ route('vistaEstante') }}">Volver al menú de Estante</a><br>
     @if (session('mensaje'))
         <div class="mensaje-exito">
             {{ session('mensaje') }}
