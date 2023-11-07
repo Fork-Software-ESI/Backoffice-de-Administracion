@@ -145,19 +145,19 @@ Route::middleware(['auth'])->group(function () {
         return view('estanteria.formularioBuscar');
     })->name('vistaBuscarEstante');
 
-    Route::post('/buscar-estanteria', [EstanteController::class, 'buscarEstantes'])->name('buscarEstante');
+    Route::post('/buscar-estanteria', [EstanteController::class, 'buscarEstante'])->name('buscarEstante');
 
     Route::get('/crear-estanteria', function () {
         return view('estanteria.crearEstante');
     })->name('crearEstante');
 
-    Route::post('/crear-estanteria', [EstanteController::class, 'crearEstantes']);
+    Route::post('/crear-estanteria', [EstanteController::class, 'crearEstante']);
 
-    Route::get('/editar-estanteria/{id}', [EstanteController::class, 'editarEstantes'])->name('editarEstante');
+    Route::get('/editar-estanteria/{id}', [EstanteController::class, 'editarEstante'])->name('editarEstante');
 
-    Route::patch('/actualizar-estanteria/{id}', [EstanteController::class, 'actualizarEstantes'])->name('actualizarEstante');
+    Route::patch('/actualizar-estanteria/{id}', [EstanteController::class, 'actualizarEstante'])->name('actualizarEstante');
 
-    Route::delete('/eliminar-estanteria/{id}', [EstanteController::class, 'eliminarEstantes'])->name('eliminarEstante');
+    Route::delete('/eliminar-estanteria/{id}', [EstanteController::class, 'eliminarEstante'])->name('eliminarEstante');
     
     //
 

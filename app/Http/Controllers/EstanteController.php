@@ -30,12 +30,20 @@ class EstanteController extends Controller
 
     public function buscarEstante(Request $request)
     {
-        $id = $request->input('id');
+        $id = $request->input('ID');
         $estanteria = Estante::find($id);
         if (!$estanteria) {
-            return redirect()->route('vistaBuscarEstante')->with(['mensaje' => 'Estante no encontrado']);
+            return redirect()->route('vistaBuscarEstante')->with('mensaje', 'Estante no encontrado');
         }
-        return view('estanteria.buscarEstante', ['estanteria' => $estanteria]);
+        $paquete = PaqueteEstante::where('ID_Estante', $estanteria->ID)->first();
+
+        $datos = [
+            'ID' => $estanteria->ID,
+            'ID_Almacen' => $estanteria->ID_Almacen,
+            'ID_Paquete' => $paquete ? $paquete->ID_Paquete : 'No tiene',
+        ];
+
+        return view('estanteria.buscarEstanteria', ['datos' => $datos]);
     }
 
     public function crearEstante(Request $request)
@@ -60,7 +68,7 @@ class EstanteController extends Controller
     {
         $estanteria = Estante::find($id);
 
-        return view('estanteria.editarEstante', ['estanteria' => $estanteria]);
+        return view('estanteria.editarEstanteria', ['estanteria' => $estanteria]);
     }
 
     public function actualizarEstante(Request $request, $id)
@@ -88,6 +96,10 @@ class EstanteController extends Controller
     public function eliminarEstante($id)
     {
         $estanteria = Estante::find($id);
+
+        if($estanteria->deleted_at != null){
+            return redirect()->route('vistaBuscarEstante')->with('mensaje', 'Estante ya eliminada');
+        }
 
         $estanteria->deleted_at = now();
         $estanteria->save();

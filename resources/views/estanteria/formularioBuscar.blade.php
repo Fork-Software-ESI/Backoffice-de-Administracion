@@ -10,11 +10,11 @@
     @if (session('mensaje'))
         {{ session('mensaje') }}
     @endif
-    <h2>Bienvenido a Buscar Estanteria</h2>
+    <h2>Bienvenido a Buscar Estante</h2>
     <form action="{{ route('buscarEstante') }}" method="post">
         @csrf
-        <label for="id">Ingrese la id del estanteria:</label>
-        <input type="number" name="id" id="id" required>
+        <label for="ID">Ingrese la id del estanteria:</label>
+        <input type="number" name="ID" required>
         <button type="submit">Buscar</button>
     </form>
 </body>

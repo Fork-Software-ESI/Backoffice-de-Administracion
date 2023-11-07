@@ -9,15 +9,13 @@
 <body>
     <a href="{{ route('vistaEstante') }}">Volver al menú de Estante</a><br>
     @if (session('mensaje'))
-        <div class="mensaje-exito">
-            {{ session('mensaje') }}
-        </div>
+        {{ session('mensaje') }}
     @endif
     <h1>Crear estanteria</h1>
     <form action="" method="post">
         @csrf
-        <label for="almacen_id">ID Almacen <input value="{{ old('almacen_id') }}" type="number" name="almacen_id" required>
-            @error('almacen_id')
+        <label for="ID_Almacen">ID Almacen <input value="{{ old('ID_Almacen') }}" type="number" name="ID_Almacen" required>
+            @error('ID_Almacen')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror

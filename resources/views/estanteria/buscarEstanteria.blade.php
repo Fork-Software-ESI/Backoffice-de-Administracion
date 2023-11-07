@@ -13,23 +13,25 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Id de almacen</th>
+                        <th>ID</th>
+                        <th>ID Almacen</th>
+                        <th>ID Paquete</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $estanteria->id }}</td>
-                        <td>{{ $estanteria->almacen_id }}</td>
+                        <td>{{ $datos['ID'] }}</td>
+                        <td>{{ $datos['ID_Almacen'] }}</td>
+                        <td>{{ $datos['ID_Paquete'] }}</td>
                     </tr>
                 </tbody>
             </table>
-
-            <form method="POST" action="{{ route('eliminarEstante', ['id' => $estanteria->id]) }}">
+            <br><br>
+            <form method="POST" action="{{ route('eliminarEstante', ['id' => $datos['ID']]) }}">
                 @csrf
                 @method('DELETE')
                 <button type="submit">Eliminar Estanteria</button>
             </form><br>
-            <a href="{{ route('editarEstante', ['id' => $estanteria->id]) }}">Editar Estanteria</a>
+            <a href="{{ route('editarEstante', ['id' => $datos['ID']]) }}">Editar Estanteria</a>
 </body>
 </html>
