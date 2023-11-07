@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Estante;
+use App\Models\PaqueteEstante;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,7 +13,19 @@ class EstanteController extends Controller
     public function mostrarEstantes()
     {
         $estanteria = Estante::all();
-        return view('estanteria.mostrarEstantes', ['estanteria' => $estanteria]);
+
+        $datos = [];
+
+        foreach($estanteria as $estante){
+            $paquete = PaqueteEstante::where('ID_Estante', $estante->ID)->first();
+            $datos[] = [
+                'ID' => $estante->ID,
+                'ID_Almacen' => $estante->ID_Almacen,
+                'ID_Paquete' => $paquete ? $paquete->ID_Paquete : 'No tiene',
+            ];
+        }
+        
+        return view('estanteria.mostrarEstantes', ['datos' => $datos]);
     }
 
     public function buscarEstante(Request $request)

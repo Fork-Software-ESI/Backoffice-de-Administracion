@@ -5,21 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <a href="{{ route('vistaEstante') }}">Volver al menú de Estanteria</a><br>
     <h1>Mostrar Estanteria</h1>
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Almacen Id</th>
+                <th>ID</th>
+                <th>ID Almacen</th>
+                <th>ID Paquete</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($estanteria as $estanterias)
+            @foreach ($datos as $estante)
                 <tr>
-                    <td>{{ $estanterias->id }}</td>
-                    <td>{{ $estanterias->almacen_id }}</td>
+                    <td>{{ $estante['ID'] }}</td>
+                    <td>{{ $estante['ID_Almacen'] }}</td>
+                    <td>{{ $estante['ID_Paquete'] }}</td>
                 </tr>
             @endforeach
         </tbody>
