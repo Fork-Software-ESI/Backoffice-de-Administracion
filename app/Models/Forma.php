@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $ID_Lote
  * @property int $ID_Paquete
- * @property string $Estado
+ * @property int $ID_Estado
  * 
  * @property Lote $lote
  * @property Paquete $paquete
@@ -30,12 +30,14 @@ class Forma extends Model
 
 	protected $casts = [
 		'ID_Lote' => 'int',
-		'ID_Paquete' => 'int'
+		'ID_Paquete' => 'int',
+		'ID_Estado' => 'int'
 	];
 
 	protected $fillable = [
 		'ID_Lote',
-		'Estado'
+		'ID_Paquete',
+		'ID_Estado'
 	];
 
 	public function lote()

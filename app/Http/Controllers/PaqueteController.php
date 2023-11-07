@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Paquete;
+use App\Models\Lote;
+use App\Models\Forma;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
@@ -20,12 +22,12 @@ class PaqueteController extends Controller
         $response = @file_get_contents($url);
         $data = json_decode($response);
 
-    if ($data == null || empty($data->items)) {
-        return true;
-    } else {
-        return false;
+        if ($data == null || empty($data->items)) {
+            return true;
+        } else {
+            return false;
+        }
     }
-}
     public function crearPaquete(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -74,7 +76,7 @@ class PaqueteController extends Controller
         $paquete = Paquete::find($id);
         
         if($paquete -> deleted_at != null){
-            return redirect()->route('vistaBuscarPaquete')->with(['mensaje' => 'Paquete no encontrado']);
+            return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'No se puede editar un paquete eliminado');
         }
         return view('paquete.editarPaquete', ['paquete' => $paquete]);
     }
@@ -111,10 +113,49 @@ class PaqueteController extends Controller
         ->with('mensaje', 'Paquete actualizado de forma exitosa');
     }
 
+    public function asignarLote(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ID_Paquete' => 'required',
+            'ID_Lote' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('vistaAsignarLote')->withErrors($validator)->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        $paquete = Paquete::where('ID', $validatedData['ID_Paquete'])->first();
+        
+        if(!$paquete){
+            return redirect()->route('vistaBuscarPaquete')->with('mensaje' , 'Paquete no encontrado');
+        }
+
+        $lote = Lote::where('ID', $validatedData['ID_Lote'])->first();
+
+        if(!$lote){
+            return redirect()->route('vistaBuscarLote')->with('mensaje', 'Lote no encontrado');
+        }
+
+        $forma = Forma::create([
+            'ID_Lote' => $validatedData['ID_Lote'],
+            'ID_Paquete' => $validatedData['ID_Paquete'],
+            'ID_Estado' => 1,
+        ]);
+
+        $forma->save();
+
+        return redirect()->route('vistaAsignarLote')->with('mensaje', 'Paquete asignado a lote');
+    }
 
     public function eliminarPaquete($id)
     {
         $paquete = Paquete::find($id);
+
+        if($paquete -> deleted_at != null){
+            return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'No se puede eliminar un paquete eliminado');
+        }
 
         $paquete->deleted_at = now();
         $paquete->save();
