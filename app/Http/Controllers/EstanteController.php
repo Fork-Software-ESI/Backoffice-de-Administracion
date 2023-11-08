@@ -81,21 +81,20 @@ class EstanteController extends Controller
         $estanteria = Estante::find($id);
 
         $validator = Validator::make($request->all(), [
-            'almacen_id' => 'exists:almacenes,id',
+            'ID_Almacen' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('estanteria.editarEstante', ['id' => $estanteria->id])->withErrors($validator)->withInput();
+            return redirect()->route('editarEstante', ['id' => $estanteria->ID])->withErrors($validator)->withInput();
         }
 
-        $data = $request->only(['almacen_id']);
+        $data = $request->only(['ID_Almacen']);
 
-        if(!$estanteria->update($data)){
-            return redirect()->route('vistaBuscarEstante', ['id' => $estanteria->id])
-            ->with('mensaje', 'Error al actualizar Estante');
-        }
-        return redirect()->route('vistaBuscarEstante', ['id' => $estanteria->id])
-            ->with('mensaje', 'Estante actualizada exitosamente');
+        $estanteria->update([
+            'ID_Almacen' => $data['ID_Almacen'],
+        ]);
+
+        return redirect()->route('vistaBuscarEstante')->with('mensaje','Estante actualizada con éxito');
     }
 
     public function eliminarEstante($id)

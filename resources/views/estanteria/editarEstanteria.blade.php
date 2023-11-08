@@ -14,8 +14,8 @@
     <form action="{{ route('actualizarEstante', ['id' => $estanteria->ID]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="ID_Almacen">ID Almacen: <input value="{{ $estanteria->ID_Almacen }}" type="number" name="almacen_id">
-            @error('estanteria')
+        <label for="ID_Almacen">ID Almacen: <input value="{{ $estanteria->ID_Almacen }}" type="number" name="ID_Almacen">
+            @error('ID_Almacen')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror

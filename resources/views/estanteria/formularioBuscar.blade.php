@@ -13,7 +13,7 @@
     <h2>Bienvenido a Buscar Estante</h2>
     <form action="{{ route('buscarEstante') }}" method="post">
         @csrf
-        <label for="ID">Ingrese la id del estanteria:</label>
+        <label for="ID">Ingrese la id del estante:</label>
         <input type="number" name="ID" required>
         <button type="submit">Buscar</button>
     </form>

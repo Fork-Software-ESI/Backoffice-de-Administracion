@@ -19,7 +19,7 @@
         <li><a href="{{ route('vistaAlmacen') }}">Almacenes</a></li>
         <li><a href="{{ route('vistaPaquete') }}">Paquetes</a></li>
         <li><a href="{{ route('vistaLote') }}">Lotes</a></li>
-        <li><a href="{{ route('vistaEstanteria') }}">Estanterias</a></li>
+        <li><a href="{{ route('vistaEstante') }}">Estanterias</a></li>
         <li><a href="{{ route('vistaCamion') }}">Camiones</a></li>
     </ol>
 </body>
