@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $NomUsuario
  * 
  * @property Persona $persona
- * @property Usuario $usuario
+ * @property User $usuario
  *
  * @package App\Models
  */
@@ -31,7 +31,8 @@ class PersonaUsuario extends Model
 	];
 
 	protected $casts = [
-		'ID' => 'int'
+		'ID_Persona' => 'int',
+		'ID_Usuario' => 'int'
 	];
 
 	public function persona()
@@ -41,6 +42,6 @@ class PersonaUsuario extends Model
 
 	public function usuario()
 	{
-		return $this->belongsTo(Usuario::class, 'ID_Usuario', 'ID');
+		return $this->belongsTo(User::class, 'ID_Usuario', 'ID');
 	}
 }

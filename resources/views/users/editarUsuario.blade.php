@@ -59,11 +59,11 @@
         </label><br><br>
         <label for="roles">Seleccione su rol
             <select name="rol" id="rol">
-                <option value="administrador" {{ $datos['rol'] === 'Administrador' ? 'selected' : '' }}>Administrador</option>
-                <option value="cliente" {{ $datos['rol'] === 'Cliente' ? 'selected' : '' }}>Cliente</option>
-                <option value="gerente" {{ $datos['rol'] === 'Gerente' ? 'selected' : '' }}>Gerente</option>
-                <option value="funcionario" {{ $datos['rol'] === 'Funcionario' ? 'selected' : '' }}>Funcionario</option>
-                <option value="chofer" {{ $datos['rol'] === 'Chofer' ? 'selected' : '' }}>Chofer</option>
+                <option value="Administrador" {{ $datos['rol'] === 'Administrador' ? 'selected' : '' }}>Administrador</option>
+                <option value="Cliente" {{ $datos['rol'] === 'Cliente' ? 'selected' : '' }}>Cliente</option>
+                <option value="Gerente" {{ $datos['rol'] === 'Gerente' ? 'selected' : '' }}>Gerente</option>
+                <option value="Funcionario" {{ $datos['rol'] === 'Funcionario' ? 'selected' : '' }}>Funcionario</option>
+                <option value="Chofer" {{ $datos['rol'] === 'Chofer' ? 'selected' : '' }}>Chofer</option>
             </select>
         </label><br><br>
         <button type="submit">Actualizar Usuario</button>

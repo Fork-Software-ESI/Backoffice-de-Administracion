@@ -41,7 +41,7 @@
             </tbody>
         </table>
         <br><br>
-        <form method="POST" action="{{ route('eliminarUsuario', ['id' => $datos['id']]) }}">
+        <form method="POST" action="{{ route('eliminarUsuario', ['username' => $datos['username']]) }}">
             @csrf
             @method('DELETE')
             <button type="submit">Eliminar Usuario</button>

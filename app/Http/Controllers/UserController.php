@@ -211,7 +211,7 @@ class UserController extends Controller
 
     public function editarUsuario($username)
     {
-        $user = User::where('username', $username)->first();
+        $user = User::where('username', $username)->withTrashed()->first();
 
         if ($user->deleted_at != null) {
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes modificar un usuario eliminado');
@@ -265,7 +265,7 @@ class UserController extends Controller
             'correo' => 'email',
             'password' => 'nullable|string|min:6|confirmed',
             'telefono' => 'string|max:20',
-            'rol' => 'required|in:administrador,chofer,cliente,funcionario,gerente',
+            'rol' => 'required|in:Administrador,Chofer,Cliente,Funcionario,Gerente',
         ]);
 
         if ($validator->fails()) {
@@ -351,9 +351,9 @@ class UserController extends Controller
             ->with('mensaje', 'Usuario actualizado exitosamente');
     }
 
-    public function eliminarUsuario($id)
+    public function eliminarUsuario($username)
     {
-        $user = User::find($id);
+        $user = User::where('username', $username)->withTrashed()->first();
 
         if ($user->deleted_at != null) {
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes eliminar un usuario ya eliminado');
