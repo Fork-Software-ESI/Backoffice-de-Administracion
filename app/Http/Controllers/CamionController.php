@@ -170,6 +170,11 @@ class CamionController extends Controller
         if ($camion->deleted_at != null) {
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'No puedes asignar un chofer a un camión eliminado');
         }
+        
+        $camionAsignado = ChoferCamion::where('ID_Camion', $camion->ID);
+        if($camionAsignado){
+            return redirect()->route('vistaAsignarChofer')->with('mensaje', 'Camion ya tiene un chofer asignado');
+        }
 
         $chofer = Chofer::find($choferID);
         if (!$chofer) {
@@ -177,6 +182,11 @@ class CamionController extends Controller
         }
         if ($chofer->deleted_at != null) {
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'No puedes asignar un chofer eliminado');
+        }
+
+        $choferAsignado = ChoferCamion::where('ID_Chofer', $chofer->ID);
+        if($choferAsignado){
+            return redirect()->route('vistaAsignarChofer')->with('mensaje', 'Chofer ya tiene un camion asignado');
         }
 
         $choferCamion = ChoferCamion::create([
