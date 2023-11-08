@@ -50,10 +50,10 @@ class CamionController extends Controller
     public function buscarCamion(Request $request)
     {
         $matricula = $request->input('matricula');
-        $camion = Camion::where('Matricula', $matricula)->first();
+        $camion = Camion::where('Matricula', $matricula)->withTrashed()->first();
 
         if (!$camion) {
-            return redirect()->route('vistaBuscarCamion')->with(['mensaje' => 'Camión no encontrado']);
+            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'Camión no encontrado');
         }
 
         $choferCamion = ChoferCamion::where('ID_Camion', $camion->ID)->first();
@@ -266,7 +266,7 @@ class CamionController extends Controller
         if($camion -> deleted_at != null){
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'No puedes eliminar un camión eliminado');
         }
-        
+
         LoteCamion::where('ID_Camion', $camion->ID)->delete();
         ChoferCamion::where('ID_Camion', $camion->ID)->delete();
         CamionPlataforma::where('ID_Camion', $camion->ID)->delete();
