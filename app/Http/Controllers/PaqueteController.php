@@ -60,7 +60,14 @@ class PaqueteController extends Controller
         $datos = [];
 
         foreach($paquete as $paquetes){
-            $lote = Forma::where('ID_Paquete', $paquetes->ID)->first();
+            $forma = Forma::where('ID_Paquete', $paquetes->ID)->first();
+
+            $lote = $forma->ID_Lote;
+            
+            if($forma->deleted_at != null){
+                $lote = 'No tiene';
+            }
+
             $descripcion = $paquetes->Descripcion;
             $datos[] = [
                 'ID' => $paquetes->ID,
@@ -70,7 +77,7 @@ class PaqueteController extends Controller
                 'ID_Estado' => $paquetes->ID_Estado,
                 'Destino' => $paquetes->Destino,
                 'Codigo'=> $paquetes->Codigo,
-                'ID_Lote' => $lote ? $lote->ID_Lote : 'No tiene',
+                'ID_Lote' => $lote,
             ];
         }
 
