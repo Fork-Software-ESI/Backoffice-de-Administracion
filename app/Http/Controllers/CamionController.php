@@ -28,6 +28,8 @@ class CamionController extends Controller
             $camionPlataforma = CamionPlataforma::where('ID_Camion', $camiones->ID)->first();
             $plataforma = $camionPlataforma ? $camionPlataforma->Numero_Plataforma : 'No tiene';
             $almacen = $camionPlataforma ? $camionPlataforma->ID_Almacen : 'No tiene';
+            $loteCamion = LoteCamion::where('ID_Camion', $camiones->ID)->first();
+            $lote = $loteCamion ? $loteCamion->ID_Lote : 'No tiene';
 
             $data[] = [
                 'id' => $camiones->ID,
@@ -36,9 +38,7 @@ class CamionController extends Controller
                 'chofer' => $nombre,
                 'almacen' => $almacen,
                 'plataforma' => $plataforma,
-                'created_at' => $camiones->created_at,
-                'updated_at' => $camiones->updated_at,
-                'deleted_at' => $camiones->deleted_at,
+                'lote' => $lote,
             ];
         }
         
@@ -56,12 +56,20 @@ class CamionController extends Controller
         $choferCamion = ChoferCamion::where('ID_Camion', $camion->ID)->first();
         $chofer = Persona::find($choferCamion->ID_Chofer);
         $nombre = $chofer ? $chofer->Nombre : 'No tiene';
+        $camionPlataforma = CamionPlataforma::where('ID_Camion', $camion->ID)->first();
+        $plataforma = $camionPlataforma ? $camionPlataforma->Numero_Plataforma : 'No tiene';
+        $almacen = $camionPlataforma ? $camionPlataforma->ID_Almacen : 'No tiene';
+        $loteCamion = LoteCamion::where('ID_Camion', $camion->ID)->first();
+        $lote = $loteCamion ? $loteCamion->ID_Lote : 'No tiene';
 
         $datos = [
             'id' => $camion->ID,
             'matricula' => $camion->Matricula,
             'pesoMaximoKg' => $camion->PesoMaximoKg,
             'chofer' => $nombre,
+            'almacen' => $almacen,
+            'plataforma' => $plataforma,
+            'lote' => $lote,
             'created_at' => $camion->created_at,
             'updated_at' => $camion->updated_at,
             'deleted_at' => $camion->deleted_at,
@@ -197,8 +205,6 @@ class CamionController extends Controller
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene chofer asignado');
         }
 
-        $chofer = Persona::find($choferCamion->ID_Chofer);
-
         $lotesCamion = LoteCamion::where('ID_Camion', $camion->ID)->first();
 
         if(!$lotesCamion){
@@ -215,10 +221,6 @@ class CamionController extends Controller
         $paquete = Paquete::find($forma->ID_Paquete);
 
         $datosLote = [
-            /* 'id' => $camion->ID,
-            'matricula' => $camion->Matricula,
-            'pesoMaximoKg' => $camion->PesoMaximoKg,
-            'chofer' => $chofer->Nombre, */
             'lote' => $lote ? $lote->ID : 'No disponible',
             'descripcionLote' => $lote ? $lote->Descripcion : 'No disponible',
             'pesoLote' => $lote ? $lote->Peso_Kg : 'No disponible',

@@ -18,9 +18,7 @@
                 <th>Chofer Asignado</th>
                 <th>Almacen</th>
                 <th>Plataforma</th>
-                <th>Creacion</th>
-                <th>Actualizacion</th>
-                <th>Eliminacion</th>
+                <th>Lote Asignado</th>
             </tr>
         </thead>
         <tbody>
@@ -32,9 +30,7 @@
                     <td>{{ $camiones['chofer'] }}</td>
                     <td>{{ $camiones['almacen'] }}</td>
                     <td>{{ $camiones['plataforma'] }}</td>
-                    <td>{{ $camiones['created_at'] }}</td>
-                    <td>{{ $camiones['updated_at'] }}</td>
-                    <td>{{ $camiones['deleted_at'] }}</td>
+                    <td>{{ $camiones['lote'] }}</td>
                 </tr>
             @endforeach
         </tbody>
