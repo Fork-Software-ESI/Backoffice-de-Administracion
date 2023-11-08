@@ -56,7 +56,25 @@ class PaqueteController extends Controller
     public function mostrarPaquetes()
     {
         $paquete = Paquete::all();
-        return view('paquete.mostrarPaquetes', ['paquete' => $paquete]);
+
+        $datos = [];
+
+        foreach($paquete as $paquetes){
+            $lote = Forma::where('ID_Paquete', $paquetes->ID)->first();
+            $descripcion = $paquetes->Descripcion;
+            $datos[] = [
+                'ID' => $paquetes->ID,
+                'Descripcion' => $descripcion ? $descripcion : 'No Tiene',
+                'Peso_Kg' => $paquetes->Peso_Kg,
+                'ID_Cliente' => $paquetes->ID_Cliente,
+                'ID_Estado' => $paquetes->ID_Estado,
+                'Destino' => $paquetes->Destino,
+                'Codigo'=> $paquetes->Codigo,
+                'ID_Lote' => $lote ? $lote->ID_Lote : 'No tiene',
+            ];
+        }
+
+        return view('paquete.mostrarPaquetes', ['datos' => $datos]);
     }
 
     public function buscarPaquete(Request $request)
@@ -65,7 +83,7 @@ class PaqueteController extends Controller
         $paquete = Paquete::find($ID);
 
         if (!$paquete) {
-            return redirect()->route('vistaBuscarPaquete')->with(['mensaje' => 'Paquete no encontrado']);
+            return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'Paquete no encontrado');
         }
 
         return view('paquete.buscarPaquete', ['paquete' => $paquete]);
