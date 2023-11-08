@@ -17,37 +17,67 @@ class PaqueteController extends Controller
         $apiKey = '7a6TfdGhaJbpPMG2ehCfSExHYsnzdkIb5a0YlJzjU5U';
         $address = urlencode($direccion);
         $countryName = "Uruguay";
-        $url = "https://geocode.search.hereapi.com/v1/geocode?apiKey=$apiKey&q=$address&country=$countryName";
+        $url = "https://geocode.search.hereapi.com/v1/geocode?q=$address&country=$countryName&apiKey=$apiKey";
 
         $response = @file_get_contents($url);
         $data = json_decode($response);
 
-        if ($data == null || empty($data->items)) {
-            return true;
-        } else {
-            return false;
+        if ($data != null && !empty($data->items)) {
+            if (count($data->items) > 1) {
+                return response()->json(['error' => 'Múltiples direcciones', 'Direcciones' => $data], 400);
+            }
+
+            $addressDetails = $data->items[0]->address;
+
+            if (
+                isset($addressDetails->street) &&
+                isset($addressDetails->houseNumber) &&
+                isset($addressDetails->city)
+            ) {
+                return true;
+            } else {
+                return response()->json(['error' => 'Dirección inválida'], 400);
+            }
         }
     }
+
     public function crearPaquete(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'Descripcion' => 'string',
+            'Descripcion' => 'alpha|string',
             'Peso_Kg' => 'required|numeric|min:1',
-            'ID_Cliente' => 'required|exists:cliente,ID',
-            'ID_Estado' => 'required|exists:estadop,ID',
-            'Destino' => 'required|string',
+            'ID_Cliente' => 'alpha|required|exists:cliente,ID',
+            'ID_Estado' => 'alpha|required|exists:estadop,ID',
+            'Calle' => 'alpha_num|required|string',
+            'Numero_Puerta' => 'required|string|alpha_num',
+            'Ciudad' => 'alpha|required|string',
         ]);
+
         if ($validator->fails()) {
             return redirect()->route('crearPaquete')->withErrors($validator)->withInput();
         }
+
         $validatedData = $validator->validated();
 
-        $validez = $this->validarDireccion($validatedData['Destino']);
-        if (!$validez) {
-            return redirect()->route('crearPaquete')->withErrors(['Destino' => 'La dirección ingresada no es válida'])->withInput();
+        $direccion = $validatedData['Calle'] . ', ' . $validatedData['Numero_Puerta'] . ', ' . $validatedData['Ciudad'];
+
+        $direccionValida = $this->validarDireccion($direccion);
+
+        if ($direccionValida !== true) {
+            return $direccionValida;
         }
+
+        $validatedData['Destino'] = $direccion;
         $validatedData['Codigo'] = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
-        Paquete::create($validatedData);
+
+        Paquete::create([
+            'Descripcion' => $validatedData['Descripcion'],
+            'Peso_Kg' => $validatedData['Peso_Kg'],
+            'ID_Cliente' => $validatedData['ID_Cliente'],
+            'ID_Estado' => $validatedData['ID_Estado'],
+            'Destino' => $validatedData['Destino'],
+            'Codigo' => $validatedData['Codigo'],
+        ]);
 
         session()->flash('mensaje', 'Paquete creado exitosamente, codigo: ' . $validatedData['Codigo']);
         return redirect()->route('crearPaquete');
@@ -103,7 +133,25 @@ class PaqueteController extends Controller
         if($paquete -> deleted_at != null){
             return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'No se puede editar un paquete eliminado');
         }
-        return view('paquete.editarPaquete', ['paquete' => $paquete]);
+
+        $direccion = explode(', ', $paquete->Destino);
+
+        $calle = $paquete->Calle = $direccion[0];
+        $numero_puerta = $paquete->Numero_Puerta = $direccion[1];
+        $ciudad = $paquete->Ciudad = $direccion[2];
+
+        $datos = [
+            'ID' => $paquete->ID,
+            'Descripcion' => $paquete->Descripcion,
+            'Peso_Kg' => $paquete->Peso_Kg,
+            'ID_Cliente' => $paquete->ID_Cliente,
+            'ID_Estado' => $paquete->ID_Estado,
+            'Calle' => $calle,
+            'Numero_Puerta' => $numero_puerta,
+            'Ciudad' => $ciudad,
+        ];
+
+        return view('paquete.editarPaquete', ['datos' => $datos]);
     }
 
 
@@ -116,15 +164,26 @@ class PaqueteController extends Controller
             'peso_Kg' => 'numeric',
             'ID_Cliente' => 'numeric',
             'ID_Estado' => 'in:1,2,3',
-            'destino' => 'string',
+            'Calle' => 'string|regex:/^[\pL\pN\s]+$/u',
+            'Numero_Puerta' => 'string|alpha_num',
+            'Ciudad' => 'string|alpha',
         ]);
 
         if ($validator->fails()) {
             return redirect()->route('editarPaquete', ['id' => $paquete->ID])->withErrors($validator)->withInput();
         }
 
-        $data = $request->only(['descripcion', 'peso_Kg', 'ID_Cliente', 'ID_Estado', 'destino']);
-        
+        $data = $request->only(['descripcion', 'peso_Kg', 'ID_Cliente', 'ID_Estado', 'Calle', 'Numero_Puerta', 'Ciudad']);
+
+        $direccion = $data['Calle'] . ', ' . $data['Numero_Puerta'] . ', ' . $data['Ciudad'];
+
+        $direccionValida = $this->validarDireccion($direccion);
+
+        if ($direccionValida !== true) {
+            return $direccionValida;
+        }
+
+        $data['destino'] = $direccion;
 
         $paquete-> update([
             'Descripcion' => $data['descripcion'],

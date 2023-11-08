@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::patch('/actualizar-usuario/{username}', [UserController::class, 'actualizarUsuario'])->name('actualizarUsuario');
 
-    Route::delete('/eliminar-user/{id}', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
+    Route::delete('/eliminar-user/{username}', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
 
     Route::get('/choferes', [ChoferController::class, 'mostrarChoferes'])->name('mostrarChoferes');
 

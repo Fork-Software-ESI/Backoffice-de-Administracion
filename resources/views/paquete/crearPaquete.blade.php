@@ -40,8 +40,20 @@
             <option value="3">Entregado</option>
         </select>
         </label><br><br>
-        <label for="Destino">Destino <input value="{{ old('Destino') }}" type="" name="Destino">
-            @error('Destino')
+        <label for="Calle">Calle <input value="{{ old('Calle') }}" type="" name="Calle">
+            @error('Calle')
+                <br>
+                <small style="color:red;">{{ $message }}</small>
+            @enderror
+        </label><br><br>
+        <label for="Numero_Puerta">Numero de puerta <input value="{{ old('Numero_Puerta') }}" type="" name="Numero">
+            @error('Numero_Puerta')
+                <br>
+                <small style="color:red;">{{ $message }}</small>
+            @enderror
+        </label><br><br>
+        <label for="Ciudad">Ciudad <input value="{{ old('Ciudad') }}" type="" name="Ciudad">
+            @error('Ciudad')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
