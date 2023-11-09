@@ -34,19 +34,13 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="ID_Estado">Estado <select name="ID_Estado" id="">
-            <option value="1">En almacen</option>
-            <option value="2">En transito</option>
-            <option value="3">Entregado</option>
-        </select>
-        </label><br><br>
         <label for="Calle">Calle <input value="{{ old('Calle') }}" type="" name="Calle">
             @error('Calle')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="Numero_Puerta">Numero de puerta <input value="{{ old('Numero_Puerta') }}" type="" name="Numero">
+        <label for="Numero_Puerta">Numero de puerta <input value="{{ old('Numero_Puerta') }}" type="" name="Numero_Puerta">
             @error('Numero_Puerta')
                 <br>
                 <small style="color:red;">{{ $message }}</small>

@@ -46,9 +46,8 @@ class PaqueteController extends Controller
         $validator = Validator::make($request->all(), [
             'Descripcion' => 'alpha|string',
             'Peso_Kg' => 'required|numeric|min:1',
-            'ID_Cliente' => 'alpha|required|exists:cliente,ID',
-            'ID_Estado' => 'alpha|required|exists:estadop,ID',
-            'Calle' => 'alpha_num|required|string',
+            'ID_Cliente' => 'alpha_num|required|exists:cliente,ID',
+            'Calle' => 'regex:/^[\pL\pN\s]+$/u|required|string',
             'Numero_Puerta' => 'required|string|alpha_num',
             'Ciudad' => 'alpha|required|string',
         ]);
@@ -74,7 +73,7 @@ class PaqueteController extends Controller
             'Descripcion' => $validatedData['Descripcion'],
             'Peso_Kg' => $validatedData['Peso_Kg'],
             'ID_Cliente' => $validatedData['ID_Cliente'],
-            'ID_Estado' => $validatedData['ID_Estado'],
+            'ID_Estado' => 1,
             'Destino' => $validatedData['Destino'],
             'Codigo' => $validatedData['Codigo'],
         ]);
@@ -85,7 +84,7 @@ class PaqueteController extends Controller
 
     public function mostrarPaquetes()
     {
-        $paquete = Paquete::all();
+        $paquete = Paquete::whereNull('deleted_at')->get();
 
         $datos = [];
 
@@ -223,7 +222,7 @@ class PaqueteController extends Controller
         }
 
         $paqueteAsignado = Forma::where('ID_Paquete', $validatedData['ID_Paquete'])->first();
-        if(!$paqueteAsignado){
+        if($paqueteAsignado){
             return redirect()->route('vistaAsignarLote')->with('mensaje', 'Paquete ya asignado a un lote');
         }
 
@@ -234,6 +233,10 @@ class PaqueteController extends Controller
         ]);
 
         $forma->save();
+
+        $paquete->update([
+            'ID_Estado' => 2,
+        ]);
 
         return redirect()->route('vistaAsignarLote')->with('mensaje', 'Paquete asignado a lote');
     }
