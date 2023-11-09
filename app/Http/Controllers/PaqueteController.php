@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChoferCamion;
 use Illuminate\Http\Request;
 use App\Models\Paquete;
 use App\Models\Lote;
 use App\Models\Forma;
+use App\Models\LoteCamion;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
@@ -253,5 +255,71 @@ class PaqueteController extends Controller
         $paquete->save();
 
         return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'Paquete eliminado con éxito');
+    }
+
+    public function paqueteEntregado(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ID_Paquete' => 'required|numeric',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect()->route('vistaPaqueteEntregado')->withErrors($validator)->withInput();
+        }
+
+        $paquete = Paquete::where('ID', $request->input('ID_Paquete'))->first();
+        if (!$paquete) {
+            return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete no encontrado');
+        }
+
+        $paqueteLote = Forma::where('ID_Paquete', $request->input('ID_Paquete'))->first();
+        if (!$paqueteLote) {
+            return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete no asignado a un lote');
+        }
+
+        $loteCamion = LoteCamion::where('ID_Lote', $paqueteLote->ID_Lote)->first();
+        if (!$loteCamion) {
+            return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Lote no asignado a un camion');
+        }
+
+        $lote = Lote::where('ID', $loteCamion->ID_Lote)->first();
+
+        $choferCamion = ChoferCamion::where('ID_Camion', $loteCamion->ID_Camion)->first();
+
+        $paquete -> update([
+            'ID_Estado' => 4,
+        ]);
+
+        $paquetesLote = Forma::where('ID_Lote', $lote->ID)->get();
+        $paquetesEntregados = 0;
+        foreach($paquetesLote as $paqueteLote){
+            $paquete = Paquete::where('ID', $paqueteLote->ID_Paquete)->first();
+            if($paquete->ID_Estado == 4){
+                $paquetesEntregados = 1;
+            }
+        }
+        if($paquetesEntregados > 0){
+            $lote -> update([
+                'ID_Estado' => 4,
+            ]);
+        }
+
+        $loteCamion -> update([
+            'ID_Estado' => 3,
+        ]);
+
+        $paqueteLote -> update([
+            'ID_Estado' => 3,
+        ]);
+
+        $lote -> update([
+            'ID_Estado' => 3,
+        ]);
+
+        $choferCamion -> update([
+            'ID_Estado' => 5,
+        ]);
+
+        return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete entregado con éxito');
     }
 }
