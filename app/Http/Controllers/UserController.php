@@ -292,6 +292,22 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)->withTrashed()->first();
 
+        $validacionEliminar = $this->validarEliminacionUsuario($user);
+
+        if ($validacionEliminar !== null) {
+            return $validacionEliminar;
+        }
+
+        $this->marcarComoEliminado($user);
+        $this->marcarComoEliminadoPersona($user);
+        $this->marcarComoEliminadoPersonaUsuario($user);
+        $this->marcarComoEliminadoRol($user);
+
+        return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario eliminado con éxito');
+    }
+
+    private function validarEliminacionUsuario($user)
+    {
         if ($user->deleted_at != null) {
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes eliminar un usuario ya eliminado');
         }
@@ -301,48 +317,55 @@ class UserController extends Controller
         if ($user->username == "superadmin") {
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes eliminar al superadmin');
         }
+
         if ($user->username == $actual->username) {
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes eliminarte a ti mismo');
         }
+
+        return null;
+    }
+
+    private function marcarComoEliminado($user)
+    {
         $user->deleted_at = now();
         $user->save();
+    }
 
-        $persona = Persona::find($user->ID);
+    private function marcarComoEliminadoPersona($user)
+    {
+        $personaUsuario = PersonaUsuario::find('ID_Usuario', $user->ID);
+        $persona = Persona::find($personaUsuario->ID_Persona);
         $persona->deleted_at = now();
         $persona->save();
+    }
 
+    private function marcarComoEliminadoPersonaUsuario($user)
+    {
         $personaUsuario = PersonaUsuario::where('ID_Usuario', $user->ID)->first();
         $personaUsuario->deleted_at = now();
         $personaUsuario->save();
+    }
 
-        if (Administrador::where('ID', $user->ID)->exists()) {
-            $rol = Administrador::where('ID', $user->ID)->first();
-            $rol->deleted_at = now();
-            $rol->save();
-        }
-        if (Chofer::where('ID', $user->ID)->exists()) {
-            $rol = Chofer::where('ID', $user->ID)->first();
-            $rol->deleted_at = now();
-            $rol->save();
-        }
-        if (Cliente::where('ID', $user->ID)->exists()) {
-            $rol = Cliente::where('ID', $user->ID)->first();
-            $rol->deleted_at = now();
-            $rol->save();
-        }
-        if (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
-            $rol = FuncionarioAlmacen::where('ID', $user->ID)->first();
-            $rol->deleted_at = now();
-            $rol->save();
-        }
-        if (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
-            $rol = GerenteAlmacen::where('ID_Gerente', $user->ID)->first();
-            $rol->deleted_at = now();
-            $rol->save();
-        }
+    private function marcarComoEliminadoRol($user)
+    {
+        $roles = ['Administrador', 'Chofer', 'Cliente', 'Funcionario', 'Gerente'];
 
-        //deleted_at persona telefono base de datos
+        foreach ($roles as $rol) {
+            if ($this->rolExists($rol, $user->ID)) {
+                $this->marcarComoEliminadoSegunRol($rol, $user->ID);
+            }
+        }
+    }
 
-        return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario eliminado con éxito');
+    private function rolExists($rol, $user)
+    {
+        return $rol::where('ID', $user->ID)->exists();
+    }
+
+    private function marcarComoEliminadoSegunRol($rol, $user)
+    {
+        $rolModel = $rol::where('ID', $user->ID)->first();
+        $rolModel->deleted_at = now();
+        $rolModel->save();
     }
 }
