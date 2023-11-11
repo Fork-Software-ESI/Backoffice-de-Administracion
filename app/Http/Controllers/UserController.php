@@ -24,89 +24,53 @@ class UserController extends Controller
         $datos = [];
 
         foreach ($users as $user){
-            $persona = Persona::where('ID', $user->ID)->firstOrNew();
-            
-            $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
-            
-            $rol = '';
-
-            if(Administrador::where('ID', $user->ID)->exists()){
-                $rol = 'Administrador';
-            }
-            if(Chofer::where('ID', $user->ID)->exists()){
-                $rol = 'Chofer';
-            }
-            if(Cliente::where('ID', $user->ID)->exists()){
-                $rol = 'Cliente';
-            }
-            if(FuncionarioAlmacen::where('ID', $user->ID)->exists()){
-                $rol = 'Funcionario';
-            }
-            if(GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()){
-                $rol = 'Gerente';
-            }
-
-            $telefonoA = $telefono ? $telefono->Telefono : 'No tiene';
-
-            $datos[] = [
-                'ci' => $persona->CI,
-                'nombre' => $persona->Nombre,
-                'apellido' => $persona->Apellido,
-                'correo' => $persona->Correo,
-                'username' => $user->username,
-                'telefono' => $telefonoA,
-                'rol' => $rol,
-            ];
+            $datos[] = $this->datosUsuario($user);
         }
         return view('users.mostrarUsuarios', ['datos' => $datos]);
     }
 
-    public function buscarUsuario(Request $request)
+    public function verificarRol($user)
     {
-        $username = $request->input('username');
-        $user = User::where('username', $username)->withTrashed()->first();
-    
-        if (!$user) {
-            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No existe un usuario con ese nombre de usuario');
-        }
-    
-        $persona = Persona::find($user->ID);
-        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
-        $rol = '';
-    
-        if (Administrador::where('ID', $user->ID)->exists()) {
+        if(Administrador::where('ID', $user->ID)->exists()){
             $rol = 'Administrador';
-        } 
-        if (Chofer::where('ID', $user->ID)->exists()) {
+        }
+        if(Chofer::where('ID', $user->ID)->exists()){
             $rol = 'Chofer';
-        } 
-        if (Cliente::where('ID', $user->ID)->exists()) {
+        }
+        if(Cliente::where('ID', $user->ID)->exists()){
             $rol = 'Cliente';
-        } 
-        if (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
+        }
+        if(FuncionarioAlmacen::where('ID', $user->ID)->exists()){
             $rol = 'Funcionario';
-        } 
-        if (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
+        }
+        if(GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()){
             $rol = 'Gerente';
         }
-        
+
+        return $rol;
+    }
+
+    public function datosUsuario($user)
+    {
+        $persona = Persona::where('ID', $user->ID)->firstOrNew();
+        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+        $rol = $this->verificarRol($user);
+        $telefonoA = $telefono ? $telefono->Telefono : 'No tiene';
         $deletedAt = $user->deleted_at;
 
-        $datos = [
-            'id' => $user->ID,
+        return [
             'ci' => $persona->CI,
             'nombre' => $persona->Nombre,
             'apellido' => $persona->Apellido,
             'correo' => $persona->Correo,
             'username' => $user->username,
-            'telefono' => $telefono ? $telefono->Telefono : 'No tiene',
+            'telefono' => $telefonoA,
             'rol' => $rol,
             'deleted_at' => $deletedAt,
         ];
-        
-        return view('users.buscarUsuario', ['user' => $user, 'datos' => $datos]);
     }
-    public function crearUsuario(Request $request)
+
+    public function validator($request)
     {
         $validator = Validator::make($request->all(), [
             'ci' => 'required|string|max:10',
@@ -124,6 +88,26 @@ class UserController extends Controller
         }
 
         $validatedData = $validator->validated();
+
+        return $validatedData;
+    }
+
+    public function buscarUsuario(Request $request)
+    {
+        $username = $request->input('username');
+        $user = User::where('username', $username)->withTrashed()->first();
+    
+        if (!$user) {
+            return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No existe un usuario con ese nombre de usuario');
+        }
+    
+        $datos = $this->datosUsuario($user);
+        
+        return view('users.buscarUsuario', ['user' => $user, 'datos' => $datos]);
+    }
+    public function crearUsuario(Request $request)
+    {
+        $validatedData = $this->validator($request);
 
         if (User::where('username', $validatedData['username'])->exists() && User::where('username', $validatedData['username'])->first()->deleted_at == null) {
             return response()->json(['error' => 'El nombre de usuario ya está en uso'], 422);
@@ -217,47 +201,15 @@ class UserController extends Controller
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No puedes modificar un usuario eliminado');
         }
 
-        $persona = Persona::find($user->ID);
-        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
-        $rol = '';
+        $datos = $this->datosUsuario($user);
 
-        if (Administrador::where('ID', $user->ID)->exists()) {
-            $rol = 'Administrador';
-        } 
-        if (Chofer::where('ID', $user->ID)->exists()) {
-            $rol = 'Chofer';
-        } 
-        if (Cliente::where('ID', $user->ID)->exists()) {
-            $rol = 'Cliente';
-        } 
-        if (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
-            $rol = 'Funcionario';
-        } 
-        if (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
-            $rol = 'Gerente';
-        }
-
-        $datos = [
-            'ci' => $persona->CI,
-            'nombre' => $persona->Nombre,
-            'apellido' => $persona->Apellido,
-            'correo' => $persona->Correo,
-            'username' => $user->username,
-            'telefono' => $telefono ? $telefono->Telefono : 'No tiene',
-            'rol' => $rol,
-        ];
-
-        session() -> put('rol', $rol);
+        session() -> put('rol', $datos['rol']);
 
         return view('users.editarUsuario', ['datos' => $datos]);
     }
 
-    public function actualizarUsuario(Request $request, $username)
+    public function validatorActualizar($request, $user)
     {
-        $user = User::where('username', $username)->first();
-
-        $rolAnterior = session('rol');
-
         $validator = Validator::make($request->all(), [
             'ci' => 'string|max:8',
             'nombre' => 'string|max:20',
@@ -274,12 +226,28 @@ class UserController extends Controller
 
         $data = $request->only(['ci', 'nombre', 'apellido', 'correo', 'telefono', 'rol']);
 
-        if (!empty($request->password)) {
-            $user->password = bcrypt($request->password);
-        }
+        return $data;
+    }
 
+    public function actualizarUsuario(Request $request, $username)
+    {
+        $user = User::where('username', $username)->first();
+        $rolAnterior = session('rol');
+
+        $data = $this->validatorActualizar($request, $user);
+
+        $this->actualizarDatosUsuario($user, $data);
+        $this->actualizarRol($user, $data['rol'], $rolAnterior);
+
+        return redirect()->route('vistaBuscarUsuario', ['username' => $user->username])
+            ->with('mensaje', 'Usuario actualizado exitosamente');
+    }
+
+    public function actualizarDatosUsuario($user, $data)
+    {
         $persona = Persona::find($user->ID);
-        $persona -> update([
+
+        $persona->update([
             'CI' => $data['ci'],
             'Nombre' => $data['nombre'],
             'Apellido' => $data['apellido'],
@@ -287,68 +255,36 @@ class UserController extends Controller
         ]);
 
         $personaTelefono = PersonaTelefono::where('ID_Persona', $persona->ID)->first();
-        $personaTelefono -> update([
+
+        $personaTelefono->update([
             'Telefono' => $data['telefono'],
         ]);
+    }
 
+    public function actualizarRol($user, $rol, $rolAnterior)
+    {
+        if ($rol != $rolAnterior) {
+            $this->eliminarRolAnterior($user, $rolAnterior);
+            $this->crearNuevoRol($user, $rol);
+        }
+    }
 
-        $rol = $data['rol'];
-
-        if($rol != $rolAnterior){
-            if ($rol == 'administrador') {
-                $rol = Administrador::create([
-                    'ID' => $persona->ID,
-                ]);
-                $rol -> save();
-            } 
-            if ($rol == 'chofer') {
-                $rol = Chofer::create([
-                    'ID' => $persona->ID,
-                ]);
-                $rol -> save();
-            } 
-            if ($rol == 'cliente') {
-                $rol = Cliente::create([
-                    'ID' => $persona->ID,
-                ]);
-                $rol -> save();
-            } 
-            if ($rol == 'funcionario') {
-                $rol = FuncionarioAlmacen::create([
-                    'ID' => $persona->ID,
-                ]);
-                $rol -> save();
-            } 
-            if ($rol == 'gerente') {
-                $rol = GerenteAlmacen::create([
-                    'ID_Gerente' => $persona->ID,
-                ]);
-                $rol -> save();
-            }
-            if ($rolAnterior == 'Administrador') {
-                $rol = Administrador::where('ID', $persona->ID)->first();
-                $rol->delete();
-            }
-            if ($rolAnterior == 'Chofer') {
-                $rol = Chofer::where('ID', $persona->ID)->first();
-                $rol->delete();
-            }
-            if ($rolAnterior == 'Cliente') {
-                $rol = Cliente::where('ID', $persona->ID)->first();
-                $rol->delete();
-            }
-            if ($rolAnterior == 'Funcionario') {
-                $rol = FuncionarioAlmacen::where('ID', $persona->ID)->first();
-                $rol->delete();
-            }
-            if ($rolAnterior == 'Gerente') {
-                $rol = GerenteAlmacen::where('ID_Gerente', $persona->ID)->first();
-                $rol->delete();
+    public function eliminarRolAnterior($user, $rolAnterior)
+    {
+        if ($rolAnterior) {
+            $eliminarRolAnterior = $rolAnterior::where('ID', $user)->first();
+            if($eliminarRolAnterior){
+                $eliminarRolAnterior->delete();
             }
         }
+    }
 
-        return redirect()->route('vistaBuscarUsuario', ['username' => $user->username])
-            ->with('mensaje', 'Usuario actualizado exitosamente');
+    public function crearNuevoRol($user, $rol)
+    {
+        $crearRol = new $rol([
+            'ID' => $user,
+        ]);
+        $crearRol->save();
     }
 
     public function eliminarUsuario($username)

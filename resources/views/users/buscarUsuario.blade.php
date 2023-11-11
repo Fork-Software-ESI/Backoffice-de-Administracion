@@ -15,7 +15,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Cédula</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
@@ -28,7 +27,6 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $datos['id'] }}</td>
                     <td>{{ $datos['ci'] }}</td>
                     <td>{{ $datos['nombre'] }}</td>
                     <td>{{ $datos['apellido'] }}</td>
