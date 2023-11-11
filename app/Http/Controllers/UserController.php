@@ -52,8 +52,9 @@ class UserController extends Controller
 
     public function datosUsuario($user)
     {
-        $persona = Persona::where('ID', $user->ID)->firstOrNew();
-        $telefono = PersonaTelefono::where('ID', $persona->ID)->first();
+        $personaUsuario = PersonaUsuario::where('ID_Usuario', $user -> ID) -> first();
+        $persona = Persona::where('ID', $personaUsuario->ID_Persona)->firstOrNew();
+        $telefono = PersonaTelefono::where('ID_Persona', $persona->ID)->first();
         $rol = $this->verificarRol($user);
         $telefonoA = $telefono ? $telefono->Telefono : 'No tiene';
         $deletedAt = $user->deleted_at;
