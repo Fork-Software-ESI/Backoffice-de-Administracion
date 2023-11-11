@@ -267,12 +267,18 @@ class PaqueteController extends Controller
             return redirect()->route('vistaPaqueteEntregado')->withErrors($validator)->withInput();
         }
 
-        $paquete = Paquete::where('ID', $request->input('ID_Paquete'))->first();
+        $validatedData = $validator->validated();
+
+        $paquete = Paquete::where('ID', $validatedData['ID_Paquete'])->first();
         if (!$paquete) {
             return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete no encontrado');
         }
 
-        $paqueteLote = Forma::where('ID_Paquete', $request->input('ID_Paquete'))->first();
+        if($paquete->ID_Estado == 4){
+            return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete ya entregado');
+        }
+
+        $paqueteLote = Forma::where('ID_Paquete', $validatedData['ID_Paquete'])->first();
         if (!$paqueteLote) {
             return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete no asignado a un lote');
         }
@@ -290,35 +296,38 @@ class PaqueteController extends Controller
             'ID_Estado' => 4,
         ]);
 
-        $paquetesLote = Forma::where('ID_Lote', $lote->ID)->get();
-        $paquetesEntregados = 0;
-        foreach($paquetesLote as $paqueteLote){
-            $paquete = Paquete::where('ID', $paqueteLote->ID_Paquete)->first();
-            if($paquete->ID_Estado == 4){
-                $paquetesEntregados = 1;
-            }
-        }
-        if($paquetesEntregados > 0){
-            $lote -> update([
-                'ID_Estado' => 4,
-            ]);
-        }
-
-        $loteCamion -> update([
-            'ID_Estado' => 3,
-        ]);
-
         $paqueteLote -> update([
             'ID_Estado' => 3,
         ]);
 
-        $lote -> update([
-            'ID_Estado' => 3,
-        ]);
+        $forma = Forma::where('ID_Lote', $lote->ID)->get();
 
-        $choferCamion -> update([
-            'ID_Estado' => 5,
-        ]);
+        $paquetesEntregados = 1;
+        foreach($forma as $formas){
+            $paquetes = Paquete::where('ID', $formas->ID_Paquete)->first();
+            if($paquetes && $paquetes->ID_Estado != 4){
+                $paquetesEntregados = 0;
+                break;
+            }
+        }
+
+        if($paquetesEntregados == 1){
+            Lote::where('ID', $lote->ID)
+                ->update([
+                    'ID_Estado' => 3,
+                ]);
+
+            LoteCamion::where('ID_Lote', $lote->ID)
+                ->update([
+                    'ID_Estado' => 3,
+                ]);
+
+            ChoferCamion::where('ID_Chofer', $choferCamion->ID_Chofer)
+                ->where('ID_Camion', $choferCamion->ID_Camion)
+                ->update([
+                    'ID_Estado' => 5,
+                ]);
+        }
 
         return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete entregado con éxito');
     }
