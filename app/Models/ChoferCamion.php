@@ -28,8 +28,6 @@ class ChoferCamion extends Model
 {
 	use SoftDeletes;
 	protected $table = 'chofer_camion';
-
-	protected $primaryKey = ['ID_Chofer', 'ID_Camion'];
 	public $incrementing = false;
 	protected $primaryKey = ['ID_Chofer','ID_Camion'];
 	public $timestamps = true;

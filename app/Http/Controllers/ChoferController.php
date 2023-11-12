@@ -30,7 +30,7 @@ class ChoferController extends Controller
     {
         $persona = $this->persona($chofer);
         $telefono = $this->telefono($persona);
-        $user = $this->user($persona, $chofer);
+        list($user, $camion, $deletedAt) = $this->user($chofer);
 
         return [
             'ci' => $persona->CI,
@@ -40,7 +40,7 @@ class ChoferController extends Controller
             'username' => $user->username,
             'telefono' => $telefono,
             'rol' => "Chofer",
-            'camion' => $camion->matricula,
+            'camion' => $camion->Matricula,
             'deleted_at' => $deletedAt,
         ];
     }
@@ -59,14 +59,14 @@ class ChoferController extends Controller
         return $telefonoA;
     }
 
-    private function user($persona, $chofer)
+    private function user($chofer)
     {
-        $user = User::where('ID', $persona->ID_Usuario)->first();
+        $user = User::where('ID', $chofer->ID)->first();
         $choferCamion = ChoferCamion::where('ID_Chofer', $chofer->ID)->first();
         $camion = Camion::where('ID', $choferCamion->ID_Camion)->first();
-        $deletedAt = $user->deleted_at;
+        $deletedAt = $user ? $user->deleted_at : null;
 
-        return [$user, $chofer, $deletedAt];
+        return [$user, $camion, $deletedAt];
     }
 
     public function asignarCamion(Request $request)
