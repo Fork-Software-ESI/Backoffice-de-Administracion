@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Camion
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Camion extends Model
 {
+	use SoftDeletes;
 	protected $table = 'camion';
 	protected $primaryKey = 'ID';
 	public $timestamps = true;

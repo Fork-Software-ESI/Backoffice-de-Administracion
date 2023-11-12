@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class ChoferCamionManeja
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ChoferCamionManeja extends Model
 {
+	use SoftDeletes;
 	protected $table = 'chofer_camion_maneja';
 	public $incrementing = false;
 	public $timestamps = true;

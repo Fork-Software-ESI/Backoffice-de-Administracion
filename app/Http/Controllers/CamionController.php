@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Camion;
+use App\Models\CamionLlevaLote;
 use App\Models\ChoferCamion;
+use App\Models\ChoferCamionManeja;
 use App\Models\Chofer;
 use App\Models\Paquete;
 use App\Models\LoteCamion;
 use App\Models\Lote;
 use App\Models\Forma;
 use App\Models\CamionPlataforma;
+use App\Models\CamionPlataformaSalida;
 use App\Models\Persona;
 
 class CamionController extends Controller
@@ -47,20 +50,32 @@ class CamionController extends Controller
     public function buscarCamion(Request $request)
     {
         $matricula = $request->input('matricula');
-        $camion = Camion::where('Matricula', $matricula)->first();
+        $camion = Camion::where('Matricula', $matricula)->withTrashed()->first();
 
         if (!$camion) {
-            return redirect()->route('vistaBuscarCamion')->with(['mensaje' => 'Camión no encontrado']);
+            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'Camión no encontrado');
         }
 
         $choferCamion = ChoferCamion::where('ID_Camion', $camion->ID)->first();
-        $chofer = Persona::find($choferCamion->ID_Chofer);
-        $nombre = $chofer ? $chofer->Nombre : 'No tiene';
+        $nombre = 'No tiene';
+        if ($choferCamion) {
+            $chofer = Persona::find($choferCamion->ID_Chofer);
+            $nombre = $chofer->Nombre;
+        }
+
         $camionPlataforma = CamionPlataforma::where('ID_Camion', $camion->ID)->first();
-        $plataforma = $camionPlataforma ? $camionPlataforma->Numero_Plataforma : 'No tiene';
-        $almacen = $camionPlataforma ? $camionPlataforma->ID_Almacen : 'No tiene';
+        $plataforma = 'No tiene';
+        $almacen = 'No tiene';
+        if($camionPlataforma){
+            $plataforma = $camionPlataforma->Numero_Plataforma;
+            $almacen = $camionPlataforma->ID_Almacen;
+        }
+        
         $loteCamion = LoteCamion::where('ID_Camion', $camion->ID)->first();
-        $lote = $loteCamion ? $loteCamion->ID_Lote : 'No tiene';
+        $lote = 'No tiene';
+        if($loteCamion){
+            $lote = $loteCamion->ID_Lote;
+        }
 
         $datos = [
             'id' => $camion->ID,
@@ -171,7 +186,7 @@ class CamionController extends Controller
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'No puedes asignar un chofer a un camión eliminado');
         }
         
-        $camionAsignado = ChoferCamion::where('ID_Camion', $camion->ID);
+        $camionAsignado = ChoferCamion::where('ID_Camion', $camion->ID)->first();
         if($camionAsignado){
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'Camion ya tiene un chofer asignado');
         }
@@ -184,7 +199,7 @@ class CamionController extends Controller
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'No puedes asignar un chofer eliminado');
         }
 
-        $choferAsignado = ChoferCamion::where('ID_Chofer', $chofer->ID);
+        $choferAsignado = ChoferCamion::where('ID_Chofer', $chofer->ID)->first();
         if($choferAsignado){
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'Chofer ya tiene un camion asignado');
         }
@@ -224,9 +239,9 @@ class CamionController extends Controller
         $lote = Lote::where('ID', $lotesCamion->ID_Lote)->first();
 
         $forma = Forma::where('ID_Lote', $lote->ID)->first();
-        if(!$forma){
+        /* if(!$forma){
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene lote asignado');
-        }
+        } */
 
         $paquete = Paquete::find($forma->ID_Paquete);
 
@@ -252,8 +267,14 @@ class CamionController extends Controller
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'No puedes eliminar un camión eliminado');
         }
 
-        $camion->deleted_at = now();
-        $camion->save();
+        LoteCamion::where('ID_Camion', $camion->ID)->delete();
+        ChoferCamion::where('ID_Camion', $camion->ID)->delete();
+        CamionPlataforma::where('ID_Camion', $camion->ID)->delete();
+        CamionPlataformaSalida::where('ID_Camion', $camion->ID)->delete();
+        ChoferCamionManeja::where('ID_Camion', $camion->ID)->delete();
+        CamionLlevaLote::where('ID_Camion', $camion->ID)->delete();
+
+        $camion->delete();
 
         return redirect()->route('vistaBuscarCamion')->with('mensaje', 'Camion eliminado con éxito');
     }

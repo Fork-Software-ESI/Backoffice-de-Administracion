@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class ChoferTipoLibretum
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ChoferTipoLibretum extends Model
 {
+	use SoftDeletes;
 	protected $table = 'chofer_tipo_libreta';
 	public $incrementing = false;
 	public $timestamps = true;

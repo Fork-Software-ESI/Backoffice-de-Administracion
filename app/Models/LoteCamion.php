@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class LoteCamion
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LoteCamion extends Model
 {
+	use SoftDeletes;
 	protected $table = 'lote_camion';
 	protected $primaryKey = 'ID_Lote';
 	public $incrementing = false;
