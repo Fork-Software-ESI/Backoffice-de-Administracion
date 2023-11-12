@@ -24,6 +24,7 @@ class PersonaUsuario extends Model
 {
 	protected $table = 'persona_usuario';
 	public $incrementing = false;
+	protected $primaryKey = ['ID_Persona', 'ID_Usuario'];
 	public $timestamps = true;
 
 	protected $fillable = [

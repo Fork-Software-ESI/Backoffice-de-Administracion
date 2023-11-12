@@ -26,6 +26,7 @@ class ChoferCamion extends Model
 {
 	protected $table = 'chofer_camion';
 	public $incrementing = false;
+	protected $primaryKey = ['ID_Chofer','ID_Camion'];
 	public $timestamps = true;
 
 	protected $casts = [
