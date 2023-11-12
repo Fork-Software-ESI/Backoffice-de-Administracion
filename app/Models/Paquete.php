@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $ID_Cliente
  * @property string|null $Descripcion
  * @property int $Peso_Kg
- * @property string $Estado
+ * @property string $ID_Estado
  * @property string $Destino
  * 
  * @property Cliente $cliente
@@ -37,7 +37,9 @@ class Paquete extends Model
 
 	protected $casts = [
 		'ID_Cliente' => 'int',
-		'Peso_Kg' => 'int'
+		'ID_Estado' => 'int',
+		'Descripcion'=> 'string',
+		'Peso_Kg' => 'int',
 	];
 
 	protected $fillable = [
@@ -45,7 +47,7 @@ class Paquete extends Model
 		'ID_Estado',
 		'Descripcion',
 		'Peso_Kg',
-		'Estado',
+		'ID_Estado',
 		'Destino',
 		'Codigo'
 	];
