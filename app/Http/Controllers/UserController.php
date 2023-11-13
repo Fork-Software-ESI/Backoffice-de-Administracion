@@ -11,6 +11,7 @@ use App\Models\GerenteAlmacen;
 use App\Models\FuncionarioAlmacen;
 use App\Models\PersonaTelefono;
 use App\Models\PersonaUsuario;
+use App\Models\ChoferTipoLibretum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -123,15 +124,34 @@ class UserController extends Controller
 
         $persona = $this->crearPersona($validatedData);
 
-        $personaUsuario = $this->crearPersonaUsuario($user, $persona);
+        $this->crearPersonaUsuario($user, $persona);
 
-        $telefono = $this->crearTelefono($persona, $validatedData['telefono']);
+        $this->crearTelefono($persona, $validatedData['telefono']);
 
         $this->crearRol($validatedData['rol'], $persona);
+
+        session(['id' => $persona->ID]);
+
+        if ($validatedData['rol'] == 'chofer') {
+            return redirect()->route('formularioLibreta');
+        }
 
         session()->flash('mensaje', 'Usuario creado exitosamente');
         return redirect()->route('crearUsuario');
     }
+
+    public function tipoLibreta()
+    {
+        $id = session('id');
+        $tipo_libreta = request('tipo_libreta');
+        
+        ChoferTipoLibretum::create([
+            'ID' => $id,
+            'Tipo' => $tipo_libreta,
+        ]);
+
+        return redirect()->route('crearUsuario')->with('mensaje', 'Chofer con libreta creado exitosamente');
+    }   
 
     private function usuarioExistente($username)
     {

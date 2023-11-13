@@ -47,6 +47,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/choferes', [ChoferController::class, 'mostrarChoferes'])->name('mostrarChoferes');
 
+    Route::get('/choferLibreta', function () {
+        return view('chofer.formularioLibreta');
+    })->name('formularioLibreta');
+
+    Route::post('/choferLibreta', [UserController::class, 'tipoLibreta'])->name('guardarLibreta');
+
     //
 
     Route::get('/menu-almacen', function () {
