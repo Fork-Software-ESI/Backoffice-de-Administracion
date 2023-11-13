@@ -14,14 +14,14 @@
     <form action="{{ route('actualizarPaquete', ['id' => $datos['ID']]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="descripcion">Descripcion <input value="{{ $datos['Descripcion'] }}" type="text" name="descripcion">
-            @error('descripcion')
+        <label for="Descripcion">Descripcion <input value="{{ $datos['Descripcion'] }}" type="text" name="Descripcion">
+            @error('Descripcion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label> <br> <br>
-        <label for="peso_Kg">Peso en kg <input value="{{ $datos['Peso_Kg'] }}" type="text" name="peso_Kg">
-            @error('peso_Kg')
+        <label for="Peso_Kg">Peso en kg <input value="{{ $datos['Peso_Kg'] }}" type="text" name="Peso_Kg">
+            @error('Peso_Kg')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror

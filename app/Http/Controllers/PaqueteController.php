@@ -26,13 +26,13 @@ class PaqueteController extends Controller
 
         if (empty($data->items || $data == null)) {
             /* return response()->json(['error' => 'Dirección inválida'], 400); */
-            return redirect()->route('crearPaquete')->with(['mensaje' => 'Direccion invalida']);
+            return 'Direccion invalida';
         }
 
         if ($data != null && !empty($data->items)) {
             if (count($data->items) > 1) {
                 /* return response()->json(['error' => 'Múltiples direcciones', 'Direcciones' => $data], 400); */
-                return redirect()->route('crearPaquete')->with(['mensaje' => 'Múltiples direcciones', 'Direcciones' => $data]);
+                return 'Múltiples direcciones';
             }
 
             $addressDetails = $data->items[0]->address;
@@ -44,7 +44,7 @@ class PaqueteController extends Controller
             ) {
                 return true;
             } else {
-                return redirect()->route('crearPaquete')->with(['mensaje' => 'Direccion invalida - Faltan datos']);
+                return 'Direccion invalida - Faltan datos';
             }
         }
     }
@@ -105,6 +105,23 @@ class PaqueteController extends Controller
         return $codigo;
     }
 
+    private function mostrarDatosPaquete($paquetes)
+    {
+        $forma = Forma::where('ID_Paquete', $paquetes->ID)->whereNull('deleted_at')->first();
+        $lote = $forma ? $forma->ID_Lote : 'No tiene';
+        
+        $descripcion = $paquetes->Descripcion;
+        return [
+            'ID' => $paquetes->ID,
+            'Descripcion' => $descripcion ? $descripcion : 'No Tiene',
+            'Peso_Kg' => $paquetes->Peso_Kg,
+            'ID_Cliente' => $paquetes->ID_Cliente,
+            'ID_Estado' => $paquetes->ID_Estado,
+            'Destino' => $paquetes->Destino,
+            'Codigo'=> $paquetes->Codigo,
+            'ID_Lote' => $lote,
+        ];
+    }
     public function mostrarPaquetes()
     {
         $paquete = Paquete::whereNull('deleted_at')->get();
@@ -118,25 +135,6 @@ class PaqueteController extends Controller
         return view('paquete.mostrarPaquetes', ['datos' => $datos]);
     }
 
-    private function mostrarDatosPaquete($paquetes)
-    {
-        $forma = Forma::where('ID_Paquete', $paquetes->ID)->first();
-        $lote = $forma->ID_Lote;
-        if($forma->deleted_at != null){
-            $lote = 'No tiene';
-        }
-        $descripcion = $paquetes->Descripcion;
-        return [
-            'ID' => $paquetes->ID,
-            'Descripcion' => $descripcion ? $descripcion : 'No Tiene',
-            'Peso_Kg' => $paquetes->Peso_Kg,
-            'ID_Cliente' => $paquetes->ID_Cliente,
-            'ID_Estado' => $paquetes->ID_Estado,
-            'Destino' => $paquetes->Destino,
-            'Codigo'=> $paquetes->Codigo,
-            'ID_Lote' => $lote,
-        ];
-    }
     public function buscarPaquete(Request $request)
     {
         $ID = $request->input('id');
@@ -198,7 +196,13 @@ class PaqueteController extends Controller
     {
         $paquete = Paquete::find($id);
 
-        $validatedData = $this->validatorActualizar($request, $paquete);
+        $validator = $this->validatorActualizar($request);
+
+        if ($validator->fails()) {
+            return redirect()->route('editarPaquete', ['id' => $paquete->ID])->withErrors($validator)->withInput();
+        }
+
+        $validatedData = $validator->validated();
 
         $validatedData['Destino'] = $this->direccion($validatedData);
 
@@ -211,7 +215,7 @@ class PaqueteController extends Controller
         return redirect()->route('vistaBuscarPaquete', ['id' => $paquete->ID])
         ->with('mensaje', 'Paquete actualizado de forma exitosa');
     }
-    private function validatorActualizar($request, $paquete)
+    private function validatorActualizar($request)
     {
         $validator = Validator::make($request->all(), [
             'Descripcion' => 'string',
@@ -223,13 +227,7 @@ class PaqueteController extends Controller
             'Ciudad' => 'string|alpha',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->route('editarPaquete', ['id' => $paquete->ID])->withErrors($validator)->withInput();
-        }
-
-        $data = $request->only(['descripcion', 'peso_Kg', 'ID_Cliente', 'ID_Estado', 'Calle', 'Numero_Puerta', 'Ciudad']);
-
-        return $data;
+        return $validator;
     }
     public function asignarLote(Request $request)
     {
