@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Buscar Almacen</title>
+    <style>
+        #botonLogout {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
 </head>
 <body>
     <a href="{{ route('vistaAlmacen') }}">Volver al menú de Almacen</a>
@@ -34,5 +41,9 @@
             <button type="submit">Eliminar Almacen</button>
         </form><br>
         <a href="{{ route('editarAlmacen', ['id' => $almacen->ID]) }}">Editar Almacen</a>
+        <form action="{{ route('auth.logout') }}" method="GET">
+        @csrf
+        <button id="botonLogout" type="submit">Cerrar sesión</button>
+    </form>
 </body>
 </html>

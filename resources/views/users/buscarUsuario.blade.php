@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Usuario - Buscar Usuario</title>
+    <style>
+        #botonLogout {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -45,7 +52,11 @@
             <button type="submit">Eliminar Usuario</button>
         </form>
         <br>
-        <a href="{{ route('editarUsuario', ['username' => $datos['username']]) }}">Editar Usuario</a>
+        <a href="{{ route('editarUsuario', ['username' => $user->username]) }}">Editar Usuario</a>
+        <form action="{{ route('auth.logout') }}" method="GET">
+            @csrf
+            <button id="botonLogout" type="submit">Cerrar sesión</button>
+        </form>
 </body>
 
 </html>

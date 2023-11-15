@@ -10,6 +10,11 @@
         table,th,td {
             border: 1px solid;
         }
+        #botonLogout {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
     </style>
 </head>
 
@@ -48,6 +53,10 @@
             @endforeach
         </tbody>
     </table>
+    <form action="{{ route('auth.logout') }}" method="GET">
+        @csrf
+        <button id="botonLogout" type="submit">Cerrar sesión</button>
+    </form>
 </body>
 
 </html>

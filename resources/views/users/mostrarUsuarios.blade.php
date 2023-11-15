@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuario - Mostrar Usuarios</title>
     <link rel="stylesheet" href="/css/mostrarUsuarios.css">
+    <style>
+        #botonLogout {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -37,6 +44,10 @@
             @endforeach
         </tbody>
     </table>
+    <form action="{{ route('auth.logout') }}" method="GET">
+        @csrf
+        <button id="botonLogout" type="submit">Cerrar sesión</button>
+    </form>
 </body>
 
 </html>
