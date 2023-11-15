@@ -12,21 +12,24 @@
         }
     </style>
 </head>
+
 <body>
-    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a><br>
+    <a href="{{ route('vistaEstante') }}">Volver al menú de Estanteria</a><br>
     <h1>Mostrar Estanteria</h1>
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Almacen Id</th>
+                <th>ID</th>
+                <th>ID Almacen</th>
+                <th>ID Paquete</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($estanteria as $estanteria)
+            @foreach ($datos as $estante)
                 <tr>
-                    <td>{{ $estanteria->id }}</td>
-                    <td>{{ $estanteria->almacen_id }}</td>
+                    <td>{{ $estante['ID'] }}</td>
+                    <td>{{ $estante['ID_Almacen'] }}</td>
+                    <td>{{ $estante['ID_Paquete'] }}</td>
                 </tr>
             @endforeach
         </tbody>

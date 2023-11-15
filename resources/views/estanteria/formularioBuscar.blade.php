@@ -13,15 +13,15 @@
     </style>
 </head>
 <body>
-    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a><br>
+    <a href="{{ route('vistaEstante') }}">Volver al menú de Estanteria</a><br>
     @if (session('mensaje'))
         {{ session('mensaje') }}
     @endif
-    <h2>Bienvenido a Buscar Estanteria</h2>
-    <form action="{{ route('buscarEstanteria') }}" method="post">
+    <h2>Bienvenido a Buscar Estante</h2>
+    <form action="{{ route('buscarEstante') }}" method="post">
         @csrf
-        <label for="id">Ingrese la id del estanteria:</label>
-        <input type="number" name="id" id="id" required>
+        <label for="ID">Ingrese la id del estante:</label>
+        <input type="number" name="ID" required>
         <button type="submit">Buscar</button>
     </form>
     <form action="{{ route('auth.logout') }}" method="GET">

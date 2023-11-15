@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Estante
@@ -22,9 +23,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Estante extends Model
 {
+	use SoftDeletes;
 	protected $table = 'estante';
+	protected $primaryKey = 'ID';
+	public $incrementing = true;
 	public $timestamps = true;
+	protected $dates = ['deleted_at'];
 
+	protected $fillable = [
+		'ID_Almacen'
+	];
 	protected $casts = [
 		'ID_Almacen' => 'int'
 	];

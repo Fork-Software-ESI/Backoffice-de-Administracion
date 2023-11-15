@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaqueteController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\LoteController;
-use App\Http\Controllers\EstanteriaController;
+use App\Http\Controllers\EstanteController;
 use App\Http\Controllers\ChoferController;
 use App\Http\Controllers\CamionController;
 use App\Http\Controllers\PlataformaController;
@@ -148,27 +148,27 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/menu-estanteria', function () {
         return view('estanteria.estanteria');
-    })->name('vistaEstanteria');
+    })->name('vistaEstante');
 
-    Route::get('/estanterias', [EstanteriaController::class, 'mostrarEstanterias'])->name('mostrarEstanteria');
+    Route::get('/estanterias', [EstanteController::class, 'mostrarEstantes'])->name('mostrarEstante');
 
     Route::get('/buscar-estanteria', function () {
         return view('estanteria.formularioBuscar');
-    })->name('vistaBuscarEstanteria');
+    })->name('vistaBuscarEstante');
 
-    Route::post('/buscar-estanteria', [EstanteriaController::class, 'buscarEstanteria'])->name('buscarEstanteria');
+    Route::post('/buscar-estanteria', [EstanteController::class, 'buscarEstante'])->name('buscarEstante');
 
     Route::get('/crear-estanteria', function () {
         return view('estanteria.crearEstanteria');
-    })->name('crearEstanteria');
+    })->name('crearEstante');
 
-    Route::post('/crear-estanteria', [EstanteriaController::class, 'crearEstanteria']);
+    Route::post('/crear-estanteria', [EstanteController::class, 'crearEstante']);
 
-    Route::get('/editar-estanteria/{id}', [EstanteriaController::class, 'editarEstanteria'])->name('editarEstanteria');
+    Route::get('/editar-estanteria/{id}', [EstanteController::class, 'editarEstante'])->name('editarEstante');
 
-    Route::patch('/actualizar-estanteria/{id}', [EstanteriaController::class, 'actualizarEstanteria'])->name('actualizarEstanteria');
+    Route::patch('/actualizar-estanteria/{id}', [EstanteController::class, 'actualizarEstante'])->name('actualizarEstante');
 
-    Route::delete('/eliminar-estanteria/{id}', [EstanteriaController::class, 'eliminarEstanteria'])->name('eliminarEstanteria');
+    Route::delete('/eliminar-estanteria/{id}', [EstanteController::class, 'eliminarEstante'])->name('eliminarEstante');
     
     //
 

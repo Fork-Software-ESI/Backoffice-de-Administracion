@@ -14,25 +14,27 @@
     </style>
 </head>
 <body>
-    <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a><br>
+    <a href="{{ route('vistaEstante') }}">Volver al menú de Estanteria</a><br>
     <h2>Bienvenido a Buscar Estanteria</h2>
     <h2>Informacion del estanteria:</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Id de almacen</th>
+                        <th>ID</th>
+                        <th>ID Almacen</th>
+                        <th>ID Paquete</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $estanteria->id }}</td>
-                        <td>{{ $estanteria->almacen_id }}</td>
+                        <td>{{ $datos['ID'] }}</td>
+                        <td>{{ $datos['ID_Almacen'] }}</td>
+                        <td>{{ $datos['ID_Paquete'] }}</td>
                     </tr>
                 </tbody>
             </table>
-
-            <form method="POST" action="{{ route('eliminarEstanteria', ['id' => $estanteria->id]) }}">
+            <br><br>
+            <form method="POST" action="{{ route('eliminarEstante', ['id' => $datos['ID']]) }}">
                 @csrf
                 @method('DELETE')
                 <button type="submit">Eliminar Estanteria</button>
