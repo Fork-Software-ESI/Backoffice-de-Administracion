@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estanterias - Crear estanteria</title>
+    <style>
+        #botonLogout {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
 </head>
 <body>
     <a href="{{ route('vistaEstanteria') }}">Volver al menú de Estanteria</a>
@@ -21,6 +28,10 @@
             @enderror
         </label><br><br>
         <button type="submit">Actualizar estanteria</button>
+    </form>
+    <form action="{{ route('auth.logout') }}" method="GET">
+        @csrf
+        <button id="botonLogout" type="submit">Cerrar sesión</button>
     </form>
 </body>
 </html>

@@ -7,6 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Usuario - Crear Usuario</title>
     <link rel="stylesheet" href="/css/crearUsuario.css">
+    <style>
+        #botonLogout {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -87,6 +94,10 @@
             @enderror
         </label><br><br>
         <button type="submit">Crear</button>
+    </form>
+    <form action="{{ route('auth.logout') }}" method="GET">
+        @csrf
+        <button id="botonLogout" type="submit">Cerrar sesión</button>
     </form>
 </body>
 
