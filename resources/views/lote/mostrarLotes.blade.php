@@ -29,9 +29,6 @@
                 <th>Id</th>
                 <th>Descripcion</th>
                 <th>Peso_Kg</th>
-                <th>Creado</th>
-                <th>Actualizado</th>
-                <th>Eliminado</th>
             </tr>
         </thead>
         <tbody>
@@ -40,9 +37,6 @@
                     <td>{{ $lote->ID }}</td>
                     <td>{{ $lote->Descripcion }}</td>
                     <td>{{ $lote->Peso_Kg }}</td>
-                    <td>{{ $lote->created_at }}</td>
-                    <td>{{ $lote->updated_at }}</td>
-                    <td>{{ $lote->deleted_at }}</td>
                 </tr>
             @endforeach
         </tbody>

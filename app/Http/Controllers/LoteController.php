@@ -54,6 +54,10 @@ class LoteController extends Controller
     {
         $lote = Lote::find($id);
 
+        if($lote->deleted_at != null){
+            return redirect()->route('vistaBuscarLote')->with('mensaje', 'No puedes editar un lote ya eliminado');
+        }
+
         return view('lote.editarLote', ['lote' => $lote]);
     }
 
@@ -84,6 +88,10 @@ class LoteController extends Controller
     public function eliminarlote($id)
     {
         $lote = Lote::find($id);
+
+        if($lote->deleted_at != null){
+            return redirect()->route('vistaBuscarLote')->with('mensaje', 'No puedes eliminar un lote ya eliminado');
+        }
 
         $lote->deleted_at = now();
         $lote->save();
