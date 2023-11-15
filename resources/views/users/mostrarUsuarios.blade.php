@@ -34,7 +34,7 @@
                 <td>{{ $usuario['telefono'] }}</td>
                 <td>{{ $usuario['rol'] }}</td>
             </tr>
-        @endforeach
+            @endforeach
         </tbody>
     </table>
 </body>

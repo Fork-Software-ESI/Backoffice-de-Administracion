@@ -1,12 +1,9 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class PersonaTelefono
@@ -19,23 +16,21 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
+
 class PersonaTelefono extends Model
 {
-	protected $primaryKey = ['ID', 'Telefono'];
-	protected $table = 'persona_telefono';
-	public $incrementing = false;
-	public $timestamps = true;
-	
-	protected $fillable = [
-		'ID_Persona',
-		'Telefono'
-	];
-	protected $casts = [
-		'ID' => 'int'
-	];
+    use SoftDeletes;
+    protected $table = 'persona_telefono';
+    public $timestamps = false;
+    protected $primaryKey = 'ID';
 
-	public function persona()
-	{
-		return $this->belongsTo(Persona::class, 'ID_Persona' , 'ID');
-	}
+    protected $fillable = [
+        'ID_Persona', 
+        'Telefono'
+    ];
+
+    public function persona()
+    {
+        return $this->belongsTo(Persona::class, 'ID_Persona', 'ID');
+    }
 }

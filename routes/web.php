@@ -44,16 +44,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::patch('/actualizar-usuario/{username}', [UserController::class, 'actualizarUsuario'])->name('actualizarUsuario');
 
-    Route::delete('/eliminar-user/{id}', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
+    Route::delete('/eliminar-user/{username}', [UserController::class, 'eliminarUsuario'])->name('eliminarUsuario');
 
     Route::get('/choferes', [ChoferController::class, 'mostrarChoferes'])->name('mostrarChoferes');
 
-    Route::get('/asignarCamion', function(){
-        return view('chofer.asignarCamion');
-    })->name('vistaAsignarCamion');
+    Route::get('/choferLibreta', function () {
+        return view('chofer.formularioLibreta');
+    })->name('formularioLibreta');
 
-    Route::post('/asignarCamion', [ChoferController::class, 'asignarCamion'])->name('asignarCamion');
-
+    Route::post('/choferLibreta', [UserController::class, 'tipoLibreta'])->name('guardarLibreta');
 
     //
 

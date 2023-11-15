@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class PersonaUsuario
@@ -16,27 +17,30 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $ID_Persona
  * 
  * @property Persona $persona
- * @property Usuario $usuario
+ * @property User $usuario
  *
  * @package App\Models
  */
 class PersonaUsuario extends Model
 {
+	use SoftDeletes;
 	protected $table = 'persona_usuario';
 	public $incrementing = false;
 	public $timestamps = true;
+	protected $primaryKey = ['ID_Usuario', 'ID_Persona'];
 
 	protected $fillable = [
 		'ID_Usuario',
 		'ID_Persona',
 	];
 	protected $casts = [
-		'ID' => 'int'
+		'ID_Persona' => 'int',
+		'ID_Usuario' => 'int'
 	];
 
 	public function usuario()
 	{
-		return $this->belongsTo(Usuario::class, 'ID_Usuario', 'ID');
+		return $this->belongsTo(User::class, 'ID_Usuario', 'ID');
 	}
 
 	public function persona()
