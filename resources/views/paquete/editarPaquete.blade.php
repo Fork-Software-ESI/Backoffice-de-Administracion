@@ -18,22 +18,22 @@
 <body>
     <a href="{{ route('vistaPaquete') }}">Volver al menú de Paquete</a><br>
     <h1>Editar Paquete</h1>
-    <form action="{{ route('actualizarPaquete', ['id' => $paquete->ID]) }}" method="post">
+    <form action="{{ route('actualizarPaquete', ['id' => $datos['ID']]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="descripcion">Descripcion <input value="{{ $paquete->Descripcion }}" type="text" name="descripcion">
-            @error('descripcion')
+        <label for="Descripcion">Descripcion <input value="{{ $datos['Descripcion'] }}" type="text" name="Descripcion">
+            @error('Descripcion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label> <br> <br>
-        <label for="peso_Kg">Peso en kg <input value="{{ $paquete->Peso_Kg }}" type="text" name="peso_Kg">
-            @error('peso_Kg')
+        <label for="Peso_Kg">Peso en kg <input value="{{ $datos['Peso_Kg'] }}" type="text" name="Peso_Kg">
+            @error('Peso_Kg')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="ID_Cliente">Id del cliente <input value="{{ $paquete->ID_Cliente }}" type="" name="ID_Cliente">
+        <label for="ID_Cliente">Id del cliente <input value="{{ $datos['ID_Cliente'] }}" type="" name="ID_Cliente">
             @error('ID_Cliente')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
@@ -41,13 +41,25 @@
         </label><br><br>
         <label for="ID_Estado">Estado 
             <select name="ID_Estado">
-                <option value="1" {{ $paquete->ID_Estado == '1' ? 'selected' : '' }}>En almacen</option>
-                <option value="2" {{ $paquete->ID_Estado == '2' ? 'selected' : '' }}>En transito</option>
-                <option value="3" {{ $paquete->ID_Estado == '3' ? 'selected' : '' }}>Entregado</option>
+                <option value="1" {{ $datos['ID_Estado'] == '1' ? 'selected' : '' }}>En almacen</option>
+                <option value="2" {{ $datos['ID_Estado'] == '2' ? 'selected' : '' }}>En transito</option>
+                <option value="3" {{ $datos['ID_Estado'] == '3' ? 'selected' : '' }}>Entregado</option>
             </select>
         </label><br><br>
-        <label for="destino">Destino <input value="{{ $paquete->Destino }}" type="" name="destino">
-            @error('destino')
+        <label for="Calle">Calle <input value="{{ $datos['Calle'] }}" type="" name="Calle">
+            @error('Calle')
+                <br>
+                <small style="color:red;">{{ $message }}</small>
+            @enderror
+        </label><br><br>
+        <label for="Numero_Puerta">Numero de puerta <input value="{{ $datos['Numero_Puerta'] }}" type="" name="Numero_Puerta">
+            @error('Numero_Puerta')
+                <br>
+                <small style="color:red;">{{ $message }}</small>
+            @enderror
+        </label><br><br>
+        <label for="Ciudad">Ciudad <input value="{{ $datos['Ciudad'] }}" type="" name="Ciudad">
+            @error('Ciudad')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror

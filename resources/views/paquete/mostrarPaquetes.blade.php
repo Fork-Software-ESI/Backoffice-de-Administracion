@@ -31,24 +31,20 @@
                 <th>ID_Estado</th>
                 <th>Destino</th>
                 <th>Codigo</th>
-                <th>Creado</th>
-                <th>Actualizado</th>
-                <th>Eliminado</th>
+                <th>ID Lote</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($paquete as $paquete)
+            @foreach ($datos as $paquete)
                 <tr>
-                    <td>{{ $paquete->ID }}</td>
-                    <td>{{ $paquete->ID_Cliente }}</td>
-                    <td>{{ $paquete->Descripcion }}</td>
-                    <td>{{ $paquete->Peso_Kg }}</td>
-                    <td>{{ $paquete->ID_Estado }}</td>
-                    <td>{{ $paquete->Destino }}</td>
-                    <td>{{ $paquete->Codigo }}</td>
-                    <td>{{ $paquete->created_at }}</td>
-                    <td>{{ $paquete->updated_at }}</td>
-                    <td>{{ $paquete->deleted_at }}</td>
+                    <td>{{ $paquete['ID'] }}</td>
+                    <td>{{ $paquete['ID_Cliente'] }}</td>
+                    <td>{{ $paquete['Descripcion'] }}</td>
+                    <td>{{ $paquete['Peso_Kg'] }}</td>
+                    <td>{{ $paquete['ID_Estado'] }}</td>
+                    <td>{{ $paquete['Destino'] }}</td>
+                    <td>{{ $paquete['Codigo'] }}</td>
+                    <td>{{ $paquete['ID_Lote'] }}</td>
                 </tr>
             @endforeach
         </tbody>

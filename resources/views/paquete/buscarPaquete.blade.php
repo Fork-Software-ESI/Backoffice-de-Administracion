@@ -54,7 +54,7 @@
         @csrf
         @method('DELETE')
         <button type="submit">Eliminar Paquete</button>
-    </form>
+    </form> <br>
     <a href="{{ route('editarPaquete', ['id' => $paquete->ID]) }}">Editar Paquete</a>    
     <form action="{{ route('auth.logout') }}" method="GET">
         @csrf

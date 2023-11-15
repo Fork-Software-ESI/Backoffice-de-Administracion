@@ -100,6 +100,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/crear-paquete', [PaqueteController::class, 'crearPaquete']);
 
+    Route::get('/asignar-lote', function () {
+        return view('paquete.asignarLote');
+    })->name('vistaAsignarLote');
+
+    Route::post('/asignar-lote', [PaqueteController::class, 'asignarLote'])->name('asignarLote');
+
+    Route::get('paqueteEntregado', function(){
+        return view('paquete.paqueteEntregado');
+    })->name('vistaPaqueteEntregado');
+
+    Route::post('paqueteEntregado', [PaqueteController::class, 'paqueteEntregado'])->name('paqueteEntregado');
+
     Route::get('/editar-paquete/{id}', [PaqueteController::class, 'editarPaquete'])->name('editarPaquete');
 
     Route::patch('/actualizar-paquete/{id}', [PaqueteController::class, 'actualizarPaquete'])->name('actualizarPaquete');

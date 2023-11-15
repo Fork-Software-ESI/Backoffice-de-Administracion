@@ -20,6 +20,8 @@
         <li><a href="{{ route('mostrarPaquete') }}">Mostrar paquetes</a></li>
         <li><a href="{{ route('vistaBuscarPaquete') }}">Buscar paquete y eliminarlo o editarlo</a></li>
         <li><a href="{{ route('crearPaquete') }}">Crear paquete</a></li>
+        <li><a href="{{ route('vistaAsignarLote') }}">Asignar paquete a lote</a></li>
+        <li><a href="{{ route('vistaPaqueteEntregado') }}">Marcar como entregado un paquete</a></li>
     </ol>
     <form action="{{ route('auth.logout') }}" method="GET">
         @csrf

@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Paquete
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $ID_Cliente
  * @property string|null $Descripcion
  * @property int $Peso_Kg
- * @property string $Estado
+ * @property string $ID_Estado
  * @property string $Destino
  * 
  * @property Cliente $cliente
@@ -29,13 +30,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Paquete extends Model
 {
+	use SoftDeletes;
 	protected $table = 'paquete';
 	protected $primaryKey = 'ID';
 	public $timestamps = true;
 
 	protected $casts = [
 		'ID_Cliente' => 'int',
-		'Peso_Kg' => 'int'
+		'ID_Estado' => 'int',
+		'Descripcion'=> 'string',
+		'Peso_Kg' => 'int',
 	];
 
 	protected $fillable = [
@@ -43,7 +47,7 @@ class Paquete extends Model
 		'ID_Estado',
 		'Descripcion',
 		'Peso_Kg',
-		'Estado',
+		'ID_Estado',
 		'Destino',
 		'Codigo'
 	];
