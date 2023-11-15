@@ -143,31 +143,41 @@ class CamionController extends Controller
 
         $camion = Camion::where('Matricula', $matricula)->first();
         if (!$camion) {
-            return redirect()->route('formularioHora')->with(['mensaje' => 'Camión no encontrado']);
+            return redirect()->route('formularioHora')->with('mensaje', 'Camión no encontrado');
         }
 
         $camionPlataforma = CamionPlataforma::where('ID_Camion', $camion->ID)->first();
 
         if (!$camionPlataforma) {
-            return redirect()->route('formularioHora')->with(['mensaje' => 'El camión no tiene una plataforma asignada']);
+            return redirect()->route('formularioHora')->with('mensaje', 'El camión no tiene una plataforma asignada');
         }
 
         $camionPlataformaSalida = CamionPlataformaSalida::where('ID_Camion', $camion->ID)->first();
 
         if($hora == 'llegada'){
             if ($camionPlataforma->Fecha_Hora_Llegada !== null) {
-                return redirect()->route('formularioHora')->with(['mensaje' => 'El camión ya ha llegado']);
+                return redirect()->route('formularioHora')->with('mensaje', 'El camión ya ha llegado');
             }
 
             CamionPlataforma::where('ID_Camion', $camion->ID)->update(['Fecha_Hora_Llegada' => now()]);
 
-            return redirect()->route('formularioHora')->with('mensaje','Se a marcado la hora exitosamente');
+            $estadoc = ChoferCamion::where('ID_Camion', $camion->ID)->first();
+            $estadoc ->update([
+                'ID_Estado' => 2,
+            ]);
+
+            return redirect()->route('formularioHora')->with('mensaje','Se ha marcado la hora exitosamente');
         }
         
         if($camionPlataformaSalida->Fecha_Hora_Salida != null){
-            return redirect()->route('formularioHora')->with(['mensaje' => 'El camión ya ha salido']);
+            return redirect()->route('formularioHora')->with('mensaje', 'El camión ya ha salido');
         }
         CamionPlataformaSalida::where('ID_Camion', $camion->ID)->update(['Fecha_Hora_Llegada' => now()]);
+
+        $estadoc = ChoferCamion::where('ID_Camion', $camion->ID)->first();
+        $estadoc ->update([
+            'ID_Estado' => 4,
+        ]);
         
         return redirect()->route('formularioHora')->with('mensaje','Se a marcado la hora exitosamente');
     }
@@ -211,6 +221,14 @@ class CamionController extends Controller
         ]);
 
         $plataformaSalida->save();
+
+        $choferCamion = ChoferCamion::where('ID_Camion', $camion->ID)->first();
+
+        $choferCamion ->update([
+            'ID_Estado' => 2,
+        ]);
+
+        $choferCamion->save();
 
         return redirect()->route('formularioAsignarPlataforma')->with('mensaje', 'Plataforma asignada exitosamente');
     }
