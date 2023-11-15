@@ -55,6 +55,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/asignarCamion', function(){
         return view('chofer.asignarCamion');
     })->name('vistaAsignarCamion');
+
+    Route::post('/asignarCamion', [ChoferController::class, 'asignarCamion'])->name('asignarCamion');
     
     Route::post('/choferLibreta', [UserController::class, 'tipoLibreta'])->name('guardarLibreta');
 

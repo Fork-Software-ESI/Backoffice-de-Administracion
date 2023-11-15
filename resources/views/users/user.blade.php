@@ -20,7 +20,6 @@
         <li><a href="{{ route('mostrarUsuarios') }}">Mostrar usuarios</a></li>
         <li><a href="{{ route('vistaBuscarUsuario') }}">Buscar usuarios y eliminar o editar el mismo</a></li>
         <li><a href="{{ route('crearUsuario') }}">Crear usuario</a></li>
-        <li><a href="{{ route('mostrarChoferes') }}">Mostrar solo los choferes</a></li>
         <li><a href="{{ route('vistaAsignarCamion') }}">Asignar un chofer a un camion</a></li>
     </ol>
 
