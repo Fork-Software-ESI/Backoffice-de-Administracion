@@ -26,8 +26,8 @@ class PersonaUsuario extends Model
 	use SoftDeletes;
 	protected $table = 'persona_usuario';
 	public $incrementing = false;
+	protected $primaryKey = ['ID_Persona', 'ID_Usuario'];
 	public $timestamps = true;
-	protected $primaryKey = ['ID_Usuario', 'ID_Persona'];
 
 	protected $fillable = [
 		'ID_Usuario',

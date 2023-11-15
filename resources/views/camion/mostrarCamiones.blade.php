@@ -28,6 +28,7 @@
                 <th>Chofer Asignado</th>
                 <th>Almacen</th>
                 <th>Plataforma</th>
+                <th>Lote Asignado</th>
                 <th>Fecha hora llegada</th>
                 <th>Fecha hora salida</th>
             </tr>
@@ -41,6 +42,7 @@
                     <td>{{ $camiones['chofer'] }}</td>
                     <td>{{ $camiones['almacen'] }}</td>
                     <td>{{ $camiones['plataforma'] }}</td>
+                    <td>{{ $camiones['lote'] }}</td>
                     <td>{{ $camiones['horaLlegada'] }}</td>
                     <td>{{ $camiones['horaSalida'] }}</td>
                 </tr>
