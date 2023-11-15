@@ -52,6 +52,10 @@ Route::middleware(['auth'])->group(function () {
         return view('chofer.formularioLibreta');
     })->name('formularioLibreta');
 
+    Route::get('/asignarCamion', function(){
+        return view('chofer.asignarCamion');
+    })->name('vistaAsignarCamion');
+    
     Route::post('/choferLibreta', [UserController::class, 'tipoLibreta'])->name('guardarLibreta');
 
     //
