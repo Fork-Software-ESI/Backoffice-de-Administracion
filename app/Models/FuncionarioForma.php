@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class FuncionarioForma
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FuncionarioForma extends Model
 {
+	use SoftDeletes;
 	protected $table = 'funcionario_forma';
 	protected $primaryKey = 'ID_Paquete';
 	public $incrementing = false;
@@ -32,7 +34,8 @@ class FuncionarioForma extends Model
 	];
 
 	protected $fillable = [
-		'ID_Funcionario'
+		'ID_Funcionario',
+		'ID_Paquete'
 	];
 
 	public function funcionario_almacen()

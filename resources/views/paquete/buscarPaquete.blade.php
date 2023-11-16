@@ -40,7 +40,15 @@
                 <td>{{ $paquete->ID_Cliente }}</td>
                 <td>{{ $paquete->Descripcion }}</td>
                 <td>{{ $paquete->Peso_Kg }}</td>
-                <td>{{ $paquete->ID_Estado }}</td>
+                @if ($paquete->ID_Estado == 1)
+                    <td>En almacen</td>
+                @elseif ($paquete->ID_Estado == 2)
+                    <td>En lote</td>
+                @elseif ($paquete->ID_Estado == 3)
+                    <td>En transito</td>
+                @elseif ($paquete->ID_Estado == 4)
+                    <td>Entregado</td>
+                @endif
                 <td>{{ $paquete->Destino }}</td>
                 <td>{{ $paquete->Codigo }}</td>
                 <td>{{ $paquete->created_at }}</td>
@@ -55,7 +63,7 @@
         @method('DELETE')
         <button type="submit">Eliminar Paquete</button>
     </form> <br>
-    <a href="{{ route('editarPaquete', ['id' => $paquete->ID]) }}">Editar Paquete</a>    
+    <a href="{{ route('editarPaquete', ['id' => $paquete->ID]) }}">Editar Paquete</a>
     <form action="{{ route('auth.logout') }}" method="GET">
         @csrf
         <button id="botonLogout" type="submit">Cerrar sesión</button>

@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class GerenteLote
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GerenteLote extends Model
 {
+	use SoftDeletes;
 	protected $table = 'gerente_lote';
 	protected $primaryKey = 'ID_Lote';
 	public $incrementing = false;
@@ -32,7 +34,8 @@ class GerenteLote extends Model
 	];
 
 	protected $fillable = [
-		'ID_Gerente'
+		'ID_Gerente',
+		'ID_Lote'
 	];
 
 	public function gerente_almacen()

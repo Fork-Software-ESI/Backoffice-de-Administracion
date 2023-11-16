@@ -28,7 +28,7 @@
             <tr>
                 <th>Id</th>
                 <th>Descripcion</th>
-                <th>Peso_Kg</th>
+                <th>Estado</th>
             </tr>
         </thead>
         <tbody>
@@ -36,7 +36,13 @@
                 <tr>
                     <td>{{ $lote->ID }}</td>
                     <td>{{ $lote->Descripcion }}</td>
-                    <td>{{ $lote->Peso_Kg }}</td>
+                    @if ($lote->ID_Estado == 1)
+                        <td>Pendiente</td>
+                    @elseif ($lote->ID_Estado == 2)
+                        <td>Cargado</td>
+                    @elseif ($lote->ID_Estado == 3)
+                        <td>Entregado</td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

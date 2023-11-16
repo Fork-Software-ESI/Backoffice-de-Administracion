@@ -22,6 +22,10 @@
         @csrf
         <label for="ID">Ingrese la id del estante:</label>
         <input type="number" name="ID" required>
+        <br><br>
+        <label for="almacen">ID Almacen</label>
+        <input type="text" name="almacen" id="almacen" required>
+        <br><br>
         <button type="submit">Buscar</button>
     </form>
     <form action="{{ route('auth.logout') }}" method="GET">

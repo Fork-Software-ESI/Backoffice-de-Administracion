@@ -32,7 +32,8 @@ class EstanteController extends Controller
     public function buscarEstante(Request $request)
     {
         $id = $request->input('ID');
-        $estanteria = Estante::find($id);
+        $almacen = $request->input('almacen');
+        $estanteria = Estante::where('ID', $id)->where('ID_Almacen', $almacen)->withTrashed()->first(); 
         if (!$estanteria) {
             return redirect()->route('vistaBuscarEstante')->with('mensaje', 'Estante no encontrado');
         }
@@ -68,46 +69,17 @@ class EstanteController extends Controller
         return redirect()->route('crearEstante')->with('mensaje', 'Estante creado exitosamente');
     }
 
-
-    public function editarEstante($id)
+    public function eliminarEstante($id, $almacen)
     {
-        $estanteria = Estante::find($id);
-
-        return view('estanteria.editarEstanteria', ['estanteria' => $estanteria]);
-    }
-
-    public function actualizarEstante(Request $request, $id)
-    {
-        $estanteria = Estante::find($id);
-
-        $validator = Validator::make($request->all(), [
-            'ID_Almacen' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->route('editarEstante', ['id' => $estanteria->ID])->withErrors($validator)->withInput();
-        }
-
-        $data = $request->only(['ID_Almacen']);
-
-        $estanteria->update([
-            'ID_Almacen' => $data['ID_Almacen'],
-        ]);
-
-        return redirect()->route('vistaBuscarEstante')->with('mensaje','Estante actualizada con éxito');
-    }
-
-    public function eliminarEstante($id)
-    {
-        $estanteria = Estante::find($id);
+        $estanteria = Estante::where('ID', $id)->where('ID_Almacen', $almacen)->withTrashed()->first();
 
         if($estanteria->deleted_at != null){
-            return redirect()->route('vistaBuscarEstante')->with('mensaje', 'Estante ya eliminada');
+            return redirect()->route('vistaBuscarEstante')->with('mensaje', 'Estante ya eliminado');
         }
 
         $estanteria->deleted_at = now();
         $estanteria->save();
 
-        return redirect()->route('vistaBuscarEstante')->with('mensaje', 'Estante eliminada con éxito');
+        return redirect()->route('vistaBuscarEstante')->with('mensaje', 'Estante eliminado con éxito');
     }
 }

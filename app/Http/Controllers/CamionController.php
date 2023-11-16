@@ -23,7 +23,7 @@ class CamionController extends Controller
     public function mostrarCamiones()
     {
         $camion = Camion::all();
-        
+
         $data = [];
         foreach ($camion as $camiones) {
 
@@ -50,8 +50,8 @@ class CamionController extends Controller
                 'horaSalida' => $horaSalida,
             ];
         }
-        
-        return view('camion.mostrarCamiones', ['datos' => $data] , ['camion' => $camion]);
+
+        return view('camion.mostrarCamiones', ['datos' => $data], ['camion' => $camion]);
     }
     public function buscarCamion(Request $request)
     {
@@ -72,14 +72,14 @@ class CamionController extends Controller
         $camionPlataforma = CamionPlataforma::where('ID_Camion', $camion->ID)->first();
         $plataforma = 'No tiene';
         $almacen = 'No tiene';
-        if($camionPlataforma){
+        if ($camionPlataforma) {
             $plataforma = $camionPlataforma->Numero_Plataforma;
             $almacen = $camionPlataforma->ID_Almacen;
         }
-        
+
         $loteCamion = LoteCamion::where('ID_Camion', $camion->ID)->first();
         $lote = 'No tiene';
-        if($loteCamion){
+        if ($loteCamion) {
             $lote = $loteCamion->ID_Lote;
         }
 
@@ -95,7 +95,7 @@ class CamionController extends Controller
             'updated_at' => $camion->updated_at,
             'deleted_at' => $camion->deleted_at,
         ];
-        
+
         return view('camion.buscarCamion', ['camiones' => $datos]);
     }
 
@@ -120,11 +120,11 @@ class CamionController extends Controller
             'Matricula' => $validatedData['matricula'],
             'PesoMaximoKg' => $validatedData['pesoMaximoKg'],
         ]);
-        $camion -> save();
+        $camion->save();
         session()->flash('mensaje', 'Camion creado exitosamente');
         return redirect()->route('crearCamion');
     }
-    
+
     public function editarCamion($matricula)
     {
         $camion = Camion::where('matricula', $matricula)->first();
@@ -154,7 +154,7 @@ class CamionController extends Controller
 
         $camionPlataformaSalida = CamionPlataformaSalida::where('ID_Camion', $camion->ID)->first();
 
-        if($hora == 'llegada'){
+        if ($hora == 'llegada') {
             if ($camionPlataforma->Fecha_Hora_Llegada !== null) {
                 return redirect()->route('formularioHora')->with('mensaje', 'El camión ya ha llegado');
             }
@@ -162,24 +162,24 @@ class CamionController extends Controller
             CamionPlataforma::where('ID_Camion', $camion->ID)->update(['Fecha_Hora_Llegada' => now()]);
 
             $estadoc = ChoferCamion::where('ID_Camion', $camion->ID)->first();
-            $estadoc ->update([
+            $estadoc->update([
                 'ID_Estado' => 2,
             ]);
 
-            return redirect()->route('formularioHora')->with('mensaje','Se ha marcado la hora exitosamente');
+            return redirect()->route('formularioHora')->with('mensaje', 'Se ha marcado la hora exitosamente');
         }
-        
-        if($camionPlataformaSalida->Fecha_Hora_Salida != null){
+
+        if ($camionPlataformaSalida->Fecha_Hora_Salida != null) {
             return redirect()->route('formularioHora')->with('mensaje', 'El camión ya ha salido');
         }
         CamionPlataformaSalida::where('ID_Camion', $camion->ID)->update(['Fecha_Hora_Llegada' => now()]);
 
         $estadoc = ChoferCamion::where('ID_Camion', $camion->ID)->first();
-        $estadoc ->update([
+        $estadoc->update([
             'ID_Estado' => 4,
         ]);
-        
-        return redirect()->route('formularioHora')->with('mensaje','Se a marcado la hora exitosamente');
+
+        return redirect()->route('formularioHora')->with('mensaje', 'Se a marcado la hora exitosamente');
     }
 
     public function asignarPlataforma(Request $request)
@@ -196,7 +196,7 @@ class CamionController extends Controller
         if (!$plataforma) {
             return redirect()->route('formularioAsignarPlataforma')->with('mensaje', 'Plataforma no encontrada');
         }
-        
+
         $camionPlataforma = CamionPlataforma::where('ID_Camion', $camion->ID)->first();
         if ($camionPlataforma != null) {
             return redirect()->route('formularioAsignarPlataforma')->with('mensaje', 'El camión ya tiene una plataforma asignada');
@@ -224,7 +224,7 @@ class CamionController extends Controller
 
         $choferCamion = ChoferCamion::where('ID_Camion', $camion->ID)->first();
 
-        $choferCamion ->update([
+        $choferCamion->update([
             'ID_Estado' => 2,
         ]);
 
@@ -253,7 +253,7 @@ class CamionController extends Controller
             }
         }
 
-        $camion -> update([
+        $camion->update([
             'Matricula' => $data['matricula'],
             'PesoMaximoKg' => $data['pesoMaximoKg'],
         ]);
@@ -264,7 +264,7 @@ class CamionController extends Controller
 
     public function asignarChofer(Request $request)
     {
-        $validator = Validator::make($request -> all(),[
+        $validator = Validator::make($request->all(), [
             'ID_Camion' => 'required', 'numeric',
             'ID_Chofer' => 'required', 'numeric',
             'estado' => 'required', 'numeric',
@@ -287,9 +287,9 @@ class CamionController extends Controller
         if ($camion->deleted_at != null) {
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'No puedes asignar un chofer a un camión eliminado');
         }
-        
+
         $camionAsignado = ChoferCamion::where('ID_Camion', $camion->ID)->first();
-        if($camionAsignado){
+        if ($camionAsignado) {
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'Camion ya tiene un chofer asignado');
         }
 
@@ -302,7 +302,7 @@ class CamionController extends Controller
         }
 
         $choferAsignado = ChoferCamion::where('ID_Chofer', $chofer->ID)->first();
-        if($choferAsignado){
+        if ($choferAsignado) {
             return redirect()->route('vistaAsignarChofer')->with('mensaje', 'Chofer ya tiene un camion asignado');
         }
 
@@ -318,32 +318,40 @@ class CamionController extends Controller
         session()->flash('mensaje', 'Camion vinculado con Chofer existosamente');
         return redirect()->route('asignarChofer');
     }
+    
     public function contenidoCamion($matricula)
     {
         $camion = Camion::where('Matricula', $matricula)->first();
-        
+
         if (!$camion) {
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no se encontró');
         }
 
         $choferCamion = ChoferCamion::where('ID_Camion', $camion->ID)->first();
-        
+
         if (!$choferCamion) {
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene chofer asignado');
         }
 
         $lotesCamion = LoteCamion::where('ID_Camion', $camion->ID)->first();
 
-        if(!$lotesCamion){
+        if (!$lotesCamion) {
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene lote asignado');
         }
 
         $lote = Lote::where('ID', $lotesCamion->ID_Lote)->first();
 
-        $forma = Forma::where('ID_Lote', $lote->ID)->first();
-        /* if(!$forma){
+        // Verificar si existe un lote antes de acceder a sus propiedades
+        if (!$lote) {
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene lote asignado');
-        } */
+        }
+
+        $forma = Forma::where('ID_Lote', $lote->ID_Lote)->first();
+
+        // Verificar si existe una forma antes de acceder a sus propiedades
+        if (!$forma) {
+            return redirect()->route('vistaBuscarCamion')->with('mensaje', 'El camión no tiene lote asignado');
+        }
 
         $paquete = Paquete::find($forma->ID_Paquete);
 
@@ -352,29 +360,42 @@ class CamionController extends Controller
             'descripcionLote' => $lote ? $lote->Descripcion : 'No disponible',
             'pesoLote' => $lote ? $lote->Peso_Kg : 'No disponible',
         ];
-    
+
         $datosPaquete = [
             'paquete' => $paquete ? $paquete->ID : 'No disponible',
             'descripcionPaquete' => $paquete ? $paquete->Descripcion : 'No disponible',
             'pesoPaquete' => $paquete ? $paquete->Peso_Kg : 'No disponible',
         ];
 
-        return view('camion.contenidoCamion', ['datosLote' => $datosLote, 'datosPaquete' => $datosPaquete ]);
+        return view('camion.contenidoCamion', ['datosLote' => $datosLote, 'datosPaquete' => $datosPaquete]);
     }
+
 
     public function eliminarCamion($matricula)
     {
-        $camion = Camion::where('Matricula', $matricula)->first();
-        if($camion -> deleted_at != null){
+        $camion = Camion::where('Matricula', $matricula)->withTrashed()->first();
+        if ($camion->deleted_at != null) {
             return redirect()->route('vistaBuscarCamion')->with('mensaje', 'No puedes eliminar un camión eliminado');
         }
+        $loteCamion = LoteCamion::where('ID_Camion', $camion->ID)->delete();
+        if (ChoferCamion::where('ID_Camion', $camion->ID)->exists()) {
+            ChoferCamion::where('ID_Camion', $camion->ID)->delete();
+            if (CamionLlevaLote::where('ID_Lote', $loteCamion->ID_Lote)->exists()) {
+                CamionLlevaLote::where('ID_Lote', $loteCamion->ID_Lote)->delete();
+            }
+        }
+        if (CamionPlataforma::where('ID_Camion', $camion->ID)->exists()) {
+            CamionPlataforma::where('ID_Camion', $camion->ID)->delete();
+        }
+        if (CamionPlataformaSalida::where('ID_Camion', $camion->ID)->exists()) {
+            CamionPlataformaSalida::where('ID_Camion', $camion->ID)->delete();
+        }
+        if (ChoferCamionManeja::where('ID_Camion', $camion->ID)->exists()) {
+            ChoferCamionManeja::where('ID_Camion', $camion->ID)->delete();
+        }
 
-        LoteCamion::where('ID_Camion', $camion->ID)->delete();
-        ChoferCamion::where('ID_Camion', $camion->ID)->delete();
-        CamionPlataforma::where('ID_Camion', $camion->ID)->delete();
-        CamionPlataformaSalida::where('ID_Camion', $camion->ID)->delete();
-        ChoferCamionManeja::where('ID_Camion', $camion->ID)->delete();
-        CamionLlevaLote::where('ID_Camion', $camion->ID)->delete();
+
+
 
         $camion->delete();
 

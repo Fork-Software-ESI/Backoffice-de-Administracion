@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Administrador
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Administrador extends Model
 {
+	use SoftDeletes;
 	protected $table = 'administrador';
 	protected $primaryKey = 'ID';
 	public $incrementing = false;

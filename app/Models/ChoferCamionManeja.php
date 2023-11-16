@@ -35,7 +35,9 @@ class ChoferCamionManeja extends Model
 	];
 
 	protected $fillable = [
-		'Fecha_Hora_Fin'
+		'Fecha_Hora_Fin',
+		'ID_Chofer',
+		'ID_Camion'
 	];
 
 	public function chofer_camion()

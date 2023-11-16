@@ -26,6 +26,9 @@
         <label for="numero">Numero</label>
         <input type="number" name="numero" id="numero" required>
         <br><br>
+        <label for="almacen">ID Almacen</label>
+        <input type="text" name="almacen" id="almacen" required>
+        <br><br>
         <button type="submit">Buscar Plataforma</button>
     </form>
     <form action="{{ route('auth.logout') }}" method="GET">

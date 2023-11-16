@@ -18,7 +18,7 @@ class LoteController extends Controller
     public function buscarLote(Request $request)
     {
         $id = $request->input('id');
-        $lote = Lote::find($id);
+        $lote = Lote::where('ID', $id)->withTrashed()->first();
         if (!$lote) {
             return redirect()->route('vistaBuscarLote')->with(['mensaje' => 'Lote no encontrado']);
         }
@@ -29,7 +29,6 @@ class LoteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'descripcion' => 'required|string',
-            'peso_kg' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -44,7 +43,7 @@ class LoteController extends Controller
 
         Lote::create([
             'Descripcion' => $validatedData['descripcion'],
-            'Peso_Kg' => $validatedData['peso_kg'],
+            'ID_Estado' => 1,
         ]);
 
         session()->flash('mensaje', 'Lote creado exitosamente');
@@ -52,9 +51,9 @@ class LoteController extends Controller
     }
     public function editarLote($id)
     {
-        $lote = Lote::find($id);
+        $lote = Lote::where('ID', $id)->withTrashed()->first();
 
-        if($lote->deleted_at != null){
+        if ($lote->deleted_at != null) {
             return redirect()->route('vistaBuscarLote')->with('mensaje', 'No puedes editar un lote ya eliminado');
         }
 
@@ -63,22 +62,20 @@ class LoteController extends Controller
 
     public function actualizarLote(Request $request, $id)
     {
-        $lote = Lote::find($id);
+        $lote = Lote::where('ID', $id)->withTrashed()->first();
 
         $validator = Validator::make($request->all(), [
-            'descripcion' => 'string|max:255',
-            'peso_kg' => 'numeric',
+            'descripcion' => 'required|string',
         ]);
 
         if ($validator->fails()) {
             return redirect()->route('editarLote', ['id' => $lote->ID])->withErrors($validator)->withInput();
         }
 
-        $data = $request->only(['descripcion', 'peso_kg']);
+        $validatedData = $validator->validated();
 
-        $lote -> update([
-            'Descripcion' => $data['descripcion'],
-            'Peso_Kg' => $data['peso_kg'],
+        $lote->update([
+            'Descripcion' => $validatedData['descripcion'],
         ]);
 
         return redirect()->route('vistaBuscarLote', ['id' => $lote->ID])
@@ -87,9 +84,9 @@ class LoteController extends Controller
 
     public function eliminarlote($id)
     {
-        $lote = Lote::find($id);
+        $lote = Lote::where('ID', $id)->withTrashed()->first();
 
-        if($lote->deleted_at != null){
+        if ($lote->deleted_at != null) {
             return redirect()->route('vistaBuscarLote')->with('mensaje', 'No puedes eliminar un lote ya eliminado');
         }
 

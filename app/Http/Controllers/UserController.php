@@ -24,7 +24,7 @@ class UserController extends Controller
 
         $datos = [];
 
-        foreach ($users as $user){
+        foreach ($users as $user) {
             $datos[] = $this->datosUsuario($user);
         }
         return view('users.mostrarUsuarios', ['datos' => $datos]);
@@ -32,35 +32,29 @@ class UserController extends Controller
 
     private function verificarRol($user)
     {
-        $rol = '';
+        $rol = null;
 
-        if($rol == ''){
-            $rol = 'Cliente';
-        }
-
-        if(Administrador::where('ID', $user->ID)->exists()){
+        if (Administrador::where('ID', $user->ID)->exists()) {
             $rol = 'Administrador';
-        }
-        if(Chofer::where('ID', $user->ID)->exists()){
+        } elseif (Chofer::where('ID', $user->ID)->exists()) {
             $rol = 'Chofer';
-        }
-        if(Cliente::where('ID', $user->ID)->exists()){
+        } elseif (Cliente::where('ID', $user->ID)->exists()) {
             $rol = 'Cliente';
-        }
-        if(FuncionarioAlmacen::where('ID', $user->ID)->exists()){
+        } elseif (FuncionarioAlmacen::where('ID', $user->ID)->exists()) {
             $rol = 'Funcionario';
-        }
-        if(GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()){
+        } elseif (GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()) {
             $rol = 'Gerente';
         }
-        return $rol;
+
+        return $rol ?? 'Cliente';
     }
+
 
     private function datosUsuario($user)
     {
-        $personaUsuario = PersonaUsuario::where('ID_Usuario', $user -> ID) -> first();
-        $persona = Persona::where('ID', $personaUsuario->ID_Persona)->firstOrNew();
-        $telefono = PersonaTelefono::where('ID_Persona', $persona->ID)->first();
+        $personaUsuario = PersonaUsuario::where('ID_Usuario', $user->ID)->withTrashed()->first();
+        $persona = Persona::where('ID', $personaUsuario->ID_Persona)->withTrashed()->first();
+        $telefono = PersonaTelefono::where('ID_Persona', $persona->ID)->withTrashed()->first();
         $rol = $this->verificarRol($user);
         $telefonoA = $telefono ? $telefono->Telefono : 'No tiene';
         $deletedAt = $user->deleted_at;
@@ -88,6 +82,7 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed',
             'telefono' => 'required|string',
             'rol' => 'required|in:administrador,chofer,cliente,funcionario,gerente',
+            'id_almacen' => 'required_if:rol,funcionario,gerente|exists:almacen,ID',
         ]);
 
         if ($validator->fails()) {
@@ -103,16 +98,16 @@ class UserController extends Controller
     {
         $username = $request->input('username');
         $user = User::where('username', $username)->withTrashed()->first();
-    
+
         if (!$user) {
             return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'No existe un usuario con ese nombre de usuario');
         }
-    
+
         $datos = $this->datosUsuario($user);
-        
+
         return view('users.buscarUsuario', ['user' => $user, 'datos' => $datos]);
     }
-    
+
     public function crearUsuario(Request $request)
     {
         $validatedData = $this->validator($request);
@@ -122,18 +117,26 @@ class UserController extends Controller
         }
 
         if ($this->existeUsuarioConMismaCi($validatedData['ci'])) {
-            return redirect()->route('crearUsuario')->with('mensaje-error', 'Ya existen 2 usuarios con la misma cédula');
+            return redirect()->route('crearUsuario')->with('mensaje-error', 'Ya existe un usuario con la misma cédula');
         }
+
 
         $user = $this->crearUsuarioBase($validatedData);
 
         $persona = $this->crearPersona($validatedData);
 
+        $id_almacen = $validatedData['id_almacen'];
+
         $this->crearPersonaUsuario($user, $persona);
 
         $this->crearTelefono($persona, $validatedData['telefono']);
 
-        $this->crearRol($validatedData['rol'], $persona);
+        if ($validatedData['rol'] == 'funcionario' || $validatedData['rol'] == 'gerente')
+            $this->crearRolAlmacen($validatedData['rol'], $persona, $id_almacen);
+        else if ($validatedData['rol'] == 'administrador' || $validatedData['rol'] == 'chofer' || $validatedData['rol'] == 'cliente') {
+            $this->crearRol($validatedData['rol'], $persona);
+        }
+
 
         session(['id' => $persona->ID]);
 
@@ -149,14 +152,14 @@ class UserController extends Controller
     {
         $id = session('id');
         $tipo_libreta = request('tipo_libreta');
-        
+
         ChoferTipoLibretum::create([
             'ID' => $id,
             'Tipo' => $tipo_libreta,
         ]);
 
         return redirect()->route('crearUsuario')->with('mensaje', 'Chofer con libreta creado exitosamente');
-    }   
+    }
 
     private function usuarioExistente($username)
     {
@@ -166,7 +169,7 @@ class UserController extends Controller
     private function existeUsuarioConMismaCi($ci)
     {
         $contadorUsuariosConMismaCi = Persona::where('ci', $ci)->count();
-        return $contadorUsuariosConMismaCi >= 2;
+        return $contadorUsuariosConMismaCi >= 1;
     }
 
     private function crearUsuarioBase($validatedData)
@@ -225,6 +228,25 @@ class UserController extends Controller
         $rolModel->save();
     }
 
+    private function crearRolAlmacen($rol, $persona, $ID_Almacen)
+    {
+        $rolModel = $this->crearRolModelAlmacen($rol, $persona->ID, $ID_Almacen);
+        $rolModel->save();
+    }
+
+    private function crearRolModelAlmacen($rol, $personaId, $ID_Almacen)
+    {
+        $rolModel = null;
+
+        if ($rol == 'funcionario') {
+            $rolModel = FuncionarioAlmacen::create(['ID' => $personaId, 'ID_Almacen' => $ID_Almacen]);
+        } elseif ($rol == 'gerente') {
+            $rolModel = GerenteAlmacen::create(['ID_Gerente' => $personaId, 'ID_Almacen' => $ID_Almacen]);
+        }
+
+        return $rolModel;
+    }
+
     private function crearRolModel($rol, $personaId)
     {
         $rolModel = null;
@@ -235,10 +257,6 @@ class UserController extends Controller
             $rolModel = Chofer::create(['ID' => $personaId]);
         } elseif ($rol == 'cliente') {
             $rolModel = Cliente::create(['ID' => $personaId]);
-        } elseif ($rol == 'funcionario') {
-            $rolModel = FuncionarioAlmacen::create(['ID' => $personaId]);
-        } elseif ($rol == 'gerente') {
-            $rolModel = GerenteAlmacen::create(['ID_Gerente' => $personaId]);
         }
 
         return $rolModel;
@@ -255,7 +273,7 @@ class UserController extends Controller
 
         $datos = $this->datosUsuario($user);
 
-        session() -> put('rol', $datos['rol']);
+        session()->put('rol', $datos['rol']);
 
         return view('users.editarUsuario', ['datos' => $datos]);
     }
@@ -324,8 +342,9 @@ class UserController extends Controller
     public function eliminarRolAnterior($user, $rolAnterior)
     {
         if ($rolAnterior) {
-            $eliminarRolAnterior = $rolAnterior::where('ID', $user)->first();
-            if($eliminarRolAnterior){
+            $rolClass = 'App\\Models\\' . $rolAnterior;
+            $eliminarRolAnterior = $rolClass::where('ID', $user->ID)->first();
+            if ($eliminarRolAnterior) {
                 $eliminarRolAnterior->delete();
             }
         }
@@ -333,9 +352,8 @@ class UserController extends Controller
 
     public function crearNuevoRol($user, $rol)
     {
-        $crearRol = new $rol([
-            'ID' => $user,
-        ]);
+        $rolClass = 'App\\Models\\' . $rol;
+        $crearRol = new $rolClass(['ID' => $user->ID]);
         $crearRol->save();
     }
 
@@ -350,8 +368,9 @@ class UserController extends Controller
         }
 
         $this->marcarComoEliminado($user);
-        $this->marcarComoEliminadoPersona($user);
         $this->marcarComoEliminadoPersonaUsuario($user);
+        $this->marcarComoEliminadoPersona($user);
+        $this->marcarComoEliminadoTelefono($user);
         $this->marcarComoEliminadoRol($user);
 
         return redirect()->route('vistaBuscarUsuario')->with('mensaje', 'Usuario eliminado con éxito');
@@ -382,41 +401,60 @@ class UserController extends Controller
         $user->save();
     }
 
+    private function marcarComoEliminadoPersonaUsuario($user)
+    {
+        PersonaUsuario::where('ID_Usuario', $user->ID)->first()->delete();
+    }
+
     private function marcarComoEliminadoPersona($user)
     {
-        $personaUsuario = PersonaUsuario::find('ID_Usuario', $user->ID);
-        $persona = Persona::find($personaUsuario->ID_Persona);
+        $persona = Persona::find($user->ID);
         $persona->deleted_at = now();
         $persona->save();
     }
 
-    private function marcarComoEliminadoPersonaUsuario($user)
-    {
-        $personaUsuario = PersonaUsuario::where('ID_Usuario', $user->ID)->first();
-        $personaUsuario->deleted_at = now();
-        $personaUsuario->save();
-    }
-
     private function marcarComoEliminadoRol($user)
     {
-        $roles = ['Administrador', 'Chofer', 'Cliente', 'Funcionario', 'Gerente'];
+        $roles = ['Administrador', 'Chofer', 'Cliente', 'FuncionarioAlmacen', 'GerenteAlmacen'];
 
         foreach ($roles as $rol) {
-            if ($this->rolExists($rol, $user->ID)) {
+            $existeRol = $this->rolExists($rol, $user->ID);
+            if ($existeRol) {
                 $this->marcarComoEliminadoSegunRol($rol, $user->ID);
             }
         }
     }
 
+    private function marcarComoEliminadoTelefono($user)
+    {
+        $persona = Persona::where('ID', $user->ID)->withTrashed()->first();
+        $telefono = PersonaTelefono::where('ID_Persona', $persona->ID)->first();
+        $telefono->deleted_at = now();
+        $telefono->save();
+    }
+
     private function rolExists($rol, $user)
     {
-        return $rol::where('ID', $user->ID)->exists();
+        $rolClass = 'App\\Models\\' . $rol;
+
+        $primaryKey = ($rol === 'GerenteAlmacen') ? 'ID_Gerente' : (new $rolClass)->getKeyName();
+
+        return $rolClass::where($primaryKey, $user)->exists();
     }
+
 
     private function marcarComoEliminadoSegunRol($rol, $user)
     {
-        $rolModel = $rol::where('ID', $user->ID)->first();
-        $rolModel->deleted_at = now();
-        $rolModel->save();
+        $rolClass = 'App\\Models\\' . $rol;
+
+        $instance = new $rolClass;
+
+        $primaryKey = ($rol === 'GerenteAlmacen') ? 'ID_Gerente' : $instance->getKeyName();
+
+        $rolInstance = $rolClass::where($primaryKey, $user)->first();
+
+        if ($rolInstance) {
+            $rolInstance->delete();
+        }
     }
 }

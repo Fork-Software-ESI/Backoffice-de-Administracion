@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class GerenteAlmacen
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GerenteAlmacen extends Model
 {
+	use SoftDeletes;
 	protected $table = 'gerente_almacen';
 	protected $primaryKey = 'ID_Gerente';
 	public $incrementing = false;

@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Forma
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Forma extends Model
 {
+	use SoftDeletes;
 	protected $table = 'forma';
 	protected $primaryKey = 'ID_Paquete';
 	public $incrementing = false;

@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class FuncionarioAlmacen
@@ -22,16 +23,19 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FuncionarioAlmacen extends Model
 {
+	use SoftDeletes;
 	protected $table = 'funcionario_almacen';
 	protected $primaryKey = 'ID';
 	public $incrementing = false;
 	public $timestamps = true;
 
 	protected $fillable = [
-		'ID'
+		'ID',
+		'ID_Almacen'
 	];
 	protected $casts = [
-		'ID' => 'int'
+		'ID' => 'int',
+		'ID_Almacen' => 'int'
 	];
 
 	public function persona()

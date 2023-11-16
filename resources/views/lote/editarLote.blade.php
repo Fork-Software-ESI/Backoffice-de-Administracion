@@ -25,12 +25,6 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="peso_kg">Peso_Kg <input value="{{ $lote->Peso_Kg }}" type="text" name="peso_kg">
-            @error('peso_kg')
-                <br>
-                <small style="color:red;">{{ $message }}</small>
-            @enderror
-        </label><br><br>
         <button type="submit">Actualizar lote</button>
     </form>
     <form action="{{ route('auth.logout') }}" method="GET">

@@ -31,7 +31,7 @@ class Camion extends Model
 	public $timestamps = true;
 
 	protected $casts = [
-		'PesoMaximoKg' => 'int'
+		'PesoMaximoKg' => 'int',
 	];
 
 	protected $fillable = [

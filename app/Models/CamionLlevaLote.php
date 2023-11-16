@@ -34,7 +34,8 @@ class CamionLlevaLote extends Model
 	];
 
 	protected $fillable = [
-		'Fecha_Hora_Fin'
+		'Fecha_Hora_Fin',
+		'ID_Lote'
 	];
 
 	public function lote_camion()

@@ -170,11 +170,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/crear-estanteria', [EstanteController::class, 'crearEstante']);
 
-    Route::get('/editar-estanteria/{id}', [EstanteController::class, 'editarEstante'])->name('editarEstante');
+    Route::delete('/eliminar-estanteria/{id}/{almacen}', [EstanteController::class, 'eliminarEstante'])->name('eliminarEstante');
 
-    Route::patch('/actualizar-estanteria/{id}', [EstanteController::class, 'actualizarEstante'])->name('actualizarEstante');
-
-    Route::delete('/eliminar-estanteria/{id}', [EstanteController::class, 'eliminarEstante'])->name('eliminarEstante');
     
     //
 
@@ -242,7 +239,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/crear-plataforma', [PlataformaController::class, 'crearPlataforma'])->name('crearPlataforma');
 
-    Route::delete('/eliminar-plataforma/{numero}', [PlataformaController::class, 'eliminarPlataforma'])->name('eliminarPlataforma');
+    Route::delete('/eliminar-plataforma/{numero}/{almacen}', [PlataformaController::class, 'eliminarPlataforma'])->name('eliminarPlataforma');
 
     //
 

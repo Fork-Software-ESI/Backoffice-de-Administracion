@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class PaqueteEstante
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PaqueteEstante extends Model
 {
+	use SoftDeletes;
 	protected $table = 'paquete_estante';
 	protected $primaryKey = 'ID_Paquete';
 	public $incrementing = false;
@@ -36,7 +38,8 @@ class PaqueteEstante extends Model
 
 	protected $fillable = [
 		'ID_Estante',
-		'ID_Almacen'
+		'ID_Almacen',
+		'ID_Paquete'
 	];
 
 	public function paquete()

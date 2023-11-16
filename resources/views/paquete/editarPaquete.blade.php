@@ -21,7 +21,8 @@
     <form action="{{ route('actualizarPaquete', ['id' => $datos['ID']]) }}" method="post">
         @csrf
         @method('PATCH')
-        <label for="Descripcion">Descripcion <input value="{{ $datos['Descripcion'] }}" type="text" name="Descripcion">
+        <label for="Descripcion">Descripcion <input value="{{ $datos['Descripcion'] }}" type="text"
+                name="Descripcion">
             @error('Descripcion')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
@@ -33,36 +34,20 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="ID_Cliente">Id del cliente <input value="{{ $datos['ID_Cliente'] }}" type="" name="ID_Cliente">
+        <label for="ID_Cliente">Id del cliente <input value="{{ $datos['ID_Cliente'] }}" type=""
+                name="ID_Cliente">
             @error('ID_Cliente')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="ID_Estado">Estado 
+        <label for="ID_Estado">Estado
             <select name="ID_Estado">
                 <option value="1" {{ $datos['ID_Estado'] == '1' ? 'selected' : '' }}>En almacen</option>
-                <option value="2" {{ $datos['ID_Estado'] == '2' ? 'selected' : '' }}>En transito</option>
-                <option value="3" {{ $datos['ID_Estado'] == '3' ? 'selected' : '' }}>Entregado</option>
+                <option value="2" {{ $datos['ID_Estado'] == '2' ? 'selected' : '' }}>En lote</option>
+                <option value="3" {{ $datos['ID_Estado'] == '3' ? 'selected' : '' }}>En transito</option>
+                <option value="4" {{ $datos['ID_Estado'] == '4' ? 'selected' : '' }}>Entregado</option>'
             </select>
-        </label><br><br>
-        <label for="Calle">Calle <input value="{{ $datos['Calle'] }}" type="" name="Calle">
-            @error('Calle')
-                <br>
-                <small style="color:red;">{{ $message }}</small>
-            @enderror
-        </label><br><br>
-        <label for="Numero_Puerta">Numero de puerta <input value="{{ $datos['Numero_Puerta'] }}" type="" name="Numero_Puerta">
-            @error('Numero_Puerta')
-                <br>
-                <small style="color:red;">{{ $message }}</small>
-            @enderror
-        </label><br><br>
-        <label for="Ciudad">Ciudad <input value="{{ $datos['Ciudad'] }}" type="" name="Ciudad">
-            @error('Ciudad')
-                <br>
-                <small style="color:red;">{{ $message }}</small>
-            @enderror
         </label><br><br>
         <button type="submit">Actualizar Paquete</button>
     </form>

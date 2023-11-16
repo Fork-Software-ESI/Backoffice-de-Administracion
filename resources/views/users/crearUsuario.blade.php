@@ -31,7 +31,8 @@
     <h1>Crear usuario</h1>
     <form action="" method="post">
         @csrf
-        <label for="ci">Cedula de identidad <input value="{{ old('ci') }}" type="text" name="ci" required>
+        <label for="ci">Cedula de identidad <input value="{{ old('ci') }}" type="text" name="ci"
+                required>
             @error('ci')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
@@ -62,7 +63,8 @@
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
-        <label for="username">Nombre de usuario <input value="{{ old('username') }}" type="text" name="username" required>
+        <label for="username">Nombre de usuario <input value="{{ old('username') }}" type="text" name="username"
+                required>
             @error('username')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
@@ -81,24 +83,39 @@
             @enderror
         </label><br><br>
         <label for="rol">Seleccione su rol
-        <select name="rol" id="rol">
-            <option value="administrador">Administrador</option>
-            <option value="gerente">Gerente</option>
-            <option value="cliente">Cliente</option>
-            <option value="chofer">Chofer</option>
-            <option value="funcionario">Funcionario</option>
-        </select>
+            <select name="rol" id="rol">
+                <option value="administrador">Administrador</option>
+                <option value="gerente">Gerente</option>
+                <option value="cliente">Cliente</option>
+                <option value="chofer">Chofer</option>
+                <option value="funcionario">Funcionario</option>
+            </select>
             @error('rol')
                 <br>
                 <small style="color:red;">{{ $message }}</small>
             @enderror
         </label><br><br>
+        <label for="id_almacen" id="label_id_almacen" style="display:none;">ID Almacen <input
+                value="{{ old('id_almacen') }}" type="text" name="id_almacen"></label><br><br>
         <button type="submit">Crear</button>
     </form>
     <form action="{{ route('auth.logout') }}" method="GET">
         @csrf
         <button id="botonLogout" type="submit">Cerrar sesión</button>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var rolSelect = document.getElementById('rol');
+            var idAlmacenLabel = document.getElementById('label_id_almacen');
+
+            rolSelect.addEventListener('change', function() {
+                idAlmacenLabel.style.display = (rolSelect.value === 'funcionario' || rolSelect.value ===
+                    'gerente') ? 'block' : 'none';
+            });
+        });
+    </script>
+
 </body>
 
 </html>

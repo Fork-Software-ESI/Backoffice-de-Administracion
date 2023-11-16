@@ -61,7 +61,7 @@ class PaqueteController extends Controller
 
         $validatedData['Destino'] = $this->direccion($validatedData);
 
-        if(!$validatedData['Destino']){
+        if (!$validatedData['Destino']) {
             return $validatedData['Destino'];
         }
 
@@ -73,7 +73,7 @@ class PaqueteController extends Controller
 
         session()->flash('mensaje', 'Paquete creado exitosamente, codigo: ' . $validatedData['Codigo']);
         return redirect()->route('crearPaquete');
-    }    
+    }
     private function validarPaquete($request)
     {
         $validator = Validator::make($request->all(), [
@@ -109,7 +109,7 @@ class PaqueteController extends Controller
     {
         $forma = Forma::where('ID_Paquete', $paquetes->ID)->whereNull('deleted_at')->first();
         $lote = $forma ? $forma->ID_Lote : 'No tiene';
-        
+
         $descripcion = $paquetes->Descripcion;
         return [
             'ID' => $paquetes->ID,
@@ -118,7 +118,7 @@ class PaqueteController extends Controller
             'ID_Cliente' => $paquetes->ID_Cliente,
             'ID_Estado' => $paquetes->ID_Estado,
             'Destino' => $paquetes->Destino,
-            'Codigo'=> $paquetes->Codigo,
+            'Codigo' => $paquetes->Codigo,
             'ID_Lote' => $lote,
         ];
     }
@@ -128,7 +128,7 @@ class PaqueteController extends Controller
 
         $datos = [];
 
-        foreach($paquete as $paquetes){
+        foreach ($paquete as $paquetes) {
             $datos[] = $this->mostrarDatosPaquete($paquetes);
         }
 
@@ -138,7 +138,7 @@ class PaqueteController extends Controller
     public function buscarPaquete(Request $request)
     {
         $ID = $request->input('id');
-        $paquete = Paquete::find($ID);
+        $paquete = Paquete::where('ID', $ID)->withTrashed()->first();
 
         if (!$paquete) {
             return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'Paquete no encontrado');
@@ -149,13 +149,13 @@ class PaqueteController extends Controller
 
     public function editarPaquete($id)
     {
-        $paquete = Paquete::find($id);
-        
-        if($paquete -> deleted_at != null){
+        $paquete = Paquete::where('ID', $id)->withTrashed()->first();
+
+        if ($paquete->deleted_at != null) {
             return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'No se puede editar un paquete eliminado');
         }
 
-        list($calle,$numero_puerta,$ciudad) = $this->variablesDireccion($paquete);
+        list($calle, $numero_puerta, $ciudad) = $this->variablesDireccion($paquete);
 
         $datos = $this->datosPaquete($paquete, $calle, $numero_puerta, $ciudad);
 
@@ -191,7 +191,7 @@ class PaqueteController extends Controller
         ];
     }
 
-    
+
     public function actualizarPaquete(Request $request, $id)
     {
         $paquete = Paquete::find($id);
@@ -204,16 +204,10 @@ class PaqueteController extends Controller
 
         $validatedData = $validator->validated();
 
-        $validatedData['Destino'] = $this->direccion($validatedData);
-
-        if(!$validatedData['Destino']){
-            return $validatedData['Destino'];
-        }
-
         $paquete->update($validatedData);
 
         return redirect()->route('vistaBuscarPaquete', ['id' => $paquete->ID])
-        ->with('mensaje', 'Paquete actualizado de forma exitosa');
+            ->with('mensaje', 'Paquete actualizado de forma exitosa');
     }
     private function validatorActualizar($request)
     {
@@ -221,7 +215,7 @@ class PaqueteController extends Controller
             'Descripcion' => 'string',
             'Peso_Kg' => 'numeric',
             'ID_Cliente' => 'numeric',
-            'ID_Estado' => 'in:1,2,3',
+            'ID_Estado' => 'in:1,2,3,4',
             'Calle' => 'string|regex:/^[\pL\pN\s]+$/u',
             'Numero_Puerta' => 'string|alpha_num',
             'Ciudad' => 'string|alpha',
@@ -243,19 +237,19 @@ class PaqueteController extends Controller
         $validatedData = $validator->validated();
 
         $paquete = Paquete::where('ID', $validatedData['ID_Paquete'])->first();
-        
-        if(!$paquete){
-            return redirect()->route('vistaBuscarPaquete')->with('mensaje' , 'Paquete no encontrado');
+
+        if (!$paquete) {
+            return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'Paquete no encontrado');
         }
 
         $lote = Lote::where('ID', $validatedData['ID_Lote'])->first();
 
-        if(!$lote){
+        if (!$lote) {
             return redirect()->route('vistaBuscarLote')->with('mensaje', 'Lote no encontrado');
         }
 
         $paqueteAsignado = Forma::where('ID_Paquete', $validatedData['ID_Paquete'])->first();
-        if($paqueteAsignado){
+        if ($paqueteAsignado) {
             return redirect()->route('vistaAsignarLote')->with('mensaje', 'Paquete ya asignado a un lote');
         }
 
@@ -278,7 +272,7 @@ class PaqueteController extends Controller
     {
         $paquete = Paquete::find($id);
 
-        if($paquete -> deleted_at != null){
+        if ($paquete->deleted_at != null) {
             return redirect()->route('vistaBuscarPaquete')->with('mensaje', 'No se puede eliminar un paquete eliminado');
         }
 
@@ -293,7 +287,7 @@ class PaqueteController extends Controller
         $validator = Validator::make($request->all(), [
             'ID_Paquete' => 'required|numeric',
         ]);
-        
+
         if ($validator->fails()) {
             return redirect()->route('vistaPaqueteEntregado')->withErrors($validator)->withInput();
         }
@@ -305,7 +299,7 @@ class PaqueteController extends Controller
             return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete no encontrado');
         }
 
-        if($paquete->ID_Estado == 4){
+        if ($paquete->ID_Estado == 4) {
             return redirect()->route('vistaPaqueteEntregado')->with('mensaje', 'Paquete ya entregado');
         }
 
@@ -323,26 +317,26 @@ class PaqueteController extends Controller
 
         $choferCamion = ChoferCamion::where('ID_Camion', $loteCamion->ID_Camion)->first();
 
-        $paquete -> update([
+        $paquete->update([
             'ID_Estado' => 4,
         ]);
 
-        $paqueteLote -> update([
+        $paqueteLote->update([
             'ID_Estado' => 3,
         ]);
 
         $forma = Forma::where('ID_Lote', $lote->ID)->get();
 
         $paquetesEntregados = 1;
-        foreach($forma as $formas){
+        foreach ($forma as $formas) {
             $paquetes = Paquete::where('ID', $formas->ID_Paquete)->first();
-            if($paquetes && $paquetes->ID_Estado != 4){
+            if ($paquetes && $paquetes->ID_Estado != 4) {
                 $paquetesEntregados = 0;
                 break;
             }
         }
 
-        if($paquetesEntregados == 1){
+        if ($paquetesEntregados == 1) {
             Lote::where('ID', $lote->ID)
                 ->update([
                     'ID_Estado' => 3,
