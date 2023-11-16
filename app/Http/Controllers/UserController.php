@@ -32,6 +32,12 @@ class UserController extends Controller
 
     private function verificarRol($user)
     {
+        $rol = '';
+
+        if($rol == ''){
+            $rol = 'Cliente';
+        }
+
         if(Administrador::where('ID', $user->ID)->exists()){
             $rol = 'Administrador';
         }
@@ -47,7 +53,6 @@ class UserController extends Controller
         if(GerenteAlmacen::where('ID_Gerente', $user->ID)->exists()){
             $rol = 'Gerente';
         }
-
         return $rol;
     }
 
